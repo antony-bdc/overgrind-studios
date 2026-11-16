@@ -4,6 +4,8 @@ import * as THREE from "./vendor/three.module.min.js";
 export const D2R = Math.PI / 180;
 export const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
 export const sm = (x) => x * x * (3 - 2 * x);
+/* weak device → lighter scenes (no mirror floor, lower pixel ratio, fewer particles) */
+export const LITE = (() => { try { const q = new URLSearchParams(location.search); if (q.has("lite")) return q.get("lite") !== "0"; } catch (e) {} return (navigator.hardwareConcurrency || 8) <= 4 || (navigator.deviceMemory || 8) <= 4; })();
 export const hash = (n) => { const x = Math.sin(n * 127.1) * 43758.5453; return x - Math.floor(x); };
 
 /* ---------- loading ---------- */
@@ -193,7 +195,7 @@ export async function say(who, line) {
 }
 export function blip(kind = "pop") { // tiny synthesized UI sounds, no files
   if (muted) return; const a = ctx(); if (!a) return; const t = a.currentTime, o = a.createOscillator(), g = a.createGain(); o.connect(g).connect(a.destination);
-  const P = { pop: [520, 880, .09, "triangle", .12], whoosh: [180, 60, .25, "sawtooth", .05], spark: [1400, 2400, .12, "square", .04], thud: [140, 50, .18, "sine", .3], glitch: [90, 900, .1, "square", .05] }[kind] || [600, 900, .1, "sine", .1];
+  const P = { pop: [520, 880, .09, "triangle", .12], whoosh: [180, 60, .25, "sawtooth", .05], spark: [1400, 2400, .12, "square", .04], thud: [140, 50, .18, "sine", .3], glitch: [90, 900, .1, "square", .05], tick: [1900, 1300, .025, "sine", .025], coin: [990, 1980, .14, "square", .05] }[kind] || [600, 900, .1, "sine", .1];
   o.type = P[3]; o.frequency.setValueAtTime(P[0], t); o.frequency.exponentialRampToValueAtTime(P[1], t + P[2]);
   g.gain.setValueAtTime(P[4], t); g.gain.exponentialRampToValueAtTime(.0001, t + P[2] + .05); o.start(t); o.stop(t + P[2] + .06);
 }

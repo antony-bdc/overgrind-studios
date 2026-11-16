@@ -19,6 +19,7 @@
 <script type="application/ld+json">{{LDJSON}}</script>
 <link rel="preload" href="assets/fonts/unbounded.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/archivo.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/crew3d/run_fs.webp" as="image" type="image/webp">
 <link rel="stylesheet" href="assets/site.css">
 </head>
 <body class="no-js">
@@ -26,9 +27,16 @@
 <div class="grain" aria-hidden="true"></div>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="liquid" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence id="liquid-t" type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="7"/><feDisplacementMap id="liquid-d" in="SourceGraphic" scale="0" xChannelSelector="R" yChannelSelector="G"/></filter></svg>
 <div class="loader" aria-hidden="true">
-  <div class="tile"><b>OG</b><i></i></div>
-  <div class="lbl" data-i18n="ld">Loading seven worlds</div>
-  <div class="count">0</div>
+  <div class="ld-in">
+    <div class="tile"><b>OG</b><i></i></div>
+    <div class="ld-title"><span data-i18n="ld.t">Joining Overgrind</span><em>...</em></div>
+    <div class="ld-by" data-i18n="ld.by">by freshstatue and the crew</div>
+  </div>
+  <div class="ld-foot">
+    <div class="ld-bar"><div class="ld-studs"></div><div class="ld-fill"></div><div class="ld-run"><i></i></div></div>
+    <div class="ld-row"><span class="lbl" data-i18n="ld">Loading seven worlds</span><span class="count">0</span></div>
+    <div class="ld-tip" data-i18n="ld.tip">Tip: there are 10 golden studs hidden on this site.</div>
+  </div>
 </div>
 <div class="cur" aria-hidden="true"><div class="dot"></div><div class="ring"><span data-i18n="cur">VIEW</span></div></div>
 
@@ -41,8 +49,10 @@
       <a href="#worlds" data-i18n="n.games">Games</a>
       <a href="#road" data-i18n="n.road">Roadmap</a>
       <a href="#devlog" data-i18n="n.devlog">Devlog</a>
-      <a href="#studio" data-i18n="n.studio">Studio</a>
+      <a href="#builder" data-i18n="n.build">Builder</a>
       <a href="#join" data-i18n="n.join">Join</a>
+      <button class="gs-badge" type="button" hidden aria-label="Golden studs found"><i class="gs-ico"></i><b>0/10</b></button>
+      <button class="nav-mute" type="button" aria-pressed="true" aria-label="Sound on or off">{{i:volume-2}}{{i:volume-x}}</button>
       <div class="lang" role="group" aria-label="Language"><button data-lang="en" class="on">EN</button><button data-lang="de">DE</button></div>
       <a class="btn fire sm" href="{{ROBLOX}}" target="_blank" rel="noopener"><span data-i18n="n.cta">Join on Roblox</span>{{i:arrow-up-right}}</a>
     </nav>
@@ -67,10 +77,12 @@
     <div class="facts">
       <div><b>7</b><span data-i18n="f.1">games in development</span></div>
       <div><b>4</b><span data-i18n="f.2">devs in the crew</span></div>
-      <div><b>EN · DE</b><span data-i18n="f.3">a crew from Switzerland</span></div>
+      <div><b>CH · DE</b><span data-i18n="f.3">a crew from Switzerland and Germany</span></div>
+      <div class="live" hidden><b><i class="live-dot"></i><span data-members>0</span></b><span data-i18n="f.4">members in the community</span></div>
     </div>
   </div>
   <div class="scroll-cue" data-i18n="h.scroll">Scroll</div>
+  <button class="gs" type="button" data-gs="1" aria-label="Golden stud" style="--x:91%;--y:17%"></button>
 </section>
 
 <div class="marquee" aria-hidden="true"><div class="track">{{MARQUEE}}</div></div>
@@ -78,6 +90,7 @@
 <section class="manifesto">
   <div class="wrap">
     <div class="kicker" data-i18n="m.k">Why Overgrind</div>
+    <button class="gs" type="button" data-gs="2" aria-label="Golden stud" style="--x:94%;--y:18%"></button>
     <p id="mani" data-i18n="m.t">We don't ship the first version that works. We ship the one we'd play ourselves, after school, after work, at two in the morning. That's the grind.</p>
   </div>
 </section>
@@ -144,18 +157,22 @@
     <h2 id="worlds-title" data-i18n="w.t">Seven worlds.<br>One crew.</h2>
     <p data-i18n="w.p">Every game has its own look, its own rules and its own team. Scroll through them, then dive into the details below.</p>
   </div>
+  <canvas class="runway-gl" aria-hidden="true"></canvas>
+  <button class="gs" type="button" data-gs="3" aria-label="Golden stud" style="--x:58%;--y:132px"></button>
   <div class="rail">{{PANELS}}
     <div class="end"><b data-i18n="w.end">And we're only getting started.</b><a class="btn ghost" href="#dives"><span data-i18n="w.endc">Read the details</span>{{i:arrow-down}}</a></div>
   </div>
 </section>
 
 <section class="dives" id="dives" aria-label="Games in detail">
+  <button class="gs" type="button" data-gs="4" aria-label="Golden stud" style="--x:96%;--y:60px"></button>
   <div class="wrap"><div class="kicker" data-i18n="d.k">In detail</div><h2 class="sec-title" data-i18n="d.t">What we're building</h2></div>
   {{DIVES}}
 </section>
 
 <section class="lab">
   <div class="wrap">
+    <button class="gs" type="button" data-gs="5" aria-label="Golden stud" style="--x:1%;--y:70%"></button>
     <div class="kicker" data-i18n="l.k">Early concepts</div>
     <h2 class="sec-title" data-i18n="l.t">Still in the lab</h2>
     <div class="lab-grid">{{LAB}}</div>
@@ -166,7 +183,9 @@
   <div class="wrap">
     <div class="kicker" data-i18n="r.k">Roadmap</div>
     <h2 class="sec-title" id="road-title" data-i18n="r.t">What's next</h2>
+    <button class="gs" type="button" data-gs="6" aria-label="Golden stud" style="--x:97%;--y:22%"></button>
     <div class="steps">
+      <canvas class="obby-gl" aria-hidden="true"></canvas>
       <div class="rule"><i></i></div>
       <div class="step"><small data-i18n="r.1s">Now</small><h4 data-i18n="r.1h">Seven games in the workshop</h4><p data-i18n="r.1p">Every project is being built in Roblox Studio right now.</p></div>
       <div class="step"><small data-i18n="r.2s">Next</small><h4 data-i18n="r.2h">First playtests</h4><p data-i18n="r.2p">Nostalgia Recess: test with friends.</p><p data-i18n="r.2q">SEEN ONLINE: private beta.</p></div>
@@ -196,11 +215,23 @@
         <small class="credit" data-i18n="v.cr">Voice: ElevenLabs</small>
       </div>
     </div>
+    <div class="tt-wall">
+      <div class="tt-head"><h3 data-i18n="tt.h">Fresh from the TikTok</h3><a class="tt-handle" href="{{TIKTOK}}" target="_blank" rel="noopener">@overgrindstudios{{i:arrow-up-right}}</a></div>
+      <div class="tt-slot">
+        <div class="tt-gate">
+          <div class="tt-phones" aria-hidden="true"><i></i><i></i><i></i></div>
+          <p data-i18n="tt.p">Our latest clips and devlogs, straight from TikTok. They load from tiktok.com, and TikTok may set cookies.</p>
+          <button class="btn fire tt-load" type="button">{{i:play}}<span data-i18n="tt.c">Load TikTok videos</span></button>
+        </div>
+      </div>
+    </div>
+    <button class="gs" type="button" data-gs="7" aria-label="Golden stud" style="--x:48%;--y:97%"></button>
   </div>
 </section>
 
 <section class="studio" id="studio" aria-labelledby="studio-title">
   <div class="wrap">
+    <button class="gs" type="button" data-gs="8" aria-label="Golden stud" style="--x:2%;--y:6%"></button>
     <div class="kicker" data-i18n="s.k">The studio</div>
     <h2 class="sec-title" id="studio-title" data-i18n="s.t">One label.<br>Many creators.</h2>
     <figure class="vplayer wide" data-cursor>
@@ -223,6 +254,36 @@
   </div>
 </section>
 
+
+<section class="builder" id="builder" aria-labelledby="bld-title">
+  <div class="wrap">
+    <div class="bld-head">
+      <div><div class="kicker" data-i18n="b.k">Avatar builder</div>
+      <h2 class="sec-title" id="bld-title" data-i18n="b.t">Build your<br>grinder.</h2></div>
+      <p data-i18n="b.p">Pick colors, a face and a game outfit. Download your crew card, share it, or send it along with your application.</p>
+    </div>
+    <div class="bld">
+      <div class="bld-stage"><canvas id="builder-gl" role="img" aria-label="Your avatar in 3D. Drag to turn it, click to make it move."></canvas><span class="bld-hint" data-i18n="b.hint">drag to turn · click for an emote</span></div>
+      <div class="bld-ui">
+        <div class="bld-grp"><span class="bld-l" data-i18n="b.skin">Skin</span><div class="bld-sw" data-part="skin"></div></div>
+        <div class="bld-grp"><span class="bld-l" data-i18n="b.shirt">Shirt</span><div class="bld-sw" data-part="shirt"></div></div>
+        <div class="bld-grp"><span class="bld-l" data-i18n="b.pants">Pants</span><div class="bld-sw" data-part="pants"></div></div>
+        <div class="bld-grp"><span class="bld-l" data-i18n="b.face">Face</span><div class="bld-faces"></div></div>
+        <div class="bld-grp"><span class="bld-l" data-i18n="b.fit">Game outfit</span><div class="bld-fits"></div></div>
+        <div class="bld-row">
+          <label><span data-i18n="b.name">Name on the card</span><input class="bld-name" maxlength="18" value="Grinder" autocomplete="nickname"></label>
+          <label><span data-i18n="b.role">Role</span><select class="bld-role"><option>Builder</option><option>Scripter</option><option>3D Modeler</option><option>UI Designer</option><option>Animator</option><option>VFX</option><option>Sound</option><option>Player</option></select></label>
+        </div>
+        <div class="bld-act">
+          <button class="btn fire" type="button" data-act="dl">{{i:arrow-down}}<span data-i18n="b.dl">Download card</span></button>
+          <button class="btn ghost" type="button" data-act="share" hidden><span data-i18n="b.share">Share</span>{{i:arrow-up-right}}</button>
+          <button class="btn ghost" type="button" data-act="apply"><span data-i18n="b.apply">Apply with this avatar</span>{{i:arrow-down}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button class="gs" type="button" data-gs="9" aria-label="Golden stud" style="--x:96%;--y:94%"></button>
+</section>
 
 <section class="apply" id="apply" aria-labelledby="apply-title">
   <div class="wrap">
@@ -268,9 +329,20 @@
     <span>© 2026 Overgrind Studios</span>
     <span data-i18n="ft.1">Built by freshstatue and the crew</span>
     <span><a href="{{TIKTOK}}" target="_blank" rel="noopener">TikTok</a> · <a href="{{ROBLOX}}" target="_blank" rel="noopener">Roblox</a></span>
-    <span data-i18n="ft.2">Not affiliated with Roblox Corporation.</span>
+    <span data-i18n="ft.2">Not affiliated with Roblox Corporation.</span><button class="gs inline" type="button" data-gs="10" aria-label="Golden stud"></button>
   </div>
 </footer>
+<div class="lu-cardwrap gs-secret" hidden>
+  <div class="lu-card t-gold" tabindex="-1" role="dialog" aria-modal="true" aria-label="Secret card">
+    <i class="c-foil" aria-hidden="true"></i>
+    <button class="c-close" type="button" aria-label="Close">{{i:x}}</button>
+    <div class="c-top"><span class="c-rar">SECRET</span><span class="c-brand">OVERGRIND · 10/10</span></div>
+    <div class="c-img"><img src="assets/crew3d/card_fs.png" alt="FreshStatue in gold" loading="lazy"></div>
+    <div class="c-name">Golden Grinder</div><div class="c-role" data-i18n="gs.role">You found every golden stud</div>
+    <div class="c-rows"><div><span data-i18n="gs.r1">Studs</span><b>10 / 10</b></div><div><span data-i18n="gs.r2">Status</span><b data-i18n="gs.r2v">Certified grinder</b></div></div>
+    <div class="c-quote" data-i18n="gs.q">“Real grinders check every corner.”</div>
+  </div>
+</div>
 
 <script src="vendor/gsap.min.js"></script>
 <script src="vendor/ScrollTrigger.min.js"></script>
@@ -283,6 +355,9 @@ var DE = {{DEJSON}};
 <script src="app.js"></script>
 <script type="module" src="bricks.js"></script>
 <script type="module" src="lineup.js"></script>
+<script type="module" src="scenes.js"></script>
+<script type="module" src="builder.js"></script>
+<script type="module" src="extras.js"></script>
 <script src="transition.js"></script>
 {{GOAT}}
 </body>

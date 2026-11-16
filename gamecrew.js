@@ -67,3 +67,13 @@ async function init() {
   }
   requestAnimationFrame(frame); canvas.classList.add("on");
 }
+
+/* keep long titles (ELEMENT CLASH, DUBAI 2099) on the left of the avatar: shrink until every line fits */
+function fitTitle() {
+  const h = document.querySelector(".gp-hero h1"); if (!h) return; h.style.fontSize = "";
+  const lines = [...h.querySelectorAll(".ln")]; if (!lines.length) return;
+  let fs = parseFloat(getComputedStyle(h).fontSize), n = 0;
+  while (lines.some((l) => l.scrollWidth > l.clientWidth + 1) && fs > 34 && n++ < 60) { fs -= 3; h.style.fontSize = fs + "px"; }
+}
+(document.fonts ? document.fonts.ready : Promise.resolve()).then(fitTitle);
+let fitT; addEventListener("resize", () => { clearTimeout(fitT); fitT = setTimeout(fitTitle, 120); });

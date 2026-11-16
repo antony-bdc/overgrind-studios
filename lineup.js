@@ -6,11 +6,12 @@ import { RenderPass } from "./vendor/addons/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "./vendor/addons/postprocessing/UnrealBloomPass.js";
 import { OutputPass } from "./vendor/addons/postprocessing/OutputPass.js";
 import { ShaderPass } from "./vendor/addons/postprocessing/ShaderPass.js";
-import { loadCrew, makeAvatar, boxRig, setArm, setOutfit, updateOutfit, say, blip, isMuted, setMuted, preloadVoices, clamp, sm, hash } from "./crew3d.js";
+import { LITE, loadCrew, makeAvatar, boxRig, setArm, setOutfit, updateOutfit, say, blip, isMuted, setMuted, preloadVoices, clamp, sm, hash } from "./crew3d.js";
 
 const section = document.querySelector(".lineup");
 const canvas = document.getElementById("lineup-gl");
-if (section && canvas) init().catch((e) => { console.warn("lineup", e); section.classList.add("lu-fallback"); });
+// lazy: only build the stage once the section is about to scroll in
+if (section && canvas) { const io = new IntersectionObserver((es) => { if (!es[0].isIntersecting) return; io.disconnect(); init().catch((e) => { console.warn("lineup", e); section.classList.add("lu-fallback"); }); }, { rootMargin: "900px 0px" }); io.observe(section); }
 
 async function init() {
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -18,7 +19,7 @@ async function init() {
   const de = () => document.documentElement.lang === "de";
 
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, powerPreference: "high-performance" });
-  const PR = Math.min(small ? 1.25 : 1.5, devicePixelRatio || 1);
+  const PR = Math.min(LITE ? 1 : small ? 1.25 : 1.5, devicePixelRatio || 1);
   renderer.setPixelRatio(PR);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -47,7 +48,7 @@ async function init() {
   [ex, gi].forEach((J) => { const q = qSprite(); J.head.add(q); J.q = q; });
 
   // mirror twins for the glossy floor (desktop only)
-  const MIRROR = !small;
+  const MIRROR = !small && !LITE;
   if (MIRROR) {
     [fs, an].forEach((J) => { const m = makeAvatar(J.key, data); m.mat.color.setScalar(.32); if (m.extraMat) m.extraMat.color.multiplyScalar(.32); const g = new THREE.Group(); g.scale.y = -1; g.add(m.root); scene.add(g); J.twin = m; });
   }
@@ -243,6 +244,7 @@ async function init() {
   tags.forEach((t) => t.addEventListener("click", () => openCard(+t.dataset.who)));
   section.querySelectorAll("[data-card]").forEach((b) => b.addEventListener("click", () => openCard(+b.dataset.card)));
   window.__luCard = openCard;
+  window.__luDance = () => { play(CREW[0], "dance"); setTimeout(() => play(CREW[1], "dance"), 180); };
 
   /* ---------- per-frame pose ---------- */
   const wv = (t, a, b) => Math.min(clamp((t - a) / .2, 0, 1), 1 - clamp((t - (b - .2)) / .2, 0, 1));

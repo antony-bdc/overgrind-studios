@@ -16,7 +16,7 @@
       if (el.id === "mani" && window.__mani) { window.__mani(v); return; }
       el.innerHTML = v;
     });
-    root.lang = l;
+    root.lang = l; document.dispatchEvent(new CustomEvent("og-lang", { detail: l }));
     document.querySelectorAll(".lang button").forEach(function(b){ b.classList.toggle("on", b.dataset.lang === l); });
     try { localStorage.setItem("og-lang", l); } catch(e){}
     if (window.ScrollTrigger) ScrollTrigger.refresh();
@@ -124,20 +124,29 @@
   var ready = Promise.all([document.fonts ? document.fonts.ready : Promise.resolve(), new Promise(function(r){ setTimeout(r, reduce || seen ? 0 : 900); })]);
   var counter = { v: 0 };
   var load = gsap.timeline();
+  var ldBar = loader.querySelector(".ld-foot"), ldRun = loader.querySelector(".ld-run i");
   load.to(".loader .tile i", { scaleX: 1, duration: .7, ease: "power3.inOut" }, 0)
-      .to(counter, { v: 100, duration: reduce || seen ? 0 : 1.1, ease: "power2.inOut", onUpdate: function(){ count.textContent = Math.round(counter.v); } }, 0);
+      .to(counter, { v: 100, duration: reduce || seen ? 0 : 1.5, ease: "power1.inOut", onUpdate: function(){ var v = Math.round(counter.v); count.textContent = v; ldBar.style.setProperty("--p", counter.v.toFixed(2)); } }, 0);
   ready.then(function(){
     load.then(function(){
       var tl = gsap.timeline({ defaults: { ease: "expo.out" } });
-      tl.to(loader, { clipPath: "inset(0 0 100% 0)", duration: reduce || seen ? 0 : 1, ease: "expo.inOut" })
-        .set(loader, { display: "none" })
-        .add(function(){ if (window.__bricksIntro) window.__bricksIntro(); }, "-=.6");
-      if (chars) tl.to(chars, { yPercent: 0, duration: 1.1, stagger: .045 }, "-=1.8");
-      tl.to(".mark .bar", { scaleX: 1, duration: .75, ease: "power4.inOut", onComplete: function(){ var e = barEnd(); burst(e.x, e.y, 70, -Math.PI * .3, 2.4, 1500); } }, "-=.55")
+      var fast = reduce || seen, T = fast ? 0 : .45;
+      if (!fast){
+        loader.classList.add("jump");
+        tl.to(ldRun, { y: -70, x: 40, rotation: 12, duration: .32, ease: "power2.out" }, 0)
+          .to(ldRun, { y: 260, x: 90, rotation: 40, duration: .45, ease: "power2.in" }, .32)
+          .to(".ld-in", { scale: .9, autoAlpha: 0, duration: .4, ease: "power2.in" }, .12);
+        gsap.set(".hero .wrap, #bricks", { scale: 1.12, transformOrigin: "50% 45%" });
+        tl.to(".hero .wrap, #bricks", { scale: 1, duration: 1.6, ease: "expo.out", clearProps: "transform" }, T + .15);
+      }
+      tl.to(loader, { scale: fast ? 1 : 2.4, autoAlpha: 0, duration: fast ? 0 : .7, ease: "expo.in" }, T)
+        .set(loader, { display: "none" }, T + (fast ? 0 : .7))
+        .add(function(){ if (window.__bricksIntro) window.__bricksIntro(); }, T + .1);
+      if (chars) tl.to(chars, { yPercent: 0, duration: 1.1, stagger: .045 }, T + .25);
+      tl.to(".mark .bar", { scaleX: 1, duration: .75, ease: "power4.inOut", onComplete: function(){ var e = barEnd(); burst(e.x, e.y, 70, -Math.PI * .3, 2.4, 1500); } }, T + .9)
         .to([".eyebrow", ".studios", ".lede", ".hero .cta", ".facts > div", ".scroll-cue"], { autoAlpha: 1, y: 0, duration: 1, stagger: .07 }, "-=.6");
     });
   });
-  loader.style.clipPath = "inset(0 0 0 0)";
 
   /* hero scroll-out */
   gsap.to(".mark, .studios", { yPercent: -40, ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true } });

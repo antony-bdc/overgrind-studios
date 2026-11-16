@@ -19,6 +19,7 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "name": "Overgrind Studios", "url": "https://overgrindstudio.click/", "logo": "https://overgrindstudio.click/icon.png", "sameAs": ["https://www.roblox.com/communities/1068137339/Overgrind-Studios", "https://www.tiktok.com/@overgrindstudios"], "description": "A small crew of Roblox devs with seven games in the workshop.", "subjectOf": [{"@type": "VideoGame", "name": "WYRMQUAKE", "genre": "Dragon runner", "description": "Ride a dragon straight into the ground, tunnel through the earth and burst out the other side, taking everything in your way with you. Every 1000 metres you pick a card, and some of them are a gamble.", "gamePlatform": "Roblox", "image": "https://overgrindstudio.click/assets/games/wyrm.jpg"}, {"@type": "VideoGame", "name": "NOSTALGIA RECESS", "genre": "Schoolyard multiplayer", "description": "Tag, hide and seek, bear cave: the schoolyard games you played between 2005 and 2017, back with your friends on one big playground. Every character gets their own look.", "gamePlatform": "Roblox", "image": "https://overgrindstudio.click/assets/games/recess.jpg"}, {"@type": "VideoGame", "name": "BRAINROT PIRATES", "genre": "Pirate adventure", "description": "An ocean built from tiny studs, with big rolling waves and white foam. Brainrot crews sail out of Brainrot Bay, trade, raid and swim wherever they want.", "gamePlatform": "Roblox", "image": "https://overgrindstudio.click/assets/games/pirates.jpg"}, {"@type": "VideoGame", "name": "SEEN ONLINE", "genre": "Horror", "description": "You're an archivist in a white lab coat with a number on your back. Your job is to track down the people who vanished from old photos. Some of them are still out there, and they have changed.", "gamePlatform": "Roblox", "image": "https://overgrindstudio.click/assets/games/seen.jpg"}, {"@type": "VideoGame", "name": "ELEMENT CLASH: ARENA", "genre": "Ranked elemental PvP", "description": "Third-person elemental fights in ranked 1v1, 2v2 and 3v3, on PC and mobile. Outside the arena there's a free-fight map in our own stud style, with a whole city to fight through.", "gamePlatform": "Roblox", "image": "https://overgrindstudio.click/assets/games/clash.jpg"}, {"@type": "VideoGame", "name": "LANTERNFALL", "genre": "Co-op survival horror", "description": "A co-op survival horror game for you and your friends. Nobody makes it through the dark alone, so you'd better stick together.", "gamePlatform": "Roblox", "image": "https://overgrindstudio.click/assets/games/lantern.jpg"}, {"@type": "VideoGame", "name": "THE LINE: DUBAI 2099", "genre": "Story sci-fi", "description": "Dubai, 2099. The city is one vertical line in the desert, run by an AI called MOTHERLINE. You play Amir, a maintenance tech who is going to get his sister Layla back.", "gamePlatform": "Roblox", "image": "https://overgrindstudio.click/assets/games/line.jpg"}]}</script>
 <link rel="preload" href="assets/fonts/unbounded.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/archivo.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/crew3d/run_fs.webp" as="image" type="image/webp">
 <link rel="stylesheet" href="assets/site.css">
 </head>
 <body class="no-js">
@@ -26,9 +27,16 @@
 <div class="grain" aria-hidden="true"></div>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="liquid" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence id="liquid-t" type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="7"/><feDisplacementMap id="liquid-d" in="SourceGraphic" scale="0" xChannelSelector="R" yChannelSelector="G"/></filter></svg>
 <div class="loader" aria-hidden="true">
-  <div class="tile"><b>OG</b><i></i></div>
-  <div class="lbl" data-i18n="ld">Loading seven worlds</div>
-  <div class="count">0</div>
+  <div class="ld-in">
+    <div class="tile"><b>OG</b><i></i></div>
+    <div class="ld-title"><span data-i18n="ld.t">Joining Overgrind</span><em>...</em></div>
+    <div class="ld-by" data-i18n="ld.by">by freshstatue and the crew</div>
+  </div>
+  <div class="ld-foot">
+    <div class="ld-bar"><div class="ld-studs"></div><div class="ld-fill"></div><div class="ld-run"><i></i></div></div>
+    <div class="ld-row"><span class="lbl" data-i18n="ld">Loading seven worlds</span><span class="count">0</span></div>
+    <div class="ld-tip" data-i18n="ld.tip">Tip: there are 10 golden studs hidden on this site.</div>
+  </div>
 </div>
 <div class="cur" aria-hidden="true"><div class="dot"></div><div class="ring"><span data-i18n="cur">VIEW</span></div></div>
 
@@ -41,8 +49,10 @@
       <a href="#worlds" data-i18n="n.games">Games</a>
       <a href="#road" data-i18n="n.road">Roadmap</a>
       <a href="#devlog" data-i18n="n.devlog">Devlog</a>
-      <a href="#studio" data-i18n="n.studio">Studio</a>
+      <a href="#builder" data-i18n="n.build">Builder</a>
       <a href="#join" data-i18n="n.join">Join</a>
+      <button class="gs-badge" type="button" hidden aria-label="Golden studs found"><i class="gs-ico"></i><b>0/10</b></button>
+      <button class="nav-mute" type="button" aria-pressed="true" aria-label="Sound on or off"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4.7a.7.7 0 0 0-1.2-.5L6.4 7.6A1.4 1.4 0 0 1 5.4 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.4a1.4 1.4 0 0 1 1 .4l3.4 3.4a.7.7 0 0 0 1.2-.5z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.4 18.4a9 9 0 0 0 0-12.8"/></svg><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4.7a.7.7 0 0 0-1.2-.5L6.4 7.6A1.4 1.4 0 0 1 5.4 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.4a1.4 1.4 0 0 1 1 .4l3.4 3.4a.7.7 0 0 0 1.2-.5z"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/></svg></button>
       <div class="lang" role="group" aria-label="Language"><button data-lang="en" class="on">EN</button><button data-lang="de">DE</button></div>
       <a class="btn fire sm" href="https://www.roblox.com/communities/1068137339/Overgrind-Studios" target="_blank" rel="noopener"><span data-i18n="n.cta">Join on Roblox</span><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a>
     </nav>
@@ -67,10 +77,12 @@
     <div class="facts">
       <div><b>7</b><span data-i18n="f.1">games in development</span></div>
       <div><b>4</b><span data-i18n="f.2">devs in the crew</span></div>
-      <div><b>EN · DE</b><span data-i18n="f.3">a crew from Switzerland</span></div>
+      <div><b>CH · DE</b><span data-i18n="f.3">a crew from Switzerland and Germany</span></div>
+      <div class="live" hidden><b><i class="live-dot"></i><span data-members>0</span></b><span data-i18n="f.4">members in the community</span></div>
     </div>
   </div>
   <div class="scroll-cue" data-i18n="h.scroll">Scroll</div>
+  <button class="gs" type="button" data-gs="1" aria-label="Golden stud" style="--x:91%;--y:17%"></button>
 </section>
 
 <div class="marquee" aria-hidden="true"><div class="track"><div class="item"><span>WYRMQUAKE</span><span class="star">✦</span><span class="o">NOSTALGIA RECESS</span><span class="star">✦</span><span>BRAINROT PIRATES</span><span class="star">✦</span><span class="o">SEEN ONLINE</span><span class="star">✦</span><span>ELEMENT CLASH: ARENA</span><span class="star">✦</span><span class="o">LANTERNFALL</span><span class="star">✦</span><span>THE LINE: DUBAI 2099</span><span class="star">✦</span></div><div class="item"><span>WYRMQUAKE</span><span class="star">✦</span><span class="o">NOSTALGIA RECESS</span><span class="star">✦</span><span>BRAINROT PIRATES</span><span class="star">✦</span><span class="o">SEEN ONLINE</span><span class="star">✦</span><span>ELEMENT CLASH: ARENA</span><span class="star">✦</span><span class="o">LANTERNFALL</span><span class="star">✦</span><span>THE LINE: DUBAI 2099</span><span class="star">✦</span></div></div></div>
@@ -78,6 +90,7 @@
 <section class="manifesto">
   <div class="wrap">
     <div class="kicker" data-i18n="m.k">Why Overgrind</div>
+    <button class="gs" type="button" data-gs="2" aria-label="Golden stud" style="--x:94%;--y:18%"></button>
     <p id="mani" data-i18n="m.t">We don't ship the first version that works. We ship the one we'd play ourselves, after school, after work, at two in the morning. That's the grind.</p>
   </div>
 </section>
@@ -144,39 +157,48 @@
     <h2 id="worlds-title" data-i18n="w.t">Seven worlds.<br>One crew.</h2>
     <p data-i18n="w.p">Every game has its own look, its own rules and its own team. Scroll through them, then dive into the details below.</p>
   </div>
+  <canvas class="runway-gl" aria-hidden="true"></canvas>
+  <button class="gs" type="button" data-gs="3" aria-label="Golden stud" style="--x:58%;--y:132px"></button>
   <div class="rail">
     <a class="panel" href="games/wyrm/" style="--a:#8BE04E" data-bg="#0B140A" data-accent="#8BE04E" data-cursor>
       <img src="assets/games/wyrm.webp" srcset="assets/games/wyrm-800.webp 800w, assets/games/wyrm.webp 1600w" sizes="(max-width: 860px) 92vw, 60vw" width="1600" height="900" alt="WYRMQUAKE key art" loading="lazy" decoding="async">
+      <span class="vortex" aria-hidden="true"></span>
       <span class="num">01 / 07</span>
       <div class="meta"><div><div class="gen"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"></svg><span data-i18n="g.wyrm.genre">Dragon runner</span></div><h3>WYRMQUAKE</h3><p class="tg" data-i18n="g.wyrm.tag">Dive. Smash. Rise.</p></div><span class="chip dev"><i></i><span data-i18n="g.wyrm.status">In development · target winter 2026</span></span></div>
     </a>
     <a class="panel" href="games/recess/" style="--a:#FFB547" data-bg="#171007" data-accent="#FFB547" data-cursor>
       <img src="assets/games/recess.webp" srcset="assets/games/recess-800.webp 800w, assets/games/recess.webp 1600w" sizes="(max-width: 860px) 92vw, 60vw" width="1600" height="900" alt="NOSTALGIA RECESS key art" loading="lazy" decoding="async">
+      <span class="vortex" aria-hidden="true"></span>
       <span class="num">02 / 07</span>
       <div class="meta"><div><div class="gen"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 22v-4a2 2 0 1 0-4 0v4"/><path d="M18 5v17"/><path d="m4 6 7.106-3.553a2 2 0 0 1 1.788 0L20 6"/><path d="M6 5v17"/><circle cx="12" cy="9" r="2"/></svg><span data-i18n="g.recess.genre">Schoolyard multiplayer</span></div><h3>NOSTALGIA RECESS</h3><p class="tg" data-i18n="g.recess.tag">Recess never ended.</p></div><span class="chip test"><i></i><span data-i18n="g.recess.status">Friends playtest next</span></span></div>
     </a>
     <a class="panel" href="games/pirates/" style="--a:#2BD4E0" data-bg="#03141A" data-accent="#2BD4E0" data-cursor>
       <img src="assets/games/pirates.webp" srcset="assets/games/pirates-800.webp 800w, assets/games/pirates.webp 1600w" sizes="(max-width: 860px) 92vw, 60vw" width="1600" height="900" alt="BRAINROT PIRATES key art" loading="lazy" decoding="async">
+      <span class="vortex" aria-hidden="true"></span>
       <span class="num">03 / 07</span>
       <div class="meta"><div><div class="gen"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22V8"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/><circle cx="12" cy="5" r="3"/></svg><span data-i18n="g.pirates.genre">Pirate adventure</span></div><h3>BRAINROT PIRATES</h3><p class="tg" data-i18n="g.pirates.tag">Steal the seas.</p></div><span class="chip dev"><i></i><span data-i18n="g.pirates.status">In development</span></span></div>
     </a>
     <a class="panel titled" href="games/seen/" style="--a:#FF3B30" data-bg="#0D0F0E" data-accent="#FF3B30" data-cursor>
       <img src="assets/games/seen.webp" srcset="assets/games/seen-800.webp 800w, assets/games/seen.webp 1600w" sizes="(max-width: 860px) 92vw, 60vw" width="1600" height="900" alt="SEEN ONLINE key art" loading="lazy" decoding="async">
+      <span class="vortex" aria-hidden="true"></span>
       <span class="num">04 / 07</span>
       <div class="meta"><div><div class="gen"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="m12.5 17-.5-1-.5 1h1z"/><circle cx="15" cy="12" r="1"/><circle cx="9" cy="12" r="1"/></svg><span data-i18n="g.seen.genre">Horror</span></div><h3>SEEN ONLINE</h3><p class="tg" data-i18n="g.seen.tag">Some photos should stay offline.</p></div><span class="chip test"><i></i><span data-i18n="g.seen.status">Private beta next</span></span></div>
     </a>
     <a class="panel" href="games/clash/" style="--a:#A47BFF" data-bg="#100B1C" data-accent="#A47BFF" data-cursor>
       <img src="assets/games/clash.webp" srcset="assets/games/clash-800.webp 800w, assets/games/clash.webp 1600w" sizes="(max-width: 860px) 92vw, 60vw" width="1600" height="900" alt="ELEMENT CLASH: ARENA key art" loading="lazy" decoding="async">
+      <span class="vortex" aria-hidden="true"></span>
       <span class="num">05 / 07</span>
       <div class="meta"><div><div class="gen"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/><line x1="13" x2="19" y1="19" y2="13"/><line x1="16" x2="20" y1="16" y2="20"/><line x1="19" x2="21" y1="21" y2="19"/><polyline points="14.5 6.5 18 3 21 3 21 6 17.5 9.5"/><line x1="5" x2="9" y1="14" y2="18"/><line x1="7" x2="4" y1="17" y2="20"/><line x1="3" x2="5" y1="19" y2="21"/></svg><span data-i18n="g.clash.genre">Ranked elemental PvP</span></div><h3>ELEMENT CLASH: ARENA</h3><p class="tg" data-i18n="g.clash.tag">Pick an element. Climb the ranks.</p></div><span class="chip dev"><i></i><span data-i18n="g.clash.status">Season 1 in development</span></span></div>
     </a>
     <a class="panel" href="games/lantern/" style="--a:#FFC34D" data-bg="#070A15" data-accent="#FFC34D" data-cursor>
       <img src="assets/games/lantern.webp" srcset="assets/games/lantern-800.webp 800w, assets/games/lantern.webp 1600w" sizes="(max-width: 860px) 92vw, 60vw" width="1600" height="900" alt="LANTERNFALL key art" loading="lazy" decoding="async">
+      <span class="vortex" aria-hidden="true"></span>
       <span class="num">06 / 07</span>
       <div class="meta"><div><div class="gen"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 2h8l4 10H4L8 2Z"/><path d="M12 12v6"/><path d="M8 22v-2c0-1.1.9-2 2-2h4a2 2 0 0 1 2 2v2H8Z"/></svg><span data-i18n="g.lantern.genre">Co-op survival horror</span></div><h3>LANTERNFALL</h3><p class="tg" data-i18n="g.lantern.tag">Get through the dark together.</p></div><span class="chip dev"><i></i><span data-i18n="g.lantern.status">In development</span></span></div>
     </a>
     <a class="panel" href="games/line/" style="--a:#5EE7FF" data-bg="#120E08" data-accent="#5EE7FF" data-cursor>
       <img src="assets/games/line.webp" srcset="assets/games/line-800.webp 800w, assets/games/line.webp 1600w" sizes="(max-width: 860px) 92vw, 60vw" width="1600" height="900" alt="THE LINE: DUBAI 2099 key art" loading="lazy" decoding="async">
+      <span class="vortex" aria-hidden="true"></span>
       <span class="num">07 / 07</span>
       <div class="meta"><div><div class="gen"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/></svg><span data-i18n="g.line.genre">Story sci-fi</span></div><h3>THE LINE: DUBAI 2099</h3><p class="tg" data-i18n="g.line.tag">One city. One AI. One way up.</p></div><span class="chip dev"><i></i><span data-i18n="g.line.status">In development</span></span></div>
     </a>
@@ -185,6 +207,7 @@
 </section>
 
 <section class="dives" id="dives" aria-label="Games in detail">
+  <button class="gs" type="button" data-gs="4" aria-label="Golden stud" style="--x:96%;--y:60px"></button>
   <div class="wrap"><div class="kicker" data-i18n="d.k">In detail</div><h2 class="sec-title" data-i18n="d.t">What we're building</h2></div>
   
   <article class="dive" id="g-wyrm" style="--a:#8BE04E" data-bg="#0B140A" data-accent="#8BE04E">
@@ -289,6 +312,7 @@
 
 <section class="lab">
   <div class="wrap">
+    <button class="gs" type="button" data-gs="5" aria-label="Golden stud" style="--x:1%;--y:70%"></button>
     <div class="kicker" data-i18n="l.k">Early concepts</div>
     <h2 class="sec-title" data-i18n="l.t">Still in the lab</h2>
     <div class="lab-grid"><div class="lab-card"><span class="chip"><i></i><span data-i18n="l.chip">Concept</span></span><div><b>BRAINROT DENTIST</b><p data-i18n="lab.0">Dental horror for brainrot patients.</p></div></div><div class="lab-card"><span class="chip"><i></i><span data-i18n="l.chip">Concept</span></span><div><b>BRAINROT CAGE BREAK</b><p data-i18n="lab.1">Cage puzzles, a ringmaster and drones.</p></div></div></div>
@@ -299,7 +323,9 @@
   <div class="wrap">
     <div class="kicker" data-i18n="r.k">Roadmap</div>
     <h2 class="sec-title" id="road-title" data-i18n="r.t">What's next</h2>
+    <button class="gs" type="button" data-gs="6" aria-label="Golden stud" style="--x:97%;--y:22%"></button>
     <div class="steps">
+      <canvas class="obby-gl" aria-hidden="true"></canvas>
       <div class="rule"><i></i></div>
       <div class="step"><small data-i18n="r.1s">Now</small><h4 data-i18n="r.1h">Seven games in the workshop</h4><p data-i18n="r.1p">Every project is being built in Roblox Studio right now.</p></div>
       <div class="step"><small data-i18n="r.2s">Next</small><h4 data-i18n="r.2h">First playtests</h4><p data-i18n="r.2p">Nostalgia Recess: test with friends.</p><p data-i18n="r.2q">SEEN ONLINE: private beta.</p></div>
@@ -329,11 +355,23 @@
         <small class="credit" data-i18n="v.cr">Voice: ElevenLabs</small>
       </div>
     </div>
+    <div class="tt-wall">
+      <div class="tt-head"><h3 data-i18n="tt.h">Fresh from the TikTok</h3><a class="tt-handle" href="https://www.tiktok.com/@overgrindstudios" target="_blank" rel="noopener">@overgrindstudios<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></a></div>
+      <div class="tt-slot">
+        <div class="tt-gate">
+          <div class="tt-phones" aria-hidden="true"><i></i><i></i><i></i></div>
+          <p data-i18n="tt.p">Our latest clips and devlogs, straight from TikTok. They load from tiktok.com, and TikTok may set cookies.</p>
+          <button class="btn fire tt-load" type="button"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg><span data-i18n="tt.c">Load TikTok videos</span></button>
+        </div>
+      </div>
+    </div>
+    <button class="gs" type="button" data-gs="7" aria-label="Golden stud" style="--x:48%;--y:97%"></button>
   </div>
 </section>
 
 <section class="studio" id="studio" aria-labelledby="studio-title">
   <div class="wrap">
+    <button class="gs" type="button" data-gs="8" aria-label="Golden stud" style="--x:2%;--y:6%"></button>
     <div class="kicker" data-i18n="s.k">The studio</div>
     <h2 class="sec-title" id="studio-title" data-i18n="s.t">One label.<br>Many creators.</h2>
     <figure class="vplayer wide" data-cursor>
@@ -356,6 +394,36 @@
   </div>
 </section>
 
+
+<section class="builder" id="builder" aria-labelledby="bld-title">
+  <div class="wrap">
+    <div class="bld-head">
+      <div><div class="kicker" data-i18n="b.k">Avatar builder</div>
+      <h2 class="sec-title" id="bld-title" data-i18n="b.t">Build your<br>grinder.</h2></div>
+      <p data-i18n="b.p">Pick colors, a face and a game outfit. Download your crew card, share it, or send it along with your application.</p>
+    </div>
+    <div class="bld">
+      <div class="bld-stage"><canvas id="builder-gl" role="img" aria-label="Your avatar in 3D. Drag to turn it, click to make it move."></canvas><span class="bld-hint" data-i18n="b.hint">drag to turn · click for an emote</span></div>
+      <div class="bld-ui">
+        <div class="bld-grp"><span class="bld-l" data-i18n="b.skin">Skin</span><div class="bld-sw" data-part="skin"></div></div>
+        <div class="bld-grp"><span class="bld-l" data-i18n="b.shirt">Shirt</span><div class="bld-sw" data-part="shirt"></div></div>
+        <div class="bld-grp"><span class="bld-l" data-i18n="b.pants">Pants</span><div class="bld-sw" data-part="pants"></div></div>
+        <div class="bld-grp"><span class="bld-l" data-i18n="b.face">Face</span><div class="bld-faces"></div></div>
+        <div class="bld-grp"><span class="bld-l" data-i18n="b.fit">Game outfit</span><div class="bld-fits"></div></div>
+        <div class="bld-row">
+          <label><span data-i18n="b.name">Name on the card</span><input class="bld-name" maxlength="18" value="Grinder" autocomplete="nickname"></label>
+          <label><span data-i18n="b.role">Role</span><select class="bld-role"><option>Builder</option><option>Scripter</option><option>3D Modeler</option><option>UI Designer</option><option>Animator</option><option>VFX</option><option>Sound</option><option>Player</option></select></label>
+        </div>
+        <div class="bld-act">
+          <button class="btn fire" type="button" data-act="dl"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg><span data-i18n="b.dl">Download card</span></button>
+          <button class="btn ghost" type="button" data-act="share" hidden><span data-i18n="b.share">Share</span><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg></button>
+          <button class="btn ghost" type="button" data-act="apply"><span data-i18n="b.apply">Apply with this avatar</span><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button class="gs" type="button" data-gs="9" aria-label="Golden stud" style="--x:96%;--y:94%"></button>
+</section>
 
 <section class="apply" id="apply" aria-labelledby="apply-title">
   <div class="wrap">
@@ -401,9 +469,20 @@
     <span>© 2026 Overgrind Studios</span>
     <span data-i18n="ft.1">Built by freshstatue and the crew</span>
     <span><a href="https://www.tiktok.com/@overgrindstudios" target="_blank" rel="noopener">TikTok</a> · <a href="https://www.roblox.com/communities/1068137339/Overgrind-Studios" target="_blank" rel="noopener">Roblox</a></span>
-    <span data-i18n="ft.2">Not affiliated with Roblox Corporation.</span>
+    <span data-i18n="ft.2">Not affiliated with Roblox Corporation.</span><button class="gs inline" type="button" data-gs="10" aria-label="Golden stud"></button>
   </div>
 </footer>
+<div class="lu-cardwrap gs-secret" hidden>
+  <div class="lu-card t-gold" tabindex="-1" role="dialog" aria-modal="true" aria-label="Secret card">
+    <i class="c-foil" aria-hidden="true"></i>
+    <button class="c-close" type="button" aria-label="Close"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+    <div class="c-top"><span class="c-rar">SECRET</span><span class="c-brand">OVERGRIND · 10/10</span></div>
+    <div class="c-img"><img src="assets/crew3d/card_fs.png" alt="FreshStatue in gold" loading="lazy"></div>
+    <div class="c-name">Golden Grinder</div><div class="c-role" data-i18n="gs.role">You found every golden stud</div>
+    <div class="c-rows"><div><span data-i18n="gs.r1">Studs</span><b>10 / 10</b></div><div><span data-i18n="gs.r2">Status</span><b data-i18n="gs.r2v">Certified grinder</b></div></div>
+    <div class="c-quote" data-i18n="gs.q">“Real grinders check every corner.”</div>
+  </div>
+</div>
 
 <script src="vendor/gsap.min.js"></script>
 <script src="vendor/ScrollTrigger.min.js"></script>
@@ -411,11 +490,14 @@
 <script src="vendor/lenis.min.js"></script>
 <script>
 var GAMES = [{"key": "wyrm", "bg": "#0B140A", "accent": "#8BE04E"}, {"key": "recess", "bg": "#171007", "accent": "#FFB547"}, {"key": "pirates", "bg": "#03141A", "accent": "#2BD4E0"}, {"key": "seen", "bg": "#0D0F0E", "accent": "#FF3B30"}, {"key": "clash", "bg": "#100B1C", "accent": "#A47BFF"}, {"key": "lantern", "bg": "#070A15", "accent": "#FFC34D"}, {"key": "line", "bg": "#120E08", "accent": "#5EE7FF"}];
-var DE = {"ld": "Lade sieben Welten", "cur": "ANSEHEN", "n.games": "Games", "n.road": "Roadmap", "n.studio": "Studio", "n.join": "Mitmachen", "n.cta": "Auf Roblox beitreten", "h.eyebrow": "Roblox-Gamestudio · seit 2026", "h.lede": "Vier Roblox-Devs, sieben Games in der Werkstatt. Jedes wird so lange gebaut, bis es mehr als nur gut genug ist.", "s.crew": "Die Crew", "cr.f": "Founder", "cr.d": "Developer", "h.c1": "Community beitreten", "h.c2": "Games ansehen", "h.scroll": "Scrollen", "f.1": "Games in Entwicklung", "f.2": "Devs in der Crew", "f.3": "eine Crew aus der Schweiz", "m.k": "Warum Overgrind", "m.t": "Wir veröffentlichen nicht die erste Version, die funktioniert. Sondern die, die wir selbst spielen würden: nach der Schule, nach der Arbeit, um zwei Uhr nachts. Das ist der Grind.", "w.t": "Sieben Welten.<br>Eine Crew.", "w.p": "Jedes Game hat seinen eigenen Look, eigene Regeln und ein eigenes Team. Scroll durch alle und lies unten die Details.", "w.end": "Und das ist erst der Anfang.", "w.endc": "Details lesen", "d.k": "Im Detail", "d.t": "Woran wir bauen", "l.k": "Frühe Konzepte", "l.t": "Noch im Labor", "l.chip": "Konzept", "r.k": "Roadmap", "r.t": "Was als Nächstes kommt", "r.1s": "Jetzt", "r.1h": "Sieben Games in der Werkstatt", "r.1p": "Jedes Projekt entsteht gerade in Roblox Studio.", "r.2s": "Als Nächstes", "r.2h": "Erste Playtests", "r.2p": "Nostalgia Recess: Test mit Freunden.", "r.2q": "SEEN ONLINE: private Beta.", "r.3s": "Winter 2026", "r.3h": "Erste Releases", "r.3p": "Wyrmquake peilt den Winter an.", "r.3q": "Nostalgia Recess bekommt nach dem Start wöchentliche Updates.", "r.4s": "Später", "r.4h": "Seasons und mehr", "r.4p": "Element Clash startet mit Season 1. Season 2 führt in die Unterwelt.", "r.note": "Pläne können sich ändern. Tritt der Community bei, dann erfährst du es zuerst.", "s.k": "Das Studio", "s.t": "Ein Label.<br>Viele Creator.", "s.p1": "Overgrind ist eine gemeinsame Roblox-Community. Verschiedene Creator veröffentlichen unter einem Namen und messen sich am gleichen Anspruch.", "s.p2": "Keine Copy-Paste-Games, keine ersten Entwürfe auf der Startseite. Jeder Release muss etwas sein, das wir selbst spielen würden.", "s.r1": "führt das Label", "s.r2": "leitet ein Game", "s.r3": "baut mit uns", "s.r4": "das bist du", "j.1": "Sei dabei vor", "j.2": "dem ersten Drop.", "j.p": "Tritt der Roblox-Community bei, damit du zuerst erfährst, wenn ein Game aufgeht, und folg uns auf TikTok für Devlogs und Clips.", "j.c1": "Auf Roblox beitreten", "n.devlog": "Devlog", "n.apply": "Ins Team", "d.more": "Zur Game-Seite", "v.k": "Devlog", "v.t": "Hinter dem Grind", "v.ep": "Folge 0", "v.h": "Das ist Overgrind", "v.p": "Wer wir sind, was wir bauen und warum es gleich sieben Games sind. 28 Sekunden, ohne Füllstoff.", "v.c": "Mehr auf TikTok", "v.cr": "Stimme: ElevenLabs", "v.soon": "bald", "a.k": "Bau mit uns", "a.t": "Lust, mit uns zu grinden?", "a.p1": "Wir suchen immer Builder, Scripter, Modeler, UI- und VFX-Leute, denen Details genauso wichtig sind wie uns.", "a.p2": "Erzähl uns, wer du bist, und schick etwas, das du gebaut hast. Wir lesen jede Bewerbung.", "a.f1": "Dein Name", "a.f2": "Roblox-Benutzername", "a.f3": "Was du am besten kannst", "a.f4": "Portfolio oder Game-Link", "a.f5": "Ein paar Worte zu dir", "a.o": "Etwas anderes", "a.send": "Bewerbung senden", "a.note": "Öffnet dein Mailprogramm mit allem ausgefüllt. Auf dieser Seite wird nichts gespeichert.", "s.vid": "FreshStatue stellt Overgrind vor: wer wir sind, woher der Name kommt und wen wir suchen.", "gp.back": "Alle Games", "gp.follow": "Entwicklung verfolgen", "gp.k1": "Das Game", "gp.k2": "Galerie", "gp.soon": "Bald mehr Bilder", "gp.soonp": "Neue Screenshots und Clips kommen mit jedem Devlog.", "gp.next": "Nächste Welt", "ft.1": "Gebaut von freshstatue und der Crew", "ft.2": "Nicht mit der Roblox Corporation verbunden.", "g.wyrm.genre": "Drachen-Runner", "g.wyrm.tag": "Abtauchen. Zerschmettern. Aufsteigen.", "g.wyrm.status": "In Entwicklung · Ziel Winter 2026", "g.wyrm.desc": "Reite einen Drachen direkt in den Boden, grab dich durch die Erde und brich auf der anderen Seite wieder heraus. Alles, was im Weg steht, nimmst du mit. Alle 1000 Meter wählst du eine Karte, und manche davon sind ein Risiko.", "g.wyrm.f0": "Story „Der grosse Riss“ mit Overlord Quadrax und Reiterin Pip", "g.wyrm.f1": "Bosse mit Schwachpunkten, die du finden musst", "g.wyrm.f2": "Ein Hort, den du mit allem füllst, was du ausgräbst", "g.wyrm.f3": "Tägliche Strecke und Live-Rennen mit Liga", "g.wyrm.fl0": "Modus", "g.wyrm.fv0": "Solo · Live-Rennen", "g.wyrm.fl1": "Look", "g.wyrm.fv1": "Glänzender Cartoon", "g.recess.genre": "Schulhof-Multiplayer", "g.recess.tag": "Die Pause ist nie vorbei.", "g.recess.status": "Als Nächstes: Test mit Freunden", "g.recess.desc": "Fangen, Verstecken, Bärenhöhle: die Pausenspiele von 2005 bis 2017, zurück mit deinen Freunden auf einem grossen Schulhof. Jede Figur bekommt ihren eigenen Look.", "g.recess.f0": "Zum Start: Bärenhöhle, Verstecken und Fangen", "g.recess.f1": "Eine glänzende Cartoon-Welt, ganz ohne Noppen", "g.recess.f2": "Zuerst Englisch, dann Deutsch und Spanisch", "g.recess.f3": "Nach dem Release jede Woche Updates", "g.recess.fl0": "Spieler", "g.recess.fv0": "Multiplayer", "g.recess.fl1": "Für", "g.recess.fv1": "Kinder von 2005–2017", "g.pirates.genre": "Piraten-Abenteuer", "g.pirates.tag": "Erobere die Meere.", "g.pirates.status": "In Entwicklung", "g.pirates.desc": "Ein Ozean aus feinen Noppensteinen, mit grossen Wellen und weissem Schaum. Brainrot-Crews segeln aus der Brainrot Bay los, handeln, plündern und schwimmen, wohin sie wollen.", "g.pirates.f0": "Brainrot Bay: eine grosse Hafeninsel mit echten Läden", "g.pirates.f1": "Trash Tide West ist sicheres Wasser, Mistmouth Nord ist Raid-Gebiet", "g.pirates.f2": "Karibisches Tageslicht und Abende zur goldenen Stunde", "g.pirates.f3": "Eine Brainrot-Crew mit Glubschaugen, eher lustig als gruselig", "g.pirates.fl0": "Welt", "g.pirates.fv0": "Alles aus Noppen", "g.pirates.fl1": "Schwimmen", "g.pirates.fv1": "Frei, überall", "g.seen.genre": "Horror", "g.seen.tag": "Manche Fotos bleiben besser offline.", "g.seen.status": "Als Nächstes: private Beta", "g.seen.desc": "Du bist Archivar im weissen Laborkittel, mit einer Nummer auf dem Rücken. Deine Aufgabe: die Menschen finden, die aus alten Fotos verschwunden sind. Manche sind noch da draussen, und sie haben sich verändert.", "g.seen.f0": "Ein echt bedienbarer PC in der Lobby ist dein Weg in die Welten", "g.seen.f1": "Der Glockenmann, der Schwimmer und das Wesen im Feld", "g.seen.f2": "Auch fürs Spielen auf dem Handy gebaut", "g.seen.f3": "Robux nur für Kosmetik: Kittelfarben und Taschenlampenlicht", "g.seen.fl0": "Spieler", "g.seen.fv0": "Archivare im Team", "g.seen.fl1": "Plattform", "g.seen.fv1": "PC · Handy", "g.clash.genre": "Ranked-Elementkampf", "g.clash.tag": "Wähl dein Element. Steig im Rang.", "g.clash.status": "Season 1 in Entwicklung", "g.clash.desc": "Third-Person-Elementkämpfe im Ranked-Modus 1v1, 2v2 und 3v3, auf PC und Handy. Ausserhalb der Arena gibt es eine Free-Fight-Map im eigenen Noppen-Stil, mit einer ganzen Stadt zum Durchkämpfen.", "g.clash.f0": "Ranked 1v1 · 2v2 · 3v3", "g.clash.f1": "Coins für Matches, Siege, Quests und KOs", "g.clash.f2": "Skins, Auren, Emotes, Posen, KO-Effekte und Trails", "g.clash.f3": "Start mit Season 1, Season 2 führt in die Unterwelt", "g.clash.fl0": "Modi", "g.clash.fv0": "Ranked · Free Fight", "g.clash.fl1": "Plattform", "g.clash.fv1": "PC · Handy", "g.lantern.genre": "Koop-Survival-Horror", "g.lantern.tag": "Kommt gemeinsam durch die Dunkelheit.", "g.lantern.status": "In Entwicklung", "g.lantern.desc": "Ein Koop-Survival-Horror für dich und deine Freunde. Allein schafft es niemand durch die Dunkelheit, also bleibt besser zusammen.", "g.lantern.f0": "Von Anfang an für Koop gebaut", "g.lantern.f1": "Survival-Horror, Meilenstein für Meilenstein gebaut", "g.lantern.fl0": "Spieler", "g.lantern.fv0": "Koop", "g.lantern.fl1": "Genre", "g.lantern.fv1": "Survival-Horror", "g.line.genre": "Story-Sci-Fi", "g.line.tag": "Eine Stadt. Eine KI. Ein Weg nach oben.", "g.line.status": "In Entwicklung", "g.line.desc": "Dubai, 2099. Die Stadt ist eine einzige senkrechte Linie in der Wüste, gesteuert von einer KI namens MOTHERLINE. Du spielst Amir, einen Wartungstechniker, der seine Schwester Layla zurückholen will.", "g.line.f0": "Eine storybasierte Kampagne", "g.line.f1": "Realistische Grafik mit Reflexionen und Details überall", "g.line.f2": "Eine riesige Stadt mit Raum um Raum zum Erkunden", "g.line.fl0": "Held", "g.line.fv0": "Amir, Wartungstechniker", "g.line.fl1": "Gegner", "g.line.fv1": "MOTHERLINE", "lab.0": "Zahnarzt-Horror für Brainrot-Patienten.", "lab.1": "Käfig-Rätsel, ein Zirkusdirektor und Drohnen.", "n.crew": "Crew", "lu.r0": "Founder", "lu.r1": "Creator", "lu.r2": "Avatar lädt", "lu.r3": "Avatar lädt", "lu.you": "Du?", "lu.r4": "Freier Platz", "lu.k0": "Die Crew", "lu.t0": "Das sind<br>die Grinder.", "lu.p0": "Vier Devs aus der Schweiz und Deutschland. Beweg die Maus, sie schauen dir nach. Klick einen an und sag Hallo, tipp aufs Namensschild für seine Karte.", "lu.k1": "Founder", "lu.p1": "Führt das Label und baut die Games. Ja, er ist aus Marmor. Klick ihn an und schau, was passiert.", "lu.k2": "Creator", "lu.p2": "Noch kein Video, aber merk dir diesen Avatar. Die Krone kommt bald in deinen Feed.", "lu.k3": "Developer", "lu.p3": "Zwei weitere Devs aus der Crew. Ihre Avatare laden noch. Ihr Code nicht.", "lu.k4": "Freier Platz", "lu.t4": "Dieser Platz<br>gehört dir.", "lu.p4": "Builder, Scripter, Modeler, Designer: Rauf aufs Podest.", "lu.c": "Jetzt bewerben", "lu.hint": "bewegen · klicken · hallo sagen", "lu.fit": "Game-Outfits", "dl.0": "Das ist Overgrind", "dlw.0": "28 s", "dl.1": "Wyrmquake-Devlog", "dlw.1": "bald"};
+var DE = {"ld": "Lade sieben Welten", "cur": "ANSEHEN", "n.games": "Games", "n.road": "Roadmap", "n.studio": "Studio", "n.join": "Mitmachen", "n.cta": "Auf Roblox beitreten", "h.eyebrow": "Roblox-Gamestudio · seit 2026", "h.lede": "Vier Roblox-Devs, sieben Games in der Werkstatt. Jedes wird so lange gebaut, bis es mehr als nur gut genug ist.", "s.crew": "Die Crew", "cr.f": "Founder", "cr.d": "Developer", "h.c1": "Community beitreten", "h.c2": "Games ansehen", "h.scroll": "Scrollen", "f.1": "Games in Entwicklung", "f.2": "Devs in der Crew", "f.3": "eine Crew aus der Schweiz und Deutschland", "m.k": "Warum Overgrind", "m.t": "Wir veröffentlichen nicht die erste Version, die funktioniert. Sondern die, die wir selbst spielen würden: nach der Schule, nach der Arbeit, um zwei Uhr nachts. Das ist der Grind.", "w.t": "Sieben Welten.<br>Eine Crew.", "w.p": "Jedes Game hat seinen eigenen Look, eigene Regeln und ein eigenes Team. Scroll durch alle und lies unten die Details.", "w.end": "Und das ist erst der Anfang.", "w.endc": "Details lesen", "d.k": "Im Detail", "d.t": "Woran wir bauen", "l.k": "Frühe Konzepte", "l.t": "Noch im Labor", "l.chip": "Konzept", "r.k": "Roadmap", "r.t": "Was als Nächstes kommt", "r.1s": "Jetzt", "r.1h": "Sieben Games in der Werkstatt", "r.1p": "Jedes Projekt entsteht gerade in Roblox Studio.", "r.2s": "Als Nächstes", "r.2h": "Erste Playtests", "r.2p": "Nostalgia Recess: Test mit Freunden.", "r.2q": "SEEN ONLINE: private Beta.", "r.3s": "Winter 2026", "r.3h": "Erste Releases", "r.3p": "Wyrmquake peilt den Winter an.", "r.3q": "Nostalgia Recess bekommt nach dem Start wöchentliche Updates.", "r.4s": "Später", "r.4h": "Seasons und mehr", "r.4p": "Element Clash startet mit Season 1. Season 2 führt in die Unterwelt.", "r.note": "Pläne können sich ändern. Tritt der Community bei, dann erfährst du es zuerst.", "s.k": "Das Studio", "s.t": "Ein Label.<br>Viele Creator.", "s.p1": "Overgrind ist eine gemeinsame Roblox-Community. Verschiedene Creator veröffentlichen unter einem Namen und messen sich am gleichen Anspruch.", "s.p2": "Keine Copy-Paste-Games, keine ersten Entwürfe auf der Startseite. Jeder Release muss etwas sein, das wir selbst spielen würden.", "s.r1": "führt das Label", "s.r2": "leitet ein Game", "s.r3": "baut mit uns", "s.r4": "das bist du", "j.1": "Sei dabei vor", "j.2": "dem ersten Drop.", "j.p": "Tritt der Roblox-Community bei, damit du zuerst erfährst, wenn ein Game aufgeht, und folg uns auf TikTok für Devlogs und Clips.", "j.c1": "Auf Roblox beitreten", "n.devlog": "Devlog", "n.apply": "Ins Team", "d.more": "Zur Game-Seite", "v.k": "Devlog", "v.t": "Hinter dem Grind", "v.ep": "Folge 0", "v.h": "Das ist Overgrind", "v.p": "Wer wir sind, was wir bauen und warum es gleich sieben Games sind. 28 Sekunden, ohne Füllstoff.", "v.c": "Mehr auf TikTok", "v.cr": "Stimme: ElevenLabs", "v.soon": "bald", "a.k": "Bau mit uns", "a.t": "Lust, mit uns zu grinden?", "a.p1": "Wir suchen immer Builder, Scripter, Modeler, UI- und VFX-Leute, denen Details genauso wichtig sind wie uns.", "a.p2": "Erzähl uns, wer du bist, und schick etwas, das du gebaut hast. Wir lesen jede Bewerbung.", "a.f1": "Dein Name", "a.f2": "Roblox-Benutzername", "a.f3": "Was du am besten kannst", "a.f4": "Portfolio oder Game-Link", "a.f5": "Ein paar Worte zu dir", "a.o": "Etwas anderes", "a.send": "Bewerbung senden", "a.note": "Öffnet dein Mailprogramm mit allem ausgefüllt. Auf dieser Seite wird nichts gespeichert.", "s.vid": "FreshStatue stellt Overgrind vor: wer wir sind, woher der Name kommt und wen wir suchen.", "gp.back": "Alle Games", "gp.follow": "Entwicklung verfolgen", "gp.k1": "Das Game", "gp.k2": "Galerie", "gp.soon": "Bald mehr Bilder", "gp.soonp": "Neue Screenshots und Clips kommen mit jedem Devlog.", "gp.next": "Nächste Welt", "ft.1": "Gebaut von freshstatue und der Crew", "ft.2": "Nicht mit der Roblox Corporation verbunden.", "g.wyrm.genre": "Drachen-Runner", "g.wyrm.tag": "Abtauchen. Zerschmettern. Aufsteigen.", "g.wyrm.status": "In Entwicklung · Ziel Winter 2026", "g.wyrm.desc": "Reite einen Drachen direkt in den Boden, grab dich durch die Erde und brich auf der anderen Seite wieder heraus. Alles, was im Weg steht, nimmst du mit. Alle 1000 Meter wählst du eine Karte, und manche davon sind ein Risiko.", "g.wyrm.f0": "Story „Der grosse Riss“ mit Overlord Quadrax und Reiterin Pip", "g.wyrm.f1": "Bosse mit Schwachpunkten, die du finden musst", "g.wyrm.f2": "Ein Hort, den du mit allem füllst, was du ausgräbst", "g.wyrm.f3": "Tägliche Strecke und Live-Rennen mit Liga", "g.wyrm.fl0": "Modus", "g.wyrm.fv0": "Solo · Live-Rennen", "g.wyrm.fl1": "Look", "g.wyrm.fv1": "Glänzender Cartoon", "g.recess.genre": "Schulhof-Multiplayer", "g.recess.tag": "Die Pause ist nie vorbei.", "g.recess.status": "Als Nächstes: Test mit Freunden", "g.recess.desc": "Fangen, Verstecken, Bärenhöhle: die Pausenspiele von 2005 bis 2017, zurück mit deinen Freunden auf einem grossen Schulhof. Jede Figur bekommt ihren eigenen Look.", "g.recess.f0": "Zum Start: Bärenhöhle, Verstecken und Fangen", "g.recess.f1": "Eine glänzende Cartoon-Welt, ganz ohne Noppen", "g.recess.f2": "Zuerst Englisch, dann Deutsch und Spanisch", "g.recess.f3": "Nach dem Release jede Woche Updates", "g.recess.fl0": "Spieler", "g.recess.fv0": "Multiplayer", "g.recess.fl1": "Für", "g.recess.fv1": "Kinder von 2005–2017", "g.pirates.genre": "Piraten-Abenteuer", "g.pirates.tag": "Erobere die Meere.", "g.pirates.status": "In Entwicklung", "g.pirates.desc": "Ein Ozean aus feinen Noppensteinen, mit grossen Wellen und weissem Schaum. Brainrot-Crews segeln aus der Brainrot Bay los, handeln, plündern und schwimmen, wohin sie wollen.", "g.pirates.f0": "Brainrot Bay: eine grosse Hafeninsel mit echten Läden", "g.pirates.f1": "Trash Tide West ist sicheres Wasser, Mistmouth Nord ist Raid-Gebiet", "g.pirates.f2": "Karibisches Tageslicht und Abende zur goldenen Stunde", "g.pirates.f3": "Eine Brainrot-Crew mit Glubschaugen, eher lustig als gruselig", "g.pirates.fl0": "Welt", "g.pirates.fv0": "Alles aus Noppen", "g.pirates.fl1": "Schwimmen", "g.pirates.fv1": "Frei, überall", "g.seen.genre": "Horror", "g.seen.tag": "Manche Fotos bleiben besser offline.", "g.seen.status": "Als Nächstes: private Beta", "g.seen.desc": "Du bist Archivar im weissen Laborkittel, mit einer Nummer auf dem Rücken. Deine Aufgabe: die Menschen finden, die aus alten Fotos verschwunden sind. Manche sind noch da draussen, und sie haben sich verändert.", "g.seen.f0": "Ein echt bedienbarer PC in der Lobby ist dein Weg in die Welten", "g.seen.f1": "Der Glockenmann, der Schwimmer und das Wesen im Feld", "g.seen.f2": "Auch fürs Spielen auf dem Handy gebaut", "g.seen.f3": "Robux nur für Kosmetik: Kittelfarben und Taschenlampenlicht", "g.seen.fl0": "Spieler", "g.seen.fv0": "Archivare im Team", "g.seen.fl1": "Plattform", "g.seen.fv1": "PC · Handy", "g.clash.genre": "Ranked-Elementkampf", "g.clash.tag": "Wähl dein Element. Steig im Rang.", "g.clash.status": "Season 1 in Entwicklung", "g.clash.desc": "Third-Person-Elementkämpfe im Ranked-Modus 1v1, 2v2 und 3v3, auf PC und Handy. Ausserhalb der Arena gibt es eine Free-Fight-Map im eigenen Noppen-Stil, mit einer ganzen Stadt zum Durchkämpfen.", "g.clash.f0": "Ranked 1v1 · 2v2 · 3v3", "g.clash.f1": "Coins für Matches, Siege, Quests und KOs", "g.clash.f2": "Skins, Auren, Emotes, Posen, KO-Effekte und Trails", "g.clash.f3": "Start mit Season 1, Season 2 führt in die Unterwelt", "g.clash.fl0": "Modi", "g.clash.fv0": "Ranked · Free Fight", "g.clash.fl1": "Plattform", "g.clash.fv1": "PC · Handy", "g.lantern.genre": "Koop-Survival-Horror", "g.lantern.tag": "Kommt gemeinsam durch die Dunkelheit.", "g.lantern.status": "In Entwicklung", "g.lantern.desc": "Ein Koop-Survival-Horror für dich und deine Freunde. Allein schafft es niemand durch die Dunkelheit, also bleibt besser zusammen.", "g.lantern.f0": "Von Anfang an für Koop gebaut", "g.lantern.f1": "Survival-Horror, Meilenstein für Meilenstein gebaut", "g.lantern.fl0": "Spieler", "g.lantern.fv0": "Koop", "g.lantern.fl1": "Genre", "g.lantern.fv1": "Survival-Horror", "g.line.genre": "Story-Sci-Fi", "g.line.tag": "Eine Stadt. Eine KI. Ein Weg nach oben.", "g.line.status": "In Entwicklung", "g.line.desc": "Dubai, 2099. Die Stadt ist eine einzige senkrechte Linie in der Wüste, gesteuert von einer KI namens MOTHERLINE. Du spielst Amir, einen Wartungstechniker, der seine Schwester Layla zurückholen will.", "g.line.f0": "Eine storybasierte Kampagne", "g.line.f1": "Realistische Grafik mit Reflexionen und Details überall", "g.line.f2": "Eine riesige Stadt mit Raum um Raum zum Erkunden", "g.line.fl0": "Held", "g.line.fv0": "Amir, Wartungstechniker", "g.line.fl1": "Gegner", "g.line.fv1": "MOTHERLINE", "lab.0": "Zahnarzt-Horror für Brainrot-Patienten.", "lab.1": "Käfig-Rätsel, ein Zirkusdirektor und Drohnen.", "n.crew": "Crew", "lu.r0": "Founder", "lu.r1": "Creator", "lu.r2": "Avatar lädt", "lu.r3": "Avatar lädt", "lu.you": "Du?", "lu.r4": "Freier Platz", "lu.k0": "Die Crew", "lu.t0": "Das sind<br>die Grinder.", "lu.p0": "Vier Devs aus der Schweiz und Deutschland. Beweg die Maus, sie schauen dir nach. Klick einen an und sag Hallo, tipp aufs Namensschild für seine Karte.", "lu.k1": "Founder", "lu.p1": "Führt das Label und baut die Games. Ja, er ist aus Marmor. Klick ihn an und schau, was passiert.", "lu.k2": "Creator", "lu.p2": "Noch kein Video, aber merk dir diesen Avatar. Die Krone kommt bald in deinen Feed.", "lu.k3": "Developer", "lu.p3": "Zwei weitere Devs aus der Crew. Ihre Avatare laden noch. Ihr Code nicht.", "lu.k4": "Freier Platz", "lu.t4": "Dieser Platz<br>gehört dir.", "lu.p4": "Builder, Scripter, Modeler, Designer: Rauf aufs Podest.", "lu.c": "Jetzt bewerben", "lu.hint": "bewegen · klicken · hallo sagen", "lu.fit": "Game-Outfits", "dl.0": "Das ist Overgrind", "dlw.0": "28 s", "dl.1": "Wyrmquake-Devlog", "dlw.1": "bald", "ld.t": "Trete Overgrind bei", "ld.by": "von freshstatue und der Crew", "ld.tip": "Tipp: Auf dieser Seite sind 10 goldene Noppen versteckt.", "f.4": "Mitglieder in der Community", "n.build": "Builder", "tt.h": "Frisch von TikTok", "tt.p": "Unsere neusten Clips und Devlogs direkt von TikTok. Sie laden von tiktok.com, dabei kann TikTok Cookies setzen.", "tt.c": "TikTok-Videos laden", "b.k": "Avatar-Builder", "b.t": "Bau deinen<br>Grinder.", "b.p": "Wähl Farben, ein Gesicht und ein Game-Outfit. Lade deine Crew-Karte runter, teil sie oder schick sie mit deiner Bewerbung.", "b.hint": "ziehen zum Drehen · klicken für ein Emote", "b.skin": "Haut", "b.shirt": "Shirt", "b.pants": "Hose", "b.face": "Gesicht", "b.fit": "Game-Outfit", "b.name": "Name auf der Karte", "b.role": "Rolle", "b.dl": "Karte runterladen", "b.share": "Teilen", "b.apply": "Mit diesem Avatar bewerben", "gs.role": "Du hast jede goldene Noppe gefunden", "gs.r1": "Noppen", "gs.r2": "Status", "gs.r2v": "Zertifizierter Grinder", "gs.q": "„Echte Grinder schauen in jede Ecke.“"};
 </script>
 <script src="app.js"></script>
 <script type="module" src="bricks.js"></script>
 <script type="module" src="lineup.js"></script>
+<script type="module" src="scenes.js"></script>
+<script type="module" src="builder.js"></script>
+<script type="module" src="extras.js"></script>
 <script src="transition.js"></script>
 <script data-goatcounter="https://overgrind.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </body>

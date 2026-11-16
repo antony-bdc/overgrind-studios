@@ -119,13 +119,52 @@ function poseFS(dt) {
     if (FS.emote === "jump") { const x = C.clamp((f - .1) / .6, 0, 1); y += Math.sin(x * Math.PI) * .5 * sc; rs += 140 * Math.sin(x * Math.PI); ls += 140 * Math.sin(x * Math.PI); }
     if (FS.emote === "freeze") { const s = 1 - .55 * C.clamp(f / .25, 0, 1) * (f < 1 ? 1 : 1 - C.clamp((f - 1) / .15, 0, 1)); J.mat.color.setScalar(s); ls = 4 + w * 66; rs = 4 + w * 66; lf = rf = 4 + w * 26; if (f > 1) body = Math.exp(-(f - 1) * 9) * Math.sin((f - 1) * 60) * .05; }
     if (f > 1.6) { FS.emote = 0; J.mat.color.setScalar(1); } }
-  const hov = fsPick(); if (hov !== FS.hover) { FS.hover = hov; document.body.style.cursor = hov ? "pointer" : ""; }
+  const hov = fsPick(); window.__fsHover = hov; if (hov !== FS.hover) { FS.hover = hov; document.body.style.cursor = hov ? "pointer" : ""; }
   J.root.position.set(feet.x, y, Z); J.root.scale.setScalar(sc); J.root.rotation.y = FS.yaw * .3 - .15;
   J.body.rotation.x = body; J.body.scale.y = 1 + Math.sin(t * 2.1) * .008;
   J.head.rotation.set(FS.pitch, FS.yaw * .7, Math.sin(t * .9) * .02);
   const sw = Math.sin(t * 1.6) * 2 + (FS.hover ? 8 : 0);
   C.setArm(J.armR, rf + sw, rs + (FS.hover ? 8 : 0), -1); C.setArm(J.armL, lf - sw, ls + (FS.hover ? 8 : 0), 1);
   if (FS.fill) FS.fill.position.set(feet.x - 2 * sc, feet.y + 2.4 * sc, Z + 6);
+}
+
+/* ---------- clicks in the hero drop real bricks that pile up on the floor ---------- */
+const DN = 36, ZD = 4, DS = .55;
+const dBoxes = new THREE.InstancedMesh(boxGeo, mat, DN), dStuds = new THREE.InstancedMesh(studGeo, mat, DN * 4);
+dBoxes.instanceMatrix.setUsage(THREE.DynamicDrawUsage); dStuds.instanceMatrix.setUsage(THREE.DynamicDrawUsage); dBoxes.frustumCulled = dStuds.frustumCulled = false;
+const zero = new THREE.Matrix4().makeScale(0, 0, 0); for (let i = 0; i < DN; i++) { dBoxes.setMatrixAt(i, zero); for (let k = 0; k < 4; k++) dStuds.setMatrixAt(i * 4 + k, zero); }
+scene.add(dBoxes, dStuds);
+const drops = []; let dHead = 0;
+const dropCols = ["#FF4D1A", "#F2EFE9", "#FFC34D", "#2BD4E0", "#A47BFF", "#8BE04E"].map((c) => new THREE.Color(c));
+window.__dropBrick = (cx, cy) => {
+  const p = screenToWorld(cx, cy, ZD), i = dHead; dHead = (dHead + 1) % DN;
+  const c = dropCols[(Math.random() * dropCols.length) | 0]; dBoxes.setColorAt(i, c); for (let k = 0; k < 4; k++) dStuds.setColorAt(i * 4 + k, c);
+  dBoxes.instanceColor.needsUpdate = dStuds.instanceColor.needsUpdate = true;
+  const old = drops.findIndex((d) => d.i === i); if (old >= 0) drops.splice(old, 1);
+  drops.push({ i, pos: p, vy: 2, vx: (Math.random() - .5) * 1.5, rot: new THREE.Euler(Math.random() * 3, Math.random() * 3, Math.random() * 3), spin: new THREE.Vector3((Math.random() - .5) * 9, (Math.random() - .5) * 9, (Math.random() - .5) * 9), yaw: (Math.random() - .5) * .5, rest: false, age: 0, pop: 0 });
+};
+const dq = new THREE.Quaternion(), dsc = new THREE.Vector3(), de = new THREE.Euler();
+function stepDrops(dt) {
+  if (!drops.length) return;
+  const hr = hero.getBoundingClientRect(), floor = screenToWorld(innerWidth / 2, hr.bottom - 6, ZD).y, W = DS, H = .6 * DS;
+  for (const d of drops) {
+    d.age += dt; d.pop = Math.min(1, d.pop + dt * 6);
+    if (!d.rest) {
+      d.vy -= 26 * dt; d.pos.y += d.vy * dt; d.pos.x += d.vx * dt;
+      d.rot.x += d.spin.x * dt; d.rot.y += d.spin.y * dt; d.rot.z += d.spin.z * dt;
+      // land on the floor or on top of a brick that's already resting
+      let top = floor + H;
+      for (const o of drops) if (o.rest && o !== d && Math.abs(o.pos.x - d.pos.x) < W * 1.9) top = Math.max(top, o.pos.y + 2 * H);
+      if (d.pos.y <= top && d.vy < 0) {
+        if (d.vy < -7) { d.vy *= -.28; d.spin.multiplyScalar(.35); } else { d.rest = true; d.pos.y = top; d.vy = 0; d.rot.set(0, d.yaw, 0); }
+        d.pos.y = top;
+      }
+    }
+    de.copy(d.rot); dq.setFromEuler(de); dsc.setScalar(DS * (d.pop < 1 ? .4 + .6 * d.pop : 1));
+    m.compose(d.pos, dq, dsc); dBoxes.setMatrixAt(d.i, m);
+    for (let s = 0; s < 4; s++) { tmp.multiplyMatrices(m, studOff[s]); dStuds.setMatrixAt(d.i * 4 + s, tmp); }
+  }
+  dBoxes.instanceMatrix.needsUpdate = dStuds.instanceMatrix.needsUpdate = true;
 }
 
 function frame(now) {
@@ -161,6 +200,7 @@ function frame(now) {
   camera.position.y += ((pointerActive ? ndc.y * 0.8 : 0) - camera.position.y) * 0.04;
   camera.lookAt(0, 0, -6);
   poseFS(dt);
+  stepDrops(dt);
   renderer.render(scene, camera);
 }
 requestAnimationFrame(frame);

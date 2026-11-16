@@ -12,7 +12,7 @@ DE = {
  "h.eyebrow":"Roblox-Gamestudio · seit 2026",
  "h.lede":"Vier Roblox-Devs, sieben Games in der Werkstatt. Jedes wird so lange gebaut, bis es mehr als nur gut genug ist.","s.crew":"Die Crew","cr.f":"Founder","cr.d":"Developer",
  "h.c1":"Community beitreten","h.c2":"Games ansehen","h.scroll":"Scrollen",
- "f.1":"Games in Entwicklung","f.2":"Devs in der Crew","f.3":"eine Crew aus der Schweiz",
+ "f.1":"Games in Entwicklung","f.2":"Devs in der Crew","f.3":"eine Crew aus der Schweiz und Deutschland",
  "m.k":"Warum Overgrind",
  "m.t":"Wir veröffentlichen nicht die erste Version, die funktioniert. Sondern die, die wir selbst spielen würden: nach der Schule, nach der Arbeit, um zwei Uhr nachts. Das ist der Grind.",
  "w.t":"Sieben Welten.<br>Eine Crew.","w.p":"Jedes Game hat seinen eigenen Look, eigene Regeln und ein eigenes Team. Scroll durch alle und lies unten die Details.",
@@ -52,6 +52,7 @@ for i,g in enumerate(GAMES):
     panels.append(f'''
     <a class="panel{' titled' if k=='seen' else ''}" href="games/{k}/" style="--a:{g['accent']}" data-bg="{g['bg']}" data-accent="{g['accent']}" data-cursor>
       <img src="assets/games/{k}.webp" srcset="assets/games/{k}-800.webp 800w, assets/games/{k}.webp 1600w" sizes="(max-width: 860px) 92vw, 60vw" width="1600" height="900" alt="{esc(g['title'])} key art" loading="lazy" decoding="async">
+      <span class="vortex" aria-hidden="true"></span>
       <span class="num">{n} / 07</span>
       <div class="meta"><div><div class="gen">{ico(g['icon'])}<span data-i18n="g.{k}.genre">{esc(g['genre'][0])}</span></div><h3>{esc(g['title'])}</h3><p class="tg" data-i18n="g.{k}.tag">{esc(g['tag'][0])}</p></div>{chip}</div>
     </a>''')
@@ -99,6 +100,14 @@ DE.update({"n.crew":"Crew","lu.r0":"Founder","lu.r1":"Creator","lu.r2":"Avatar l
 DEVLOGS=[("EP 00","Meet Overgrind","Das ist Overgrind","28 s","28 s"),("EP 01","Wyrmquake devlog","Wyrmquake-Devlog","soon","bald")]
 devlogs=''.join(f'<div class="dl-item"><b>{e}</b><span data-i18n="dl.{j}">{esc(t)}</span><em data-i18n="dlw.{j}">{w}</em></div>' for j,(e,t,td,w,wd) in enumerate(DEVLOGS))
 for j,(e,t,td,w,wd) in enumerate(DEVLOGS): DE[f"dl.{j}"]=td; DE[f"dlw.{j}"]=wd
+
+DE.update({"ld.t":"Trete Overgrind bei","ld.by":"von freshstatue und der Crew","ld.tip":"Tipp: Auf dieser Seite sind 10 goldene Noppen versteckt.",
+ "f.4":"Mitglieder in der Community","n.build":"Builder",
+ "tt.h":"Frisch von TikTok","tt.p":"Unsere neusten Clips und Devlogs direkt von TikTok. Sie laden von tiktok.com, dabei kann TikTok Cookies setzen.","tt.c":"TikTok-Videos laden",
+ "b.k":"Avatar-Builder","b.t":"Bau deinen<br>Grinder.","b.p":"Wähl Farben, ein Gesicht und ein Game-Outfit. Lade deine Crew-Karte runter, teil sie oder schick sie mit deiner Bewerbung.",
+ "b.hint":"ziehen zum Drehen · klicken für ein Emote","b.skin":"Haut","b.shirt":"Shirt","b.pants":"Hose","b.face":"Gesicht","b.fit":"Game-Outfit",
+ "b.name":"Name auf der Karte","b.role":"Rolle","b.dl":"Karte runterladen","b.share":"Teilen","b.apply":"Mit diesem Avatar bewerben",
+ "gs.role":"Du hast jede goldene Noppe gefunden","gs.r1":"Noppen","gs.r2":"Status","gs.r2v":"Zertifizierter Grinder","gs.q":"„Echte Grinder schauen in jede Ecke.“"})
 GOAT='<script data-goatcounter="https://overgrind.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>'
 item='<div class="item">'+''.join(mq)+'</div>'
 s=open('src/index.tpl.html').read()

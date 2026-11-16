@@ -13,7 +13,7 @@
   document.addEventListener("click", function(e){
     var a = e.target.closest && e.target.closest("a"); if (!a || e.defaultPrevented) return;
     var href = a.getAttribute("href");
-    if (!href || href.charAt(0) === "#" || a.target === "_blank" || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+    if (!href || href.charAt(0) === "#" || a.hasAttribute("download") || a.target === "_blank" || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
     var url = new URL(a.href, location.href);
     if (url.origin !== location.origin || (url.pathname === location.pathname && url.hash)) return;
     e.preventDefault();
