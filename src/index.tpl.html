@@ -37,6 +37,7 @@
   <div class="wrap">
     <a class="brand" href="#top" aria-label="Overgrind Studios home"><span class="og">OG</span>Overgrind Studios</a>
     <nav class="links" aria-label="Main">
+      <a href="#crew" data-i18n="n.crew">Crew</a>
       <a href="#worlds" data-i18n="n.games">Games</a>
       <a href="#road" data-i18n="n.road">Roadmap</a>
       <a href="#devlog" data-i18n="n.devlog">Devlog</a>
@@ -78,6 +79,49 @@
   <div class="wrap">
     <div class="kicker" data-i18n="m.k">Why Overgrind</div>
     <p id="mani" data-i18n="m.t">We don't ship the first version that works. We ship the one we'd play ourselves, after school, after work, at two in the morning. That's the grind.</p>
+  </div>
+</section>
+
+<section class="lineup" id="crew" aria-labelledby="lu-title">
+  <div class="lu-sticky">
+    <canvas id="lineup-gl" role="img" aria-label="3D lineup of the Overgrind crew avatars. Move the mouse and they look at you, click one to make it react."></canvas>
+    <div class="lu-tags">
+      <button class="lu-tag" type="button" data-who="0"><b>FreshStatue</b><span data-i18n="lu.r0">Founder</span></button>
+      <button class="lu-tag" type="button" data-who="1"><b>Andrin</b><span data-i18n="lu.r1">Creator</span></button>
+      <button class="lu-tag lock" type="button" data-who="2"><b>excess</b><span data-i18n="lu.r2">Avatar loading</span></button>
+      <button class="lu-tag lock" type="button" data-who="3"><b>Ginoletsplay</b><span data-i18n="lu.r3">Avatar loading</span></button>
+      <button class="lu-tag you" type="button" data-who="4"><b data-i18n="lu.you">You?</b><span data-i18n="lu.r4">Open spot</span></button>
+    </div>
+    <div class="wrap lu-copy">
+      <div class="lu-step on">
+        <div class="kicker" data-i18n="lu.k0">The crew</div>
+        <h2 class="lu-h" id="lu-title" data-i18n="lu.t0">Meet the<br>grinders.</h2>
+        <p data-i18n="lu.p0">Four devs from Switzerland and Germany. Move your mouse, they're watching. Click one to say hi.</p>
+      </div>
+      <div class="lu-step">
+        <div class="lu-k"><em>01</em><span data-i18n="lu.k1">Founder</span></div>
+        <h3 class="lu-h">FreshStatue</h3>
+        <p data-i18n="lu.p1">Runs the label and builds the games. Yes, he's made of marble. Click him and see what happens.</p>
+      </div>
+      <div class="lu-step">
+        <div class="lu-k"><em>02</em><span data-i18n="lu.k2">Creator</span></div>
+        <h3 class="lu-h">Andrin</h3>
+        <p data-i18n="lu.p2">No video yet, but remember this avatar. The crown is coming to your feed.</p>
+      </div>
+      <div class="lu-step">
+        <div class="lu-k"><em>03 · 04</em><span data-i18n="lu.k3">Developers</span></div>
+        <h3 class="lu-h">excess &amp; Ginoletsplay</h3>
+        <p data-i18n="lu.p3">Two more devs from the crew. Their avatars are still loading. Their code isn't.</p>
+      </div>
+      <div class="lu-step">
+        <div class="lu-k"><em>05</em><span data-i18n="lu.k4">Open spot</span></div>
+        <h3 class="lu-h" data-i18n="lu.t4">This spot<br>is yours.</h3>
+        <p data-i18n="lu.p4">Builders, scripters, modelers, designers: step on the pedestal.</p>
+        <a class="btn fire lu-cta" href="#apply"><span data-i18n="lu.c">Apply now</span>{{i:arrow-down}}</a>
+      </div>
+    </div>
+    <div class="lu-dots" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i><i></i></div>
+    <div class="lu-hint" aria-hidden="true"><span data-i18n="lu.hint">move · click · say hi</span></div>
   </div>
 </section>
 
@@ -162,8 +206,6 @@
         <div class="row"><span class="rank" data-count="1">1</span><span class="role">Grinder</span><span class="who" data-i18n="s.r4">that's you</span></div>
       </div>
     </div>
-    <h3 class="crew-title" data-i18n="s.crew">The crew</h3>
-    <div class="crew">{{CREW}}</div>
   </div>
 </section>
 
@@ -177,6 +219,8 @@
         <p data-i18n="a.p1">We're always looking for builders, scripters, modelers, UI and VFX people who care about the details as much as we do.</p>
         <p data-i18n="a.p2">Tell us who you are and send something you've made. We read every application.</p>
       </div>
+      <div class="ap-stage">
+      <div class="peekers" aria-hidden="true"><img class="pk fs" src="assets/crew3d/peek_fs.png" alt="" width="520" height="364" loading="lazy"><img class="pk an" src="assets/crew3d/peek_an.png" alt="" width="520" height="455" loading="lazy"></div>
       <form class="ap-form" id="apply-form" novalidate>
         <label><span data-i18n="a.f1">Your name</span><input name="name" required autocomplete="nickname"></label>
         <label><span data-i18n="a.f2">Roblox username</span><input name="roblox" required></label>
@@ -187,6 +231,7 @@
         <button class="btn fire" type="submit"><span data-i18n="a.send">Send application</span>{{i:arrow-up-right}}</button>
         <p class="ap-note" data-i18n="a.note">Opens your email app with everything filled in. Nothing is stored on this site.</p>
       </form>
+      </div>
     </div>
   </div>
 </section>
@@ -223,6 +268,7 @@ var DE = {{DEJSON}};
 </script>
 <script src="app.js"></script>
 <script type="module" src="bricks.js"></script>
+<script type="module" src="lineup.js"></script>
 <script src="transition.js"></script>
 {{GOAT}}
 </body>

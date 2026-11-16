@@ -30,7 +30,7 @@
   /* ---------- smooth scroll ---------- */
   var lenis = null;
   if (!reduce && window.Lenis){
-    lenis = new Lenis({ lerp: 0.1, wheelMultiplier: 1 });
+    lenis = new Lenis({ lerp: 0.1, wheelMultiplier: 1 }); window.__lenis = lenis;
     lenis.on("scroll", ScrollTrigger.update);
     gsap.ticker.add(function(t){ lenis.raf(t * 1000); });
     gsap.ticker.lagSmoothing(0);
@@ -256,10 +256,6 @@
   }
 
   /* ---------- crew cards ---------- */
-  if (!reduce){
-    gsap.from(".member", { y: 60, autoAlpha: 0, rotateX: -12, duration: 1.1, stagger: .1, ease: "expo.out", scrollTrigger: { trigger: ".crew", start: "top 82%" } });
-    gsap.from(".crew-title", { y: 30, autoAlpha: 0, duration: 1, ease: "expo.out", scrollTrigger: { trigger: ".crew-title", start: "top 85%" } });
-  }
   if (finePointer && !reduce){
     document.querySelectorAll("[data-tilt]").forEach(function(c){
       var rx = gsap.quickTo(c, "rotationX", { duration: .6, ease: "power3" }), ry = gsap.quickTo(c, "rotationY", { duration: .6, ease: "power3" });
@@ -283,13 +279,16 @@
   }
 
   /* ---------- team application (mailto, nothing stored) ---------- */
-  var form = document.getElementById("apply-form");
+  var form = document.getElementById("apply-form"), stage = document.querySelector(".ap-stage");
+  if (stage && "IntersectionObserver" in window){ new IntersectionObserver(function(es){ es.forEach(function(e){ if (e.isIntersecting) stage.classList.add("seen"); }); }, { threshold: .35 }).observe(stage); }
+  document.querySelectorAll(".pk").forEach(function(p){ p.addEventListener("click", function(){ p.classList.remove("hop"); void p.offsetWidth; p.classList.add("hop"); }); });
   if (form){
     form.addEventListener("submit", function(e){
       e.preventDefault();
       var f = form.elements, bad = false;
       ["name", "roblox"].forEach(function(n){ var ok = f[n].value.trim().length > 1; f[n].classList.toggle("bad", !ok); if (!ok) bad = true; });
-      if (bad){ gsap.fromTo(form, { x: -8 }, { x: 0, duration: .5, ease: "elastic.out(1,.3)" }); return; }
+      if (bad){ gsap.fromTo(form, { x: -8 }, { x: 0, duration: .5, ease: "elastic.out(1,.3)" }); stage && (stage.classList.remove("nope"), void stage.offsetWidth, stage.classList.add("nope")); return; }
+      stage && stage.classList.add("sent");
       var body = "Name: " + f.name.value.trim() + "\nRoblox: " + f.roblox.value.trim() + "\nRole: " + f.role.value + "\nPortfolio: " + f.link.value.trim() + "\n\n" + f.msg.value.trim();
       location.href = "mailto:overgrindstudios@outlook.com?subject=" + encodeURIComponent("Dev application: " + f.name.value.trim() + " (" + f.role.value + ")") + "&body=" + encodeURIComponent(body);
     });
