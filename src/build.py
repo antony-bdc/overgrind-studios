@@ -1,0 +1,84 @@
+import json, re, html
+import sys, os; sys.path.insert(0, os.path.dirname(__file__))
+from games import GAMES, LAB
+ICONS = json.load(open('src/icons.json'))
+ROBLOX = "https://www.roblox.com/communities/1068137339/Overgrind-Studios"
+TIKTOK = "https://www.tiktok.com/@overgrindstudios"
+esc = html.escape
+def ico(n): return f'<svg class="i" viewBox="0 0 24 24" aria-hidden="true">{ICONS[n]}</svg>'
+DE = {
+ "ld":"Lade sieben Welten","cur":"ANSEHEN",
+ "n.games":"Games","n.road":"Roadmap","n.studio":"Studio","n.join":"Mitmachen","n.cta":"Auf Roblox beitreten",
+ "h.eyebrow":"Roblox-Gamestudio · seit 2026",
+ "h.lede":"Eine kleine Crew aus Roblox-Devs. Sieben Games in der Werkstatt, und jedes wird so lange gebaut, bis es mehr als nur gut genug ist.",
+ "h.c1":"Community beitreten","h.c2":"Games ansehen","h.scroll":"Scrollen",
+ "f.1":"Games in Entwicklung","f.2":"Konzepte im Labor","f.3":"eine Crew aus der Schweiz",
+ "m.k":"Warum Overgrind",
+ "m.t":"Wir veröffentlichen nicht die erste Version, die funktioniert. Sondern die, die wir selbst spielen würden: nach der Schule, nach der Arbeit, um zwei Uhr nachts. Das ist der Grind.",
+ "w.t":"Sieben Welten.<br>Eine Crew.","w.p":"Jedes Game hat seinen eigenen Look, eigene Regeln und ein eigenes Team. Scroll durch alle und lies unten die Details.",
+ "w.end":"Und das ist erst der Anfang.","w.endc":"Details lesen",
+ "d.k":"Im Detail","d.t":"Woran wir bauen",
+ "l.k":"Frühe Konzepte","l.t":"Noch im Labor","l.chip":"Konzept",
+ "r.k":"Roadmap","r.t":"Was als Nächstes kommt",
+ "r.1s":"Jetzt","r.1h":"Sieben Games in der Werkstatt","r.1p":"Jedes Projekt entsteht gerade in Roblox Studio.",
+ "r.2s":"Als Nächstes","r.2h":"Erste Playtests","r.2p":"Nostalgia Recess: Test mit Freunden.","r.2q":"SEEN ONLINE: private Beta.",
+ "r.3s":"Winter 2026","r.3h":"Erste Releases","r.3p":"Wyrmquake peilt den Winter an.","r.3q":"Nostalgia Recess bekommt nach dem Start wöchentliche Updates.",
+ "r.4s":"Später","r.4h":"Seasons und mehr","r.4p":"Element Clash startet mit Season 1. Season 2 führt in die Unterwelt.",
+ "r.note":"Pläne können sich ändern. Tritt der Community bei, dann erfährst du es zuerst.",
+ "s.k":"Das Studio","s.t":"Ein Label.<br>Viele Creator.",
+ "s.p1":"Overgrind ist eine gemeinsame Roblox-Community. Verschiedene Creator veröffentlichen unter einem Namen und messen sich am gleichen Anspruch.",
+ "s.p2":"Keine Copy-Paste-Games, keine ersten Entwürfe auf der Startseite. Jeder Release muss etwas sein, das wir selbst spielen würden.",
+ "s.r1":"führt das Label","s.r2":"leitet ein Game","s.r3":"baut mit uns","s.r4":"das bist du",
+ "j.1":"Sei dabei vor","j.2":"dem ersten Drop.","j.p":"Tritt der Roblox-Community bei, damit du zuerst erfährst, wenn ein Game aufgeht, und folg uns auf TikTok für Devlogs und Clips.",
+ "j.c1":"Auf Roblox beitreten","ft.1":"Gebaut von freshstatue und der Crew","ft.2":"Nicht mit der Roblox Corporation verbunden.",
+}
+wall_cols, panels, dives, mq = [], [], [], []
+keys=[g['key'] for g in GAMES]
+for c in range(4):
+    imgs=''.join(f'<img src="assets/games/{keys[(c*2+j)%7]}.jpg" alt="" loading="eager">' for j in range(6))
+    wall_cols.append(f'<div class="col" data-col="{c}">{imgs}</div>')
+for i,g in enumerate(GAMES):
+    k=g['key']; n=f"{i+1:02d}"
+    for f,(en,de) in [('genre',g['genre']),('tag',g['tag']),('status',g['status']),('desc',g['desc'])]:
+        DE[f"g.{k}.{f}"]=de
+    for j,(en,de) in enumerate(g['feats']): DE[f"g.{k}.f{j}"]=de
+    for j,(l_en,l_de,v_en,v_de) in enumerate(g['facts']): DE[f"g.{k}.fl{j}"]=l_de; DE[f"g.{k}.fv{j}"]=v_de
+    chip=f'<span class="chip {g["st"]}"><i></i><span data-i18n="g.{k}.status">{esc(g["status"][0])}</span></span>'
+    panels.append(f'''
+    <a class="panel{' titled' if k=='seen' else ''}" href="#g-{k}" style="--a:{g['accent']}" data-bg="{g['bg']}" data-accent="{g['accent']}" data-cursor>
+      <img src="assets/games/{k}.jpg" alt="{esc(g['title'])} key art" loading="lazy">
+      <span class="num">{n} / 07</span>
+      <div class="meta"><div><div class="gen">{ico(g['icon'])}<span data-i18n="g.{k}.genre">{esc(g['genre'][0])}</span></div><h3>{esc(g['title'])}</h3><p class="tg" data-i18n="g.{k}.tag">{esc(g['tag'][0])}</p></div>{chip}</div>
+    </a>''')
+    lines=''.join(f'<span class="ln">{esc(w)}</span>' for w in g['title'].split(': ',1)) if ': ' in g['title'] else f'<span class="ln">{esc(g["title"])}</span>'
+    feats=''.join(f'<li data-i18n="g.{k}.f{j}">{esc(en)}</li>' for j,(en,de) in enumerate(g['feats']))
+    facts=''.join(f'<div><small data-i18n="g.{k}.fl{j}">{esc(l)}</small><b data-i18n="g.{k}.fv{j}">{esc(v)}</b></div>' for j,(l,_,v,__) in enumerate(g['facts']))
+    dives.append(f'''
+  <article class="dive" id="g-{k}" style="--a:{g['accent']}" data-bg="{g['bg']}" data-accent="{g['accent']}">
+    <div class="wrap grid">
+      <figure class="art" data-cursor><img src="assets/games/{k}.jpg" alt="{esc(g['title'])} key art" loading="lazy"><span class="badge">{chip}</span></figure>
+      <div class="txt">
+        <div class="idx">{ico(g['icon'])}<span>{n}</span><span data-i18n="g.{k}.genre">{esc(g['genre'][0])}</span></div>
+        <h3>{lines}</h3>
+        <p class="tag" data-i18n="g.{k}.tag">{esc(g['tag'][0])}</p>
+        <p class="desc" data-i18n="g.{k}.desc">{esc(g['desc'][0])}</p>
+        <ul>{feats}</ul>
+        <div class="fx">{facts}</div>
+      </div>
+    </div>
+  </article>''')
+    mq.append(f'<span>{esc(g["title"])}</span><span class="star">✦</span>' if i%2==0 else f'<span class="o">{esc(g["title"])}</span><span class="star">✦</span>')
+lab=''
+for j,(t,en,de) in enumerate(LAB):
+    DE[f"lab.{j}"]=de
+    lab+=f'<div class="lab-card"><span class="chip"><i></i><span data-i18n="l.chip">Concept</span></span><div><b>{esc(t)}</b><p data-i18n="lab.{j}">{esc(en)}</p></div></div>'
+item='<div class="item">'+''.join(mq)+'</div>'
+s=open('src/index.tpl.html').read()
+rep={'{{WALL}}':''.join(wall_cols),'{{PANELS}}':''.join(panels),'{{DIVES}}':''.join(dives),'{{LAB}}':lab,'{{MARQUEE}}':item*2,
+     '{{ROBLOX}}':ROBLOX,'{{TIKTOK}}':TIKTOK,'{{GAMESJSON}}':json.dumps([dict(key=g['key'],bg=g['bg'],accent=g['accent']) for g in GAMES]),
+     '{{DEJSON}}':json.dumps(DE,ensure_ascii=False)}
+for a,b in rep.items(): s=s.replace(a,b)
+s=re.sub(r'\{\{i:([a-z0-9-]+)\}\}',lambda m:ico(m.group(1)),s)
+assert '{{' not in s, re.findall(r'\{\{[^}]*\}\}',s)
+open('index.html','w').write(s)
+print(len(s)//1024,'KB')
