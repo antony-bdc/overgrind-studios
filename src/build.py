@@ -86,9 +86,9 @@ def avatar(name,img):
             '<path d="M18 100 V78 Q18 62 34 62 H66 Q82 62 82 78 V100Z" fill="#2E2E36"/>'
             f'<text x="50" y="44" text-anchor="middle" font-family="Unbounded" font-weight="900" font-size="16" fill="#9A948A">{esc(name[0].upper())}</text></svg>')
 crew_html=''.join(f'<div class="member" data-tilt>{"<div class=av>"}{avatar(n,i)}</div><b>{esc(n)}</b><span class="{"f" if r=="f" else ""}" data-i18n="cr.{r}">{"Founder" if r=="f" else "Developer"}</span></div>' for n,r,i in CREW)
-LD={"@context":"https://schema.org","@type":"Organization","name":"Overgrind Studios","url":"https://antony-bdc.github.io/overgrind-studios/","logo":"https://antony-bdc.github.io/overgrind-studios/icon.png",
+LD={"@context":"https://schema.org","@type":"Organization","name":"Overgrind Studios","url":"https://overgrindstudio.click/","logo":"https://overgrindstudio.click/icon.png",
     "sameAs":[ROBLOX,TIKTOK],"description":"A small crew of Roblox devs with seven games in the workshop.",
-    "subjectOf":[{"@type":"VideoGame","name":g['title'],"genre":g['genre'][0],"description":g['desc'][0],"gamePlatform":"Roblox","image":f"https://antony-bdc.github.io/overgrind-studios/assets/games/{g['key']}.jpg"} for g in GAMES]}
+    "subjectOf":[{"@type":"VideoGame","name":g['title'],"genre":g['genre'][0],"description":g['desc'][0],"gamePlatform":"Roblox","image":f"https://overgrindstudio.click/assets/games/{g['key']}.jpg"} for g in GAMES]}
 
 DEVLOGS=[("EP 00","Meet Overgrind","Das ist Overgrind","28 s","28 s"),("EP 01","Wyrmquake devlog","Wyrmquake-Devlog","soon","bald")]
 devlogs=''.join(f'<div class="dl-item"><b>{e}</b><span data-i18n="dl.{j}">{esc(t)}</span><em data-i18n="dlw.{j}">{w}</em></div>' for j,(e,t,td,w,wd) in enumerate(DEVLOGS))
@@ -118,7 +118,7 @@ for i,g in enumerate(GAMES):
     feats=''.join(f'<div class="feat"><b>{j+1:02d}</b><p data-i18n="g.{k}.f{j}">{esc(en)}</p></div>' for j,(en,de) in enumerate(g['feats']))
     facts=''.join(f'<div><small data-i18n="g.{k}.fl{j}">{esc(l)}</small><b data-i18n="g.{k}.fv{j}">{esc(v)}</b></div>' for j,(l,_,v,__) in enumerate(g['facts']))
     ld={"@context":"https://schema.org","@type":"VideoGame","name":g['title'],"genre":g['genre'][0],"description":g['desc'][0],"gamePlatform":"Roblox",
-        "image":f"https://antony-bdc.github.io/overgrind-studios/assets/games/{k}.jpg","publisher":{"@type":"Organization","name":"Overgrind Studios"}}
+        "image":f"https://overgrindstudio.click/assets/games/{k}.jpg","publisher":{"@type":"Organization","name":"Overgrind Studios"}}
     s=gt.replace('{{ICON}}',g['icon'])
     rep={'{{TITLE}}':esc(g['title']),'{{DESC}}':esc(g['desc'][0]),'{{DESCR}}':esc(g['desc'][0]),'{{TAG}}':esc(g['tag'][0]),'{{BG}}':g['bg'],'{{ACCENT}}':g['accent'],'{{KEY}}':k,
          '{{NUM}}':f"{i+1:02d}",'{{GENRE}}':esc(g['genre'][0]),'{{TITLELINES}}':tl,'{{ST}}':g['st'],'{{STATUS}}':esc(g['status'][0]),'{{FEATS}}':feats,'{{FACTS}}':facts,

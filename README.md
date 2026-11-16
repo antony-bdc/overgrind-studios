@@ -2,7 +2,7 @@
 
 Website of Overgrind Studios, a small Roblox game studio.
 
-**Live:** https://antony-bdc.github.io/overgrind-studios/
+**Live:** https://overgrindstudio.click/
 
 - Roblox community: https://www.roblox.com/communities/1068137339/Overgrind-Studios
 - TikTok: https://www.tiktok.com/@overgrindstudios
