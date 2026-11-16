@@ -269,14 +269,17 @@
   }
 
 
-  /* ---------- devlog video ---------- */
-  var vfig = document.querySelector(".dl-video"), vid = document.getElementById("intro-video");
-  if (vfig && vid){
+  /* ---------- video players ---------- */
+  document.querySelectorAll(".vplayer").forEach(function(fig){
+    var vid = fig.querySelector("video"), btn = fig.querySelector(".dl-play"); if (!vid || !btn) return;
     vid.removeAttribute("controls");
-    vfig.querySelector(".dl-play").addEventListener("click", function(){ vid.controls = true; vid.play(); });
-    vid.addEventListener("play", function(){ vfig.classList.add("playing"); });
-    vid.addEventListener("ended", function(){ vfig.classList.remove("playing"); vid.controls = false; });
-    if (!reduce) gsap.from(vfig, { y: 80, rotate: -3, autoAlpha: 0, duration: 1.3, ease: "expo.out", scrollTrigger: { trigger: ".devlog", start: "top 70%" } });
+    btn.addEventListener("click", function(){ document.querySelectorAll(".vplayer video").forEach(function(o){ if (o !== vid) o.pause(); }); vid.controls = true; vid.play(); });
+    vid.addEventListener("play", function(){ fig.classList.add("playing"); });
+    vid.addEventListener("ended", function(){ fig.classList.remove("playing"); vid.controls = false; });
+  });
+  if (!reduce){
+    var dv = document.querySelector(".dl-video"); if (dv) gsap.from(dv, { y: 80, rotate: -3, autoAlpha: 0, duration: 1.3, ease: "expo.out", scrollTrigger: { trigger: ".devlog", start: "top 70%" } });
+    var wv = document.querySelector(".vplayer.wide"); if (wv) gsap.fromTo(wv, { clipPath: "inset(12% 10% 12% 10% round 26px)" }, { clipPath: "inset(0% 0% 0% 0% round 26px)", duration: 1.5, ease: "expo.out", scrollTrigger: { trigger: wv, start: "top 80%" } });
   }
 
   /* ---------- team application (mailto, nothing stored) ---------- */

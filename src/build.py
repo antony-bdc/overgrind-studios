@@ -35,7 +35,7 @@ DE = {
  "v.k":"Devlog","v.t":"Hinter dem Grind","v.ep":"Folge 0","v.h":"Das ist Overgrind","v.p":"Wer wir sind, was wir bauen und warum es gleich sieben Games sind. 28 Sekunden, ohne Füllstoff.","v.c":"Mehr auf TikTok","v.cr":"Stimme: ElevenLabs","v.soon":"bald",
  "a.k":"Bau mit uns","a.t":"Lust, mit uns zu grinden?","a.p1":"Wir suchen immer Builder, Scripter, Modeler, UI- und VFX-Leute, denen Details genauso wichtig sind wie uns.","a.p2":"Erzähl uns, wer du bist, und schick etwas, das du gebaut hast. Wir lesen jede Bewerbung.",
  "a.f1":"Dein Name","a.f2":"Roblox-Benutzername","a.f3":"Was du am besten kannst","a.f4":"Portfolio oder Game-Link","a.f5":"Ein paar Worte zu dir","a.o":"Etwas anderes","a.send":"Bewerbung senden","a.note":"Öffnet dein Mailprogramm mit allem ausgefüllt. Auf dieser Seite wird nichts gespeichert.",
- "gp.back":"Alle Games","gp.follow":"Entwicklung verfolgen","gp.k1":"Das Game","gp.k2":"Galerie","gp.soon":"Bald mehr Bilder","gp.soonp":"Neue Screenshots und Clips kommen mit jedem Devlog.","gp.next":"Nächste Welt","ft.1":"Gebaut von freshstatue und der Crew","ft.2":"Nicht mit der Roblox Corporation verbunden.",
+ "s.vid":"Das ist Overgrind: die Community und der Plan in 40 Sekunden.","gp.back":"Alle Games","gp.follow":"Entwicklung verfolgen","gp.k1":"Das Game","gp.k2":"Galerie","gp.soon":"Bald mehr Bilder","gp.soonp":"Neue Screenshots und Clips kommen mit jedem Devlog.","gp.next":"Nächste Welt","ft.1":"Gebaut von freshstatue und der Crew","ft.2":"Nicht mit der Roblox Corporation verbunden.",
 }
 wall_cols, panels, dives, mq = [], [], [], []
 keys=[g['key'] for g in GAMES]
