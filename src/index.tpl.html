@@ -96,7 +96,7 @@
       <div class="lu-step on">
         <div class="kicker" data-i18n="lu.k0">The crew</div>
         <h2 class="lu-h" id="lu-title" data-i18n="lu.t0">Meet the<br>grinders.</h2>
-        <p data-i18n="lu.p0">Four devs from Switzerland and Germany. Move your mouse, they're watching. Click one to say hi.</p>
+        <p data-i18n="lu.p0">Four devs from Switzerland and Germany. Move your mouse, they're watching. Click one to say hi, tap a name tag for their card.</p>
       </div>
       <div class="lu-step">
         <div class="lu-k"><em>01</em><span data-i18n="lu.k1">Founder</span></div>
@@ -120,9 +120,23 @@
         <a class="btn fire lu-cta" href="#apply"><span data-i18n="lu.c">Apply now</span>{{i:arrow-down}}</a>
       </div>
     </div>
+    <div class="lu-fits" role="group" aria-label="Game outfits"><span class="lu-fl">{{i:shirt}}<span data-i18n="lu.fit">Game outfits</span></span><button type="button" data-fit="" class="on" aria-label="No outfit">{{i:x}}</button>{{FITS}}</div>
+    <button class="lu-mute" type="button" aria-pressed="true" aria-label="Sound on or off">{{i:volume-2}}{{i:volume-x}}</button>
     <div class="lu-dots" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i><i></i></div>
     <div class="lu-hint" aria-hidden="true"><span data-i18n="lu.hint">move · click · say hi</span></div>
   </div>
+<div class="lu-cardwrap" hidden>
+  <div class="lu-card" tabindex="-1" role="dialog" aria-modal="true" aria-label="Crew card">
+    <i class="c-foil" aria-hidden="true"></i>
+    <button class="c-close" type="button" aria-label="Close">{{i:x}}</button>
+    <div class="c-top"><span class="c-rar"></span><span class="c-brand">OVERGRIND · CREW</span></div>
+    <div class="c-img"></div>
+    <div class="c-name"></div><div class="c-role"></div>
+    <div class="c-rows"></div>
+    <div class="c-quote"></div>
+    <a class="btn fire c-cta" href="#apply"><span data-i18n="lu.c">Apply now</span>{{i:arrow-down}}</a>
+  </div>
+</div>
 </section>
 
 <section class="worlds" id="worlds" aria-labelledby="worlds-title">

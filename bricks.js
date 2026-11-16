@@ -77,6 +77,57 @@ new IntersectionObserver(es => { visible = es[0].isIntersecting; }, { threshold:
 window.__bricksIntro = () => { intro = 1; };
 setTimeout(() => { intro = 1; }, 2600); // fallback if the loader never calls
 
+
+/* ---------- FreshStatue stands behind the wordmark and watches the cursor ---------- */
+const FS = { J: null, rise: 0, yaw: 0, pitch: 0, emote: 0, et: 0, hover: false, cycle: -1 };
+const mark = document.querySelector(".mark .w");
+import("./crew3d.js").then(async (C) => {
+  const data = await C.loadCrew("", ["fs"]);
+  const J = C.makeAvatar("fs", data); J.meshes.forEach((m) => { m.material.fog = false; }); if (J.extraMat) J.extraMat.fog = false;
+  scene.add(J.root); FS.J = J; FS.C = C;
+  const fill = new THREE.PointLight(0xfff1e0, 60, 30, 1.6); fill.position.set(0, 0, 8); scene.add(fill); FS.fill = fill;
+}).catch((e) => console.warn("hero fs", e));
+const _v = new THREE.Vector3(), _d = new THREE.Vector3();
+function screenToWorld(px, py, z) { // css px inside the canvas → world point on plane z
+  const r = canvas.getBoundingClientRect();
+  _v.set((px - r.left) / r.width * 2 - 1, -((py - r.top) / r.height) * 2 + 1, .5).unproject(camera);
+  _d.copy(_v).sub(camera.position).normalize(); const k = (z - camera.position.z) / _d.z; return camera.position.clone().addScaledVector(_d, k);
+}
+const fsRay = new THREE.Raycaster();
+function fsPick() { if (!FS.J || !pointerActive) return false; fsRay.setFromCamera(ndc, camera); return fsRay.intersectObjects(FS.J.meshes, false).length > 0; }
+addEventListener("click", (e) => {
+  if (!FS.J || e.target.closest("a,button,input,select,textarea")) return;
+  if (!fsPick()) return;
+  const C = FS.C, list = [["freeze", "touch"], ["wave", "hi"], ["jump", "grind"], ["point", "founder"]];
+  FS.cycle = (FS.cycle + 1) % list.length; FS.emote = list[FS.cycle][0]; FS.et = 0; C.say("fs", list[FS.cycle][1]); C.blip(FS.emote === "jump" ? "thud" : "pop");
+});
+function poseFS(dt) {
+  const J = FS.J; if (!J || !mark) return;
+  const r = mark.getBoundingClientRect(); if (r.width < 10) return;
+  const Z = 3;
+  const feet = screenToWorld(r.right - r.width * .13, r.bottom + r.height * .55, Z), head = screenToWorld(r.right - r.width * .13, r.top - r.height * (innerWidth < 860 ? 1.05 : .78), Z);
+  const sc = (head.y - feet.y) / 1.95;
+  FS.rise += ((intro ? 1 : 0) - FS.rise) * Math.min(1, dt * 1.6);
+  const C = FS.C; let y = feet.y - (1 - FS.rise) * 2.2 * sc, rs = 4, ls = 4, rf = 4, lf = 4, body = 0, sq = 0;
+  // look at the cursor
+  const hp = new THREE.Vector3(feet.x, feet.y + 1.6 * sc, Z);
+  const tx = pointerActive ? hit.x - hp.x : -hp.x * .4, ty = pointerActive ? hit.y - hp.y : -2;
+  FS.yaw += (C.clamp(Math.atan2(tx, 7), -.9, .9) - FS.yaw) * Math.min(1, dt * 5); FS.pitch += (C.clamp(-Math.atan2(ty, 9), -.4, .35) - FS.pitch) * Math.min(1, dt * 5);
+  if (FS.emote) { FS.et += dt; const f = FS.et, w = Math.min(C.clamp(f / .2, 0, 1), 1 - C.clamp((f - 1.4) / .2, 0, 1));
+    if (FS.emote === "wave") { rs = 4 + w * (146 + 22 * Math.sin(f * 12)); rf = 4 + w * 8; }
+    if (FS.emote === "point") { rf = 4 + w * 84; }
+    if (FS.emote === "jump") { const x = C.clamp((f - .1) / .6, 0, 1); y += Math.sin(x * Math.PI) * .5 * sc; rs += 140 * Math.sin(x * Math.PI); ls += 140 * Math.sin(x * Math.PI); }
+    if (FS.emote === "freeze") { const s = 1 - .55 * C.clamp(f / .25, 0, 1) * (f < 1 ? 1 : 1 - C.clamp((f - 1) / .15, 0, 1)); J.mat.color.setScalar(s); ls = 4 + w * 66; rs = 4 + w * 66; lf = rf = 4 + w * 26; if (f > 1) body = Math.exp(-(f - 1) * 9) * Math.sin((f - 1) * 60) * .05; }
+    if (f > 1.6) { FS.emote = 0; J.mat.color.setScalar(1); } }
+  const hov = fsPick(); if (hov !== FS.hover) { FS.hover = hov; document.body.style.cursor = hov ? "pointer" : ""; }
+  J.root.position.set(feet.x, y, Z); J.root.scale.setScalar(sc); J.root.rotation.y = FS.yaw * .3 - .15;
+  J.body.rotation.x = body; J.body.scale.y = 1 + Math.sin(t * 2.1) * .008;
+  J.head.rotation.set(FS.pitch, FS.yaw * .7, Math.sin(t * .9) * .02);
+  const sw = Math.sin(t * 1.6) * 2 + (FS.hover ? 8 : 0);
+  C.setArm(J.armR, rf + sw, rs + (FS.hover ? 8 : 0), -1); C.setArm(J.armL, lf - sw, ls + (FS.hover ? 8 : 0), 1);
+  if (FS.fill) FS.fill.position.set(feet.x - 2 * sc, feet.y + 2.4 * sc, Z + 6);
+}
+
 function frame(now) {
   requestAnimationFrame(frame);
   if (!visible) { last = now; return; }
@@ -109,6 +160,7 @@ function frame(now) {
   camera.position.x += ((pointerActive ? ndc.x * 1.2 : 0) - camera.position.x) * 0.04;
   camera.position.y += ((pointerActive ? ndc.y * 0.8 : 0) - camera.position.y) * 0.04;
   camera.lookAt(0, 0, -6);
+  poseFS(dt);
   renderer.render(scene, camera);
 }
 requestAnimationFrame(frame);
