@@ -10,9 +10,9 @@ DE = {
  "ld":"Lade sieben Welten","cur":"ANSEHEN",
  "n.games":"Games","n.road":"Roadmap","n.studio":"Studio","n.join":"Mitmachen","n.cta":"Auf Roblox beitreten",
  "h.eyebrow":"Roblox-Gamestudio · seit 2026",
- "h.lede":"Eine kleine Crew aus Roblox-Devs. Sieben Games in der Werkstatt, und jedes wird so lange gebaut, bis es mehr als nur gut genug ist.",
+ "h.lede":"Vier Roblox-Devs, sieben Games in der Werkstatt. Jedes wird so lange gebaut, bis es mehr als nur gut genug ist.","s.crew":"Die Crew","cr.f":"Founder","cr.d":"Developer",
  "h.c1":"Community beitreten","h.c2":"Games ansehen","h.scroll":"Scrollen",
- "f.1":"Games in Entwicklung","f.2":"Konzepte im Labor","f.3":"eine Crew aus der Schweiz",
+ "f.1":"Games in Entwicklung","f.2":"Devs in der Crew","f.3":"eine Crew aus der Schweiz",
  "m.k":"Warum Overgrind",
  "m.t":"Wir veröffentlichen nicht die erste Version, die funktioniert. Sondern die, die wir selbst spielen würden: nach der Schule, nach der Arbeit, um zwei Uhr nachts. Das ist der Grind.",
  "w.t":"Sieben Welten.<br>Eine Crew.","w.p":"Jedes Game hat seinen eigenen Look, eigene Regeln und ein eigenes Team. Scroll durch alle und lies unten die Details.",
@@ -46,7 +46,7 @@ for i,g in enumerate(GAMES):
     chip=f'<span class="chip {g["st"]}"><i></i><span data-i18n="g.{k}.status">{esc(g["status"][0])}</span></span>'
     panels.append(f'''
     <a class="panel{' titled' if k=='seen' else ''}" href="#g-{k}" style="--a:{g['accent']}" data-bg="{g['bg']}" data-accent="{g['accent']}" data-cursor>
-      <img src="assets/games/{k}.jpg" alt="{esc(g['title'])} key art" loading="lazy">
+      <img src="assets/games/{k}.webp" srcset="assets/games/{k}-800.webp 800w, assets/games/{k}.webp 1600w" sizes="(max-width: 860px) 92vw, 60vw" width="1600" height="900" alt="{esc(g['title'])} key art" loading="lazy" decoding="async">
       <span class="num">{n} / 07</span>
       <div class="meta"><div><div class="gen">{ico(g['icon'])}<span data-i18n="g.{k}.genre">{esc(g['genre'][0])}</span></div><h3>{esc(g['title'])}</h3><p class="tg" data-i18n="g.{k}.tag">{esc(g['tag'][0])}</p></div>{chip}</div>
     </a>''')
@@ -56,7 +56,7 @@ for i,g in enumerate(GAMES):
     dives.append(f'''
   <article class="dive" id="g-{k}" style="--a:{g['accent']}" data-bg="{g['bg']}" data-accent="{g['accent']}">
     <div class="wrap grid">
-      <figure class="art" data-cursor><img src="assets/games/{k}.jpg" alt="{esc(g['title'])} key art" loading="lazy"><span class="badge">{chip}</span></figure>
+      <figure class="art" data-cursor><img src="assets/games/{k}.webp" srcset="assets/games/{k}-800.webp 800w, assets/games/{k}.webp 1600w" sizes="(max-width: 860px) 92vw, 60vw" width="1600" height="900" alt="{esc(g['title'])} key art" loading="lazy" decoding="async"><span class="badge">{chip}</span></figure>
       <div class="txt">
         <div class="idx">{ico(g['icon'])}<span>{n}</span><span data-i18n="g.{k}.genre">{esc(g['genre'][0])}</span></div>
         <h3>{lines}</h3>
@@ -72,10 +72,22 @@ lab=''
 for j,(t,en,de) in enumerate(LAB):
     DE[f"lab.{j}"]=de
     lab+=f'<div class="lab-card"><span class="chip"><i></i><span data-i18n="l.chip">Concept</span></span><div><b>{esc(t)}</b><p data-i18n="lab.{j}">{esc(en)}</p></div></div>'
+
+CREW=[("FreshStatue","f","assets/crew/freshstatue.png"),("Andrin","d",None),("excess","d",None),("Ginoletsplay","d",None)]
+def avatar(name,img):
+    if img: return f'<img src="{img}" alt="Roblox avatar of {esc(name)}" loading="lazy">'
+    return ('<svg viewBox="0 0 100 100" aria-hidden="true"><rect x="33" y="20" width="34" height="34" rx="8" fill="#2E2E36"/>'
+            '<path d="M18 100 V78 Q18 62 34 62 H66 Q82 62 82 78 V100Z" fill="#2E2E36"/>'
+            f'<text x="50" y="44" text-anchor="middle" font-family="Unbounded" font-weight="900" font-size="16" fill="#9A948A">{esc(name[0].upper())}</text></svg>')
+crew_html=''.join(f'<div class="member" data-tilt>{"<div class=av>"}{avatar(n,i)}</div><b>{esc(n)}</b><span class="{"f" if r=="f" else ""}" data-i18n="cr.{r}">{"Founder" if r=="f" else "Developer"}</span></div>' for n,r,i in CREW)
+LD={"@context":"https://schema.org","@type":"Organization","name":"Overgrind Studios","url":"https://antony-bdc.github.io/overgrind-studios/","logo":"https://antony-bdc.github.io/overgrind-studios/icon.png",
+    "sameAs":[ROBLOX,TIKTOK],"description":"A small crew of Roblox devs with seven games in the workshop.",
+    "subjectOf":[{"@type":"VideoGame","name":g['title'],"genre":g['genre'][0],"description":g['desc'][0],"gamePlatform":"Roblox","image":f"https://antony-bdc.github.io/overgrind-studios/assets/games/{g['key']}.jpg"} for g in GAMES]}
+
 item='<div class="item">'+''.join(mq)+'</div>'
 s=open('src/index.tpl.html').read()
 rep={'{{WALL}}':''.join(wall_cols),'{{PANELS}}':''.join(panels),'{{DIVES}}':''.join(dives),'{{LAB}}':lab,'{{MARQUEE}}':item*2,
-     '{{ROBLOX}}':ROBLOX,'{{TIKTOK}}':TIKTOK,'{{GAMESJSON}}':json.dumps([dict(key=g['key'],bg=g['bg'],accent=g['accent']) for g in GAMES]),
+     '{{ROBLOX}}':ROBLOX,'{{CREW}}':crew_html,'{{LDJSON}}':json.dumps(LD,ensure_ascii=False).replace('</','<\\/'),'{{TIKTOK}}':TIKTOK,'{{GAMESJSON}}':json.dumps([dict(key=g['key'],bg=g['bg'],accent=g['accent']) for g in GAMES]),
      '{{DEJSON}}':json.dumps(DE,ensure_ascii=False)}
 for a,b in rep.items(): s=s.replace(a,b)
 s=re.sub(r'\{\{i:([a-z0-9-]+)\}\}',lambda m:ico(m.group(1)),s)
