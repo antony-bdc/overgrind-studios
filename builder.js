@@ -52,7 +52,7 @@ async function init() {
     G.set(S);
     if ((J.outfit && J.outfit.key) !== (S.fit || undefined)) setOutfit(J, S.fit);
     ring.material.color.set(S.fit && fitNames[S.fit] ? fitNames[S.fit].a : "#FF4D1A");
-    save(); if (fx) { pop = 1; blip("pop"); try { localStorage.setItem("og-built", "1"); } catch (e) {} dispatchEvent(new Event("og-build")); } syncUI();
+    save(); if (fx) { pop = 1; try { localStorage.setItem("og-built", "1"); } catch (e) {} dispatchEvent(new Event("og-build")); } syncUI();
   }
   await document.fonts.load("900 40px Unbounded").catch(() => {});
 
@@ -69,10 +69,10 @@ async function init() {
   const paintFaceBtns = () => facesBox.querySelectorAll("button").forEach((b) => { const g = b.querySelector("canvas").getContext("2d"); g.clearRect(0, 0, 88, 88); g.fillStyle = S.skin; g.beginPath(); g.roundRect(4, 4, 80, 80, 20); g.fill(); drawFace(g, 44, 44, .62, b.dataset.v); });
   const fitsBox = ui.querySelector(".bld-fits");
   fitsBox.innerHTML = `<button type="button" data-v="">${de() ? "Keins" : "None"}</button>` + Object.keys(fitNames).map((k) => `<button type="button" data-v="${k}" style="--a:${fitNames[k].a}">${fitNames[k].t.replace(/:.*$/, "")}</button>`).join("");
-  fitsBox.addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; S.fit = b.dataset.v; apply(true); if (S.fit) { emote("jump"); blip("spark"); } });
+  fitsBox.addEventListener("click", (e) => { const b = e.target.closest("button"); if (!b) return; S.fit = b.dataset.v; apply(true); if (S.fit) emote("jump"); });
   const nameIn = ui.querySelector(".bld-name"), roleIn = ui.querySelector(".bld-role");
   nameIn.addEventListener("input", () => { S.name = nameIn.value.slice(0, 18); save(); });
-  roleIn.addEventListener("change", () => { S.role = roleIn.value; save(); blip("pop"); });
+  roleIn.addEventListener("change", () => { S.role = roleIn.value; save(); });
   function syncUI() {
     for (const part of ["skin", "shirt", "pants"]) ui.querySelectorAll(`.bld-sw[data-part="${part}"] button`).forEach((b) => b.classList.toggle("on", b.dataset.v.toLowerCase() === S[part].toLowerCase()));
     facesBox.querySelectorAll("button").forEach((b) => b.classList.toggle("on", b.dataset.v === S.face)); paintFaceBtns();

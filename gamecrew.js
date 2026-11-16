@@ -62,19 +62,19 @@ async function init() {
   function direct(dt) {
     const free = !A.busy();
     if (KEY === "wyrm") { root.y = 1.15 + Math.sin(t * .9) * .22; root.x = Math.sin(t * .45) * .35; root.rz = -Math.cos(t * .45) * .22; root.ry = -1.15 + Math.cos(t * .45) * .18;
-      if (free && t > next) { A.play(Math.random() < .5 ? "roll" : "cheer", { voice: false }); blip("whoosh"); next = t + 5 + Math.random() * 3; } }
+      if (free && t > next) { A.play(Math.random() < .5 ? "roll" : "cheer", { voice: false, sound: false }); next = t + 5 + Math.random() * 3; } }
     if (KEY === "recess") { // hopscotch: three hops across, a little victory, turn, repeat
-      if (free && t > next) { if (hopN < 3) { A.play("hop", { voice: false, sound: false }); hopN++; next = t + .5; } else { A.play(Math.random() < .5 ? "victory" : "cheer", { voice: false }); hopN = 0; dirX *= -1; next = t + 2.6; } }
+      if (free && t > next) { if (hopN < 3) { A.play("hop", { voice: false, sound: false }); hopN++; next = t + .5; } else { A.play(Math.random() < .5 ? "victory" : "cheer", { voice: false, sound: false }); hopN = 0; dirX *= -1; next = t + 2.6; } }
       if (A.em === "hop") root.x = clamp(root.x + dirX * dt * .95, -.7, .7); root.ry = A.em === "hop" ? dirX * .9 : root.ry + (-.25 - root.ry) * Math.min(1, dt * 4); root.y = 0; }
     if (KEY === "pirates") { root.rz = Math.sin(t * .8) * .06; root.x = Math.sin(t * .8) * .06; root.ry = -.35;
-      if (free && t > next) { A.play(Math.random() < .55 ? "point" : "shanty", { voice: false }); next = t + 4.5 + Math.random() * 3; } }
+      if (free && t > next) { A.play(Math.random() < .55 ? "point" : "shanty", { voice: false, sound: false }); next = t + 4.5 + Math.random() * 3; } }
     if (KEY === "seen" || KEY === "lantern") { // horror: jumpy
       if (KEY === "lantern") { root.x = Math.sin(t * .35) * .5; root.ry = Math.cos(t * .35) > 0 ? .9 : -.9; if (J.outfit && hash(Math.floor(t * 9)) > .93) J.root.traverse((o) => { if (o.isPointLight) o.intensity = .3; }); }
       if ((free && t > next) || (speed > 160 && free)) { A.play(KEY === "seen" ? (Math.random() < .6 ? "lookback" : "scared") : "scared", { voice: false, sound: false }); blip("glitch"); speed = 0; next = t + 6 + Math.random() * 5; } }
     if (KEY === "clash") { root.ry = -.4;
-      if (free && t > next) { A.play(Math.random() < .7 ? "punch" : "spin", { voice: false }); blip("thud"); next = t + 2.4 + Math.random() * 2; } }
+      if (free && t > next) { A.play(Math.random() < .7 ? "punch" : "spin", { voice: false, sound: false }); next = t + 2.4 + Math.random() * 2; } }
     if (KEY === "line") { root.y = .15; root.ry = -.2 + Math.sin(t * .3) * .25;
-      if (free && t > next) { A.play(Math.random() < .5 ? "pointUp" : "spin", { voice: false }); next = t + 5 + Math.random() * 3; } }
+      if (free && t > next) { A.play(Math.random() < .5 ? "pointUp" : "spin", { voice: false, sound: false }); next = t + 5 + Math.random() * 3; } }
   }
   const cur = { x: 0, y: 0, ry: -.25, rz: 0 };
   function frame() {
@@ -83,7 +83,7 @@ async function init() {
     if (!reduce) direct(dt);
     for (const k in cur) cur[k] += (root[k] - cur[k]) * Math.min(1, dt * (k === "y" ? 3 : 5));
     if (pIn) A.lookAt(clamp(Math.atan2(mouse.x * 2.2, 3), -.9, .9) - cur.ry * .5, clamp(-mouse.y * .45, -.35, .3)); else A.lookAt(-.3, 0);
-    const h = pIn && over(); if (h !== hovering) { hovering = h; document.body.style.cursor = h ? "pointer" : ""; if (h) { blip("pop"); if (!A.busy()) A.play("hop", { voice: false, sound: false }); } }
+    const h = pIn && over(); if (h !== hovering) { hovering = h; document.body.style.cursor = h ? "pointer" : ""; if (h) { if (!A.busy()) A.play("hop", { voice: false, sound: false }); } }
     A.update(dt);
     J.root.position.set(cur.x, cur.y, 0); J.root.rotation.set(0, cur.ry, cur.rz);
     updateOutfit(J, t); shadow.position.x = cur.x; shadow.scale.setScalar(1 - Math.min(.6, cur.y + J.body.position.y)); shadow.material.opacity = .45 * (1 - Math.min(.7, cur.y));

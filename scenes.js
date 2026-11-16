@@ -125,7 +125,7 @@ async function obby() {
     if (air >= 0) { J.body.position.set(0, 0, 0); J.body.rotation.set(0, 0, 0); airPose(J, air); }
     // land puffs + step highlight
     const landed = air < 0 ? (f >= .85 || shown >= .999 ? seg + 1 : seg) : -1;
-    if (landed >= 0 && landed !== lastSeg) { if (lastSeg !== -1) { fx.burst(x, y, 40, 22, 260, ["#" + new THREE.Color(COLS[landed]).getHexString(), "#ffffff"]); blip("thud"); } lastSeg = landed; items.forEach((el, i) => el.classList.toggle("hit", i <= landed)); A.play("land", { voice: false, sound: false }); }
+    if (landed >= 0 && landed !== lastSeg) { if (lastSeg !== -1) { fx.burst(x, y, 40, 22, 260, ["#" + new THREE.Color(COLS[landed]).getHexString(), "#ffffff"]); blip("land"); } lastSeg = landed; items.forEach((el, i) => el.classList.toggle("hit", i <= landed)); A.play("land", { voice: false, sound: false }); }
     if (shown >= .995 && !reached) { reached = true; dispatchEvent(new Event("og-obby-done")); A.play("victory", { voice: false, sound: false }); flagMat.emissive.set(0x3ee07a); flagMat.color.set(0x1a6b38); fx.burst(L.x + 60, L.y + 90, 30, 60, 520, ["#3EE07A", "#FFC34D", "#ffffff"]); blip("spark"); }
     if (shown < .9 && reached) { reached = false; flagMat.emissive.set(0x000000); flagMat.color.set(0x333333); }
     J.root.position.set(x, y, 40); J.root.rotation.y += ((moving || air >= 0 ? dirF * 1.1 : .3) - J.root.rotation.y) * Math.min(1, dt * 10); J.root.rotation.x = .1;

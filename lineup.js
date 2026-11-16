@@ -58,20 +58,44 @@ async function init() {
   function radialTex(stops, s = 256) { const c = document.createElement("canvas"); c.width = c.height = s; const g = c.getContext("2d"); const gr = g.createRadialGradient(s / 2, s / 2, 0, s / 2, s / 2, s / 2); stops.forEach((q) => gr.addColorStop(q[0], q[1])); g.fillStyle = gr; g.fillRect(0, 0, s, s); const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t; }
   const floor = new THREE.Mesh(new THREE.PlaneGeometry(40, 40), new THREE.MeshStandardMaterial({ color: 0x08080a, roughness: .22, metalness: .4, transparent: MIRROR, opacity: MIRROR ? .86 : 1 }));
   floor.rotation.x = -Math.PI / 2; floor.renderOrder = 1; scene.add(floor);
-  // neon wordmark on the back wall
-  const NW = 2048, NH = 512, nc = document.createElement("canvas"); nc.width = NW; nc.height = NH; const ng = nc.getContext("2d");
-  const ntex = new THREE.CanvasTexture(nc); ntex.colorSpace = THREE.SRGBColorSpace;
-  function paintNeon() {
-    ng.clearRect(0, 0, NW, NH); ng.textAlign = "center"; ng.textBaseline = "middle"; ng.lineJoin = "round";
-    ng.font = "900 300px Unbounded, system-ui"; ng.letterSpacing = "-10px";
-    ng.shadowColor = "#FF4D1A"; ng.shadowBlur = 40; ng.strokeStyle = "#FF6A3D"; ng.lineWidth = 14; ng.strokeText("OVERGRIND", NW / 2, NH * .44);
-    ng.shadowBlur = 0; ng.strokeStyle = "#FFE3D6"; ng.lineWidth = 4; ng.strokeText("OVERGRIND", NW / 2, NH * .44);
-    ng.font = "800 64px Unbounded, system-ui"; ng.letterSpacing = "40px"; ng.fillStyle = "#FFB89E"; ng.shadowColor = "#FF4D1A"; ng.shadowBlur = 20; ng.fillText("STUDIOS", NW / 2 + 20, NH * .86);
-    ng.letterSpacing = "0px"; ntex.needsUpdate = true;
+  // OVERGRIND built from real stud plates on the back wall (studs facing you, like a brick mosaic)
+  // the real logo (Unbounded + the orange slash) rasterised into a stud grid, like a brick mosaic
+  await document.fonts.load("900 120px Unbounded").catch(() => {});
+  const rc = document.createElement("canvas"), rg = rc.getContext("2d"); rg.font = "900 120px Unbounded, system-ui"; rg.letterSpacing = "-6px";
+  const tw = Math.ceil(rg.measureText("OVERGRIND").width) + 20, CELL = 7.4; rc.width = tw; rc.height = 120;
+  rg.font = "900 120px Unbounded, system-ui"; rg.letterSpacing = "-6px"; rg.textBaseline = "alphabetic"; rg.fillStyle = "#fff"; rg.fillText("OVERGRIND", 10, 104);
+  rg.save(); rg.translate(tw / 2, 62); rg.rotate(-4 * Math.PI / 180); rg.fillStyle = "#ff4d1a"; rg.fillRect(-tw / 2 - 10, -6, tw + 20, 12); rg.restore();
+  const img = rg.getImageData(0, 0, rc.width, rc.height).data, NC = Math.floor(rc.width / CELL), NR = Math.floor(rc.height / CELL);
+  const cell = (c, r) => { const x = Math.floor((c + .5) * CELL), y = Math.floor((r + .5) * CELL), i = (y * rc.width + x) * 4; if (img[i + 3] < 120) return 0; return img[i + 1] < 160 ? 2 : 1; };
+  let rMin = NR, rMax = 0; for (let r = 0; r < NR; r++) for (let c = 0; c < NC; c++) if (cell(c, r)) { rMin = Math.min(rMin, r); rMax = Math.max(rMax, r); }
+  const CS = 9.0 / NC, signW = NC * CS, plates = [];
+  for (let r = rMin; r <= rMax; r++) { let c = 0; while (c < NC) { const k = cell(c, r); if (!k) { c++; continue; } let n = 1; while (n < 4 && c + n < NC && cell(c + n, r) === k) n++; plates.push({ c, r: r - rMin, n, k }); c += n; } }
+  const ROWS = rMax - rMin + 1;
+  const signG = new THREE.Group(); signG.position.set(0, 3.55, -6.4); signG.rotation.x = .06; scene.add(signG);
+  const plateMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: .45, metalness: 0, emissive: 0x1c1714, fog: false });
+  const signLight = new THREE.PointLight(0xfff0e6, 22, 9, 1.2); signLight.position.set(0, 3.2, -2.6); scene.add(signLight);
+  const signRim = new THREE.PointLight(0xff4d1a, 14, 6, 1.6); signRim.position.set(0, 2.6, -5.6); scene.add(signRim);
+  const plateGeos = [1, 2, 3, 4].map((n) => new THREE.BoxGeometry(n * CS - CS * .06, CS - CS * .04, CS * .45));
+  const signStudGeo = new THREE.CylinderGeometry(CS * .3, CS * .3, CS * .18, 12); signStudGeo.rotateX(Math.PI / 2);
+  const plateIM = [1, 2, 3, 4].map((n, i) => { const m = new THREE.InstancedMesh(plateGeos[i], plateMat, plates.filter((p) => p.n === n).length || 1); m.count = 0; signG.add(m); return m; });
+  const signStuds = new THREE.InstancedMesh(signStudGeo, plateMat, plates.reduce((a, p) => a + p.n, 0)); signG.add(signStuds);
+  const sm4 = new THREE.Matrix4(), sq4 = new THREE.Quaternion(), se = new THREE.Euler(), sp4 = new THREE.Vector3(), ss4 = new THREE.Vector3(1, 1, 1);
+  plates.forEach((p) => { const im = plateIM[p.n - 1]; p.idx = im.count++; p.x = -signW / 2 + (p.c + p.n / 2) * CS; p.y = (ROWS - 1 - p.r) * CS; p.delay = p.c * .012 + (ROWS - 1 - p.r) * .02 + Math.random() * .1; p.spin = (Math.random() - .5) * 3; });
+  const shade = new THREE.Color(); plates.forEach((p) => { (p.k === 2 ? shade.set(0xff4d1a).multiplyScalar(1.25) : shade.set(0xf2efe9).multiplyScalar(.7 + Math.random() * .1)); plateIM[p.n - 1].setColorAt(p.idx, shade); }); plateIM.forEach((m) => { if (m.instanceColor) m.instanceColor.needsUpdate = true; });
+  { let k = 0; plates.forEach((p) => { (p.k === 2 ? shade.set(0xff4d1a).multiplyScalar(1.25) : shade.set(0xf2efe9).multiplyScalar(.74)); for (let i = 0; i < p.n; i++) signStuds.setColorAt(k++, shade); }); signStuds.instanceColor.needsUpdate = true; }
+  let signT0 = -1, signDone = false, lastTap = 0;
+  const bounce = (x) => { const n = 7.5625, d = 2.75; if (x < 1 / d) return n * x * x; if (x < 2 / d) return n * (x -= 1.5 / d) * x + .75; if (x < 2.5 / d) return n * (x -= 2.25 / d) * x + .9375; return n * (x -= 2.625 / d) * x + .984375; };
+  function stepSign(t) {
+    if (signDone) return; if (signT0 < 0) { if (!entered) { signStuds.count = 0; return; } signT0 = t; }
+    const f = t - signT0; let k = 0, all = true;
+    for (const p of plates) { const u = clamp((f - p.delay) / .55, 0, 1); if (u < 1) all = false;
+      const fall = (1 - bounce(u)) * 3.2, rot = (1 - u) * p.spin; sp4.set(p.x, p.y + fall, (1 - u) * .6); se.set(0, 0, rot * .3); sq4.setFromEuler(se); ss4.setScalar(u > 0 ? 1 : 0);
+      sm4.compose(sp4, sq4, ss4); plateIM[p.n - 1].setMatrixAt(p.idx, sm4);
+      for (let i = 0; i < p.n; i++) { const m2 = new THREE.Matrix4().makeTranslation(-(p.n - 1) * CS / 2 + i * CS, 0, CS * .3); signStuds.setMatrixAt(k++, sm4.clone().multiply(m2)); }
+      if (u > .36 && u < .42 && t - lastTap > .16) { lastTap = t; blip("pop"); } }
+    signStuds.count = k; signStuds.instanceMatrix.needsUpdate = true; plateIM.forEach((m) => (m.instanceMatrix.needsUpdate = true));
+    if (all) signDone = true;
   }
-  await document.fonts.load("900 100px Unbounded").catch(() => {}); paintNeon();
-  const neonMat = new THREE.MeshBasicMaterial({ map: ntex, transparent: true, depthWrite: false, toneMapped: false, blending: THREE.AdditiveBlending, color: new THREE.Color(0, 0, 0) });
-  const neon = new THREE.Mesh(new THREE.PlaneGeometry(9, 2.25), neonMat); neon.position.set(0, 3.9, -6.5); scene.add(neon);
   const wallGlow = new THREE.Mesh(new THREE.PlaneGeometry(18, 7), new THREE.MeshBasicMaterial({ map: radialTex([[0, "rgba(255,77,26,.22)"], [1, "rgba(0,0,0,0)"]]), transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, opacity: 0 }));
   wallGlow.position.set(0, 3.7, -6.6); scene.add(wallGlow);
   // pedestals with studs
@@ -165,7 +189,7 @@ async function init() {
   /* ---------- sound toggle ---------- */
   const muteBtn = section.querySelector(".lu-mute");
   const syncMute = () => { if (muteBtn) { muteBtn.classList.toggle("off", isMuted()); muteBtn.setAttribute("aria-pressed", String(!isMuted())); } };
-  if (muteBtn) muteBtn.addEventListener("click", () => { setMuted(!isMuted()); syncMute(); if (!isMuted()) blip("pop"); });
+  if (muteBtn) muteBtn.addEventListener("click", () => { setMuted(!isMuted()); syncMute(); });
   syncMute(); document.addEventListener("og-mute", syncMute);
 
   /* ---------- pointer ---------- */
@@ -175,7 +199,7 @@ async function init() {
   const setMouse = (e) => { const r = canvas.getBoundingClientRect(); mouse.set((e.clientX - r.left) / r.width * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1); };
   canvas.addEventListener("pointermove", (e) => { setMouse(e); lastMove = performance.now(); pointerIn = true; });
   canvas.addEventListener("pointerleave", () => { pointerIn = false; hovered = -1; canvas.style.cursor = ""; });
-  canvas.addEventListener("click", (e) => { setMouse(e); const who = pick(); if (who >= 0) poke(who); });
+  canvas.addEventListener("click", (e) => { if (photo) return; setMouse(e); const who = pick(); if (who >= 0) { if (lobby === who) poke(who); else select(who); } });
   function pick() { ray.setFromCamera(mouse, camera); const hits = ray.intersectObjects(CREW.flatMap((c) => c.J.meshes), false); return hits.length ? hits[0].object.userData.who : -1; }
   const EMOTES = { fs: ["freeze", "wave", "jump", "point", "dab", "victory", "clap"], an: ["spin", "wave", "jump", "point", "crown", "dab", "cheer"], ex: ["glitch", "jump"], gi: ["glitch", "jump"], you: ["hello"] };
   const VOICE = { fs: { freeze: "touch", wave: "hi", jump: "grind", point: "founder", dance: "built", five: "five" }, an: { spin: "spin", wave: "hi", jump: "go", point: "crown", dance: "go", five: "five" } };
@@ -190,7 +214,7 @@ async function init() {
   function play(c, name) {
     c.emote = name; c.et = 0; const x = c.x, z = c.z;
     if (VOICE[c.key] && VOICE[c.key][name]) say(c.key, VOICE[c.key][name]);
-    blip(name === "glitch" ? "glitch" : name === "jump" || name === "dance" ? "thud" : "pop");
+    blip(name === "glitch" ? "glitch" : name === "jump" ? "jump" : "pop");
     if (name === "jump" || name === "dance") setTimeout(() => burst(x, .25, z + .2, 26, 1.6, [pCols[0], pCols[1], pCols[2]], .6), 420);
     if (name === "freeze") setTimeout(() => { burst(x, 1.4, z + .2, 34, 1.4, [pCols[1], pCols[1], pCols[2]], .9); blip("spark"); }, 1000);
     if (name === "spin") setTimeout(() => burst(x, 2.1, z + .1, 24, 1.2, [pCols[3], pCols[0], pCols[2]], .6), 300);
@@ -201,7 +225,7 @@ async function init() {
   /* ---------- outfits ---------- */
   const fitBar = section.querySelector(".lu-fits");
   let fitLocked = "", fitShown = "";
-  function dress(k) { if (k === fitShown) return; fitShown = k; [fs, an].forEach((J) => setOutfit(J, k)); if (k) { burst(0, 2.1, .6, 18, 1, [pCols[2], pCols[0]], .5); burst(SP, 2.1, .2, 14, 1, [pCols[2], pCols[0]], .3); blip("spark"); } }
+  function dress(k) { if (k === fitShown) return; fitShown = k; [fs, an].forEach((J) => setOutfit(J, k)); if (k) { burst(0, 2.1, .6, 18, 1, [pCols[2], pCols[0]], .5); burst(SP, 2.1, .2, 14, 1, [pCols[2], pCols[0]], .3); } }
   if (fitBar) {
     fitBar.querySelectorAll("button").forEach((b) => {
       b.addEventListener("click", () => { fitLocked = b.dataset.fit; dress(fitLocked); fitBar.querySelectorAll("button").forEach((x) => x.classList.toggle("on", x === b)); });
@@ -231,7 +255,7 @@ async function init() {
     el.querySelector(".c-quote").textContent = C.quote ? `“${C.quote}”` : "";
     el.querySelector(".c-cta").hidden = !C.cta;
     cardWrap.hidden = false; requestAnimationFrame(() => cardWrap.classList.add("open"));
-    if (C.line) say(C.line[0], C.line[1]); blip("whoosh");
+    if (C.line) say(C.line[0], C.line[1]); else blip("whoosh");
     el.focus({ preventScroll: true });
   }
   function closeCard() { if (!cardWrap || cardWrap.hidden) return; cardWrap.classList.remove("open"); setTimeout(() => (cardWrap.hidden = true), 350); }
@@ -242,10 +266,57 @@ async function init() {
     card.addEventListener("pointermove", (e) => { const r = card.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height; card.style.setProperty("--rx", ((.5 - y) * 18).toFixed(2) + "deg"); card.style.setProperty("--ry", ((x - .5) * 22).toFixed(2) + "deg"); card.style.setProperty("--mx", (x * 100).toFixed(1) + "%"); card.style.setProperty("--my", (y * 100).toFixed(1) + "%"); });
     card.addEventListener("pointerleave", () => { card.style.setProperty("--rx", "0deg"); card.style.setProperty("--ry", "0deg"); });
   }
-  tags.forEach((t) => t.addEventListener("click", () => openCard(+t.dataset.who)));
+  tags.forEach((t) => t.addEventListener("click", () => select(+t.dataset.who)));
   section.querySelectorAll("[data-card]").forEach((b) => b.addEventListener("click", () => openCard(+b.dataset.card)));
   window.__luCard = openCard;
   window.__luDance = () => { play(CREW[0], "dance"); setTimeout(() => play(CREW[1], "dance"), 180); };
+
+  /* ---------- lobby: pick a member, the camera flies in, info + emotes beside them ---------- */
+  let lobby = -1, selected = 0, photo = false, photoPose = "";
+  const lob = section.querySelector(".lu-lobby"), emoBar = section.querySelector(".lu-emotes");
+  const EMO = { fs: [["wave", "Wave", "Winken"], ["dance", "Dance", "Tanzen"], ["dab", "Dab", "Dab"], ["cheer", "Cheer", "Jubeln"], ["freeze", "Freeze", "Erstarren"], ["victory", "Victory", "Sieg"]],
+    an: [["wave", "Wave", "Winken"], ["dance", "Dance", "Tanzen"], ["crown", "Crown", "Krone"], ["spin", "Spin", "Drehen"], ["dab", "Dab", "Dab"], ["cheer", "Cheer", "Jubeln"]],
+    box: [["hello", "Hello", "Hallo"], ["jump", "Jump", "Springen"], ["shrug", "Shrug", "Achselzucken"]] };
+  function renderEmotes() {
+    const c = CREW[selected], list = EMO[c.key] || EMO.box, L = de() ? 2 : 1;
+    emoBar.innerHTML = `<span class="lu-el">${c.J.key === "box" ? (CARDS[selected].nameDe && de() ? CARDS[selected].nameDe : CARDS[selected].name) : CARDS[selected].name}</span>` + list.map((e) => `<button type="button" data-e="${e[0]}">${e[L]}</button>`).join("");
+  }
+  emoBar.addEventListener("click", (e) => { const b = e.target.closest("button[data-e]"); if (!b) return; const c = CREW[selected]; play(c, b.dataset.e); lastMove = performance.now(); b.classList.remove("hit"); void b.offsetWidth; b.classList.add("hit"); });
+  function select(i) {
+    selected = i; lobby = i; renderEmotes(); const C = CARDS[i], L = de() ? 1 : 0;
+    lob.className = "lu-lobby t-" + C.tone;
+    lob.querySelector(".lb-rank").textContent = C.rar; lob.querySelector(".lb-name").textContent = L && C.nameDe ? C.nameDe : C.name;
+    lob.querySelector(".lb-role").textContent = C.role[L];
+    lob.querySelector(".lb-rows").innerHTML = C.rows.map((r) => `<div><span>${r[L]}</span><b>${r[2 + L]}</b></div>`).join("");
+    lob.querySelector(".lb-quote").textContent = C.quote ? `“${C.quote}”` : "";
+    lob.querySelector(".lb-apply").hidden = !C.cta; lob.querySelector(".lb-card").hidden = !!C.cta;
+    lob.hidden = false; requestAnimationFrame(() => lob.classList.add("open")); section.classList.add("lu-lobbying");
+    const c = CREW[i]; if (c.key === "fs" || c.key === "an") play(c, "wave"); else play(c, c.ghost ? "hello" : "glitch");
+  }
+  function closeLobby() { lobby = -1; lob.classList.remove("open"); section.classList.remove("lu-lobbying"); setTimeout(() => { if (lobby < 0) lob.hidden = true; }, 400); }
+  lob.querySelector(".lu-lclose").addEventListener("click", closeLobby);
+  lob.querySelector(".lb-card").addEventListener("click", () => openCard(lobby >= 0 ? lobby : selected));
+  addEventListener("keydown", (e) => { if (e.key === "Escape") { if (photo) exitPhoto(); else if (lobby >= 0) closeLobby(); } });
+  renderEmotes(); document.addEventListener("og-lang", renderEmotes);
+
+  /* ---------- photo mode: pick a pose, snap a clean picture of the crew ---------- */
+  const ph = section.querySelector(".lu-photo"), poses = section.querySelector(".lu-poses");
+  const POSES = [["", "Stand", "Stehen"], ["wave", "Wave", "Winken"], ["cheer", "Hype", "Hype"], ["dab", "Dab", "Dab"], ["dance", "Dance", "Tanzen"], ["victory", "Victory", "Sieg"]];
+  function renderPoses() { poses.innerHTML = POSES.map((p) => `<button type="button" data-p="${p[0]}" class="${p[0] === photoPose ? "on" : ""}">${p[de() ? 2 : 1]}</button>`).join(""); }
+  function enterPhoto() { photo = true; closeLobby(); ph.hidden = false; renderPoses(); requestAnimationFrame(() => section.classList.add("lu-photoing")); }
+  function exitPhoto() { photo = false; photoPose = ""; section.classList.remove("lu-photoing"); setTimeout(() => { if (!photo) ph.hidden = true; }, 400); CREW.forEach((c) => { if (c.emote) c.et = 99; }); }
+  section.querySelector(".lu-cam").addEventListener("click", enterPhoto);
+  ph.querySelector(".lu-x").addEventListener("click", exitPhoto);
+  poses.addEventListener("click", (e) => { const b = e.target.closest("button[data-p]"); if (!b) return; photoPose = b.dataset.p; renderPoses(); CREW.forEach((c) => { c.emote = null; }); });
+  document.addEventListener("og-lang", () => { if (photo) renderPoses(); });
+  ph.querySelector(".lu-snap").addEventListener("click", () => {
+    composer.render(0); // draw a fresh frame and copy it before the browser clears the buffer
+    const W = canvas.width, H = canvas.height, out = document.createElement("canvas"); out.width = W; out.height = H; const g = out.getContext("2d"); g.drawImage(canvas, 0, 0);
+    const u = Math.max(1, W / 1440); g.font = `700 ${16 * u}px "JetBrains Mono", monospace`; g.fillStyle = "rgba(242,239,233,.85)"; g.textBaseline = "bottom";
+    g.fillText("OVERGRIND STUDIOS", 32 * u, H - 28 * u); g.fillStyle = "rgba(242,239,233,.5)"; g.textAlign = "right"; g.fillText("overgrindstudio.click", W - 32 * u, H - 28 * u);
+    out.toBlob((b) => { const a = document.createElement("a"); a.href = URL.createObjectURL(b); a.download = "overgrind-crew.png"; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 4000); }, "image/png");
+    section.classList.remove("flash"); void section.offsetWidth; section.classList.add("flash"); blip("match");
+  });
 
   /* ---------- per-frame pose ---------- */
   const wv = (t, a, b) => Math.min(clamp((t - a) / .2, 0, 1), 1 - clamp((t - (b - .2)) / .2, 0, 1));
@@ -261,7 +332,7 @@ async function init() {
     c.yaw += (yawT - c.yaw) * Math.min(1, dt * 6); c.pitch += (pitchT - c.pitch) * Math.min(1, dt * 6);
     if (entered && enterT < 0) enterT = t;
     const dropT = enterT >= 0 ? clamp((t - enterT - .12 * [2, 1, 0, 3, 4][i]) / .55, 0, 1) : 0;
-    if (dropT >= 1 && !c.landed) { c.landed = true; burst(c.x, .2, c.z + .2, c.founder ? 30 : 16, 1.1, [pCols[1], pCols[0]], c.founder ? .9 : .3); if (c.founder) blip("thud"); }
+    if (dropT >= 1 && !c.landed) { c.landed = true; burst(c.x, .2, c.z + .2, c.founder ? 30 : 16, 1.1, [pCols[1], pCols[0]], c.founder ? .9 : .3); if (c.founder) blip("land"); }
     let y = .19 + (enterT >= 0 ? (1 - dropT) * (1 - dropT) * 5 : 50), sq = 0, rotY = c.yaw * .35, rf = 4, rs = 4, lf = 4, ls = 4, headR = 0, body = 0, xo = 0;
     const br = Math.sin(t * 2.1 + i) * .008;
     c.hover += ((hovered === i ? 1 : 0) - c.hover) * Math.min(1, dt * 8);
@@ -269,7 +340,7 @@ async function init() {
     if (i < 2 && fiveT >= 0) { const f = t - fiveT, e = wv(f, 0, DUR.five), up = sm(clamp(f / .5, 0, 1)) * (1 - sm(clamp((f - 1.2) / .4, 0, 1)));
       xo = (i === 0 ? 1 : -1) * e * .12; if (i === 0) { ls = lerpA(ls, 166, up); lf = lerpA(lf, 10, up); } else { rs = lerpA(rs, 166, up); rf = lerpA(rf, 10, up); }
       rotY = (i === 0 ? .5 : -.5) * e;
-      if (f > .52 && !c.fived) { c.fived = true; if (i === 0) { burst(SP / 2, 2.25, .2, 30, 1.0, [pCols[2], pCols[0], pCols[1]], .7); blip("spark"); say(Math.random() < .5 ? "fs" : "an", "five"); } }
+      if (f > .52 && !c.fived) { c.fived = true; if (i === 0) { burst(SP / 2, 2.25, .2, 30, 1.0, [pCols[2], pCols[0], pCols[1]], .7); } }
       if (f > DUR.five) { c.fived = false; if (i === 1) fiveT = -1; } }
     if (c.emote) {
       c.et += dt; const f = c.et, E = c.emote;
@@ -327,19 +398,22 @@ async function init() {
     const stepF = prog * (SHOTS.length - 1), a = Math.floor(stepF), b = Math.min(SHOTS.length - 1, a + 1), x = sm(stepF - a);
     const A = SHOTS[a], B = SHOTS[b];
     const tp = new THREE.Vector3(...A.p.map((v, k) => v + (B.p[k] - v) * x)), tlk = new THREE.Vector3(A.l[0] + (B.l[0] - A.l[0]) * x, A.l[1] + (B.l[1] - A.l[1]) * x, 0);
-    if (!small && pointerIn) { tp.x += mouse.x * .25; tp.y += mouse.y * .12; }
+    if (lobby >= 0) { const c = CREW[lobby], side = small ? 0 : .7; tp.set(c.x + side, small ? 1.75 : 1.65, (c.z || 0) + (small ? 7.6 : 7.4)); tlk.set(c.x + side, small ? 1.3 : 1.15, 0); }
+    if (photo) { tp.set(0, 1.9, small ? 13 : 9.6); tlk.set(0, 1.25, 0); }
+    if (!small && pointerIn && !photo) { tp.x += mouse.x * .25; tp.y += mouse.y * .12; }
     const k = reduce ? 1 : Math.min(1, dt * 4); camP.lerp(tp, k); camL.lerp(tlk, k);
     camera.position.copy(camP); camera.lookAt(camL);
     ray.setFromCamera(mouse, camera); if (ray.ray.intersectPlane(plane, hit)) look.lerp(hit, Math.min(1, dt * 10));
-    if (pointerIn && !small) { const h = pick(); if (h !== hovered) { hovered = h; canvas.style.cursor = h >= 0 ? "pointer" : ""; if (h >= 0) blip("pop"); } }
+    if (pointerIn && !small) { const h = pick(); if (h !== hovered) { hovered = h; canvas.style.cursor = h >= 0 ? "pointer" : ""; } }
     if ((now - lastMove / 1000) > 4 && fiveT < 0 && t > nextFive && !CREW[0].emote && !CREW[1].emote) { fiveT = t; nextFive = t + 10; }
+    if (photo && photoPose) CREW.forEach((c) => { if (!c.emote || c.emote !== photoPose) { c.emote = photoPose; c.et = 0; } else if (c.et > (DUR[photoPose] || (XE[photoPose] ? XE[photoPose].d : 1.5)) - .3) c.et = .3; });
     // idle life: random little moves for each crew member
-    CREW.forEach((c, i) => { if (c.ghost || c.emote || !c.landed) return; c.nextIdle = c.nextIdle || t + 3 + i * 1.7; if (t < c.nextIdle) return;
+    CREW.forEach((c, i) => { if (photo || c.ghost || c.emote || !c.landed) return; c.nextIdle = c.nextIdle || t + 3 + i * 1.7; if (t < c.nextIdle) return;
       const pool = c.key === "fs" ? ["lookaround", "stretch", "phone", "tapfoot", "yawn", "think"] : c.key === "an" ? ["lookaround", "crown", "tapfoot", "dab", "shrug", "phone"] : ["lookaround", "shrug", "tapfoot"];
       c.emote = pool[(Math.random() * pool.length) | 0]; c.et = 0; c.nextIdle = t + 6 + Math.random() * 6; });
     if (enterT >= 0 && neonOn < 0 && t - enterT > .9) neonOn = t;
     let nf = 0; if (neonOn >= 0) { const f = t - neonOn; nf = f > .9 ? 1 - (hash(Math.floor(t * 8)) > .97 ? .5 : 0) : [0, 1, 0, 0, 1, .3, 1, 0, 1][Math.floor(f * 10)] ?? 1; }
-    neonMat.color.setScalar(nf * 1.25); wallGlow.material.opacity = nf;
+    stepSign(t); wallGlow.material.opacity = nf * .45;
     const focus = SHOTS[Math.round(stepF)].f;
     CREW.forEach((c, i) => { const on = focus === -1 ? (c.founder ? .9 : .5) : focus === i || (focus === 23 && (i === 2 || i === 3)) ? 1 : .18; c.focus += (on - c.focus) * Math.min(1, dt * 3);
       c.beam.material.uniforms.uI.value = c.focus * c.focus * (c.locked ? .6 : 1) * (c.ghost ? .8 : 1); c.pool.material.opacity = c.focus * .9; c.ring.material.opacity = c.focus * .8 + c.hover * .2; pose(c, i, t, dt); });

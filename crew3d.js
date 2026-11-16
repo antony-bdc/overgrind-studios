@@ -172,7 +172,7 @@ export const LINES = {
   fs: { hi: "fs_hi", founder: "fs_founder", touch: "fs_touch", five: "fs_five", grind: "fs_grind", built: "fs_built" },
   an: { hi: "an_hi", crown: "an_crown", video: "an_video", spin: "an_spin", five: "an_five", go: "an_go" },
 };
-let AC = null, sfxBase = "", muted = false, gest = false;
+let AC = null, sfxBase = new URL("./", import.meta.url).href, muted = false, gest = false;
 for (const ev of ["pointerdown", "keydown", "touchstart"]) addEventListener(ev, () => { gest = true; if (AC && AC.state === "suspended") AC.resume(); }, { capture: true, passive: true });
 try { muted = localStorage.getItem("og-mute") === "1"; } catch (e) {}
 const bufs = {};
@@ -193,10 +193,15 @@ export async function say(who, line) {
   const s = a.createBufferSource(), g = a.createGain(); g.gain.value = .9; s.buffer = b; s.connect(g).connect(a.destination); s.start(); speaking = s;
   return b.duration;
 }
-export function blip(kind = "pop") { // tiny synthesized UI sounds, no files
-  if (muted) return; const a = ctx(); if (!a) return; const t = a.currentTime, o = a.createOscillator(), g = a.createGain(); o.connect(g).connect(a.destination);
-  const P = { pop: [520, 880, .09, "triangle", .12], whoosh: [180, 60, .25, "sawtooth", .05], spark: [1400, 2400, .12, "square", .04], thud: [140, 50, .18, "sine", .3], glitch: [90, 900, .1, "square", .05], tick: [1900, 1300, .025, "sine", .025], coin: [990, 1980, .14, "square", .05] }[kind] || [600, 900, .1, "sine", .1];
-  o.type = P[3]; o.frequency.setValueAtTime(P[0], t); o.frequency.exponentialRampToValueAtTime(P[1], t + P[2]);
-  g.gain.setValueAtTime(P[4], t); g.gain.exponentialRampToValueAtTime(.0001, t + P[2] + .05); o.start(t); o.stop(t + P[2] + .06);
+/* UI sounds: recorded CC0 samples (Kenney), a little pitch variation so repeats don't sound robotic */
+const SFX = { pop: [["tap1", "tap2", "tap3", "tap4"], .5], tick: [["tick"], .25], whoosh: [["whoosh"], .4], spark: [["match"], .45], match: [["match"], .45],
+  thud: [["land2"], .5], land: [["land2"], .5], jump: [["jump"], .4], coin: [["coin"], .6], glitch: [["glitch"], .4] };
+let lastBlip = {};
+export function blip(kind = "pop") {
+  if (muted) return; const a = ctx(); if (!a) return; const def = SFX[kind] || SFX.pop;
+  const now = performance.now(); if (now - (lastBlip[kind] || 0) < 70) return; lastBlip[kind] = now; // no machine-gun repeats
+  const name = "ui/" + def[0][(Math.random() * def[0].length) | 0];
+  getBuf(name).then((b) => { if (!b || muted) return; const s = a.createBufferSource(), g = a.createGain(); s.buffer = b; s.playbackRate.value = .94 + Math.random() * .12; g.gain.value = def[1]; s.connect(g).connect(a.destination); s.start(); });
 }
+export function preloadSfx() { const go = () => Object.values(SFX).forEach((d) => d[0].forEach((n) => getBuf("ui/" + n))); if (gest) go(); else addEventListener("pointerdown", go, { once: true }); }
 export function preloadVoices(who) { const go = () => Object.values(LINES[who] || {}).forEach((n) => getBuf(n)); if (gest) go(); else addEventListener("pointerdown", go, { once: true }); }

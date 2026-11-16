@@ -59,9 +59,9 @@ async function init() {
     const pick = pool[(Math.random() * pool.length) | 0];
     if (GR && GR.landed && (pick === "dance" || pick === "cheer")) setTimeout(() => GR.A.play(pick, { voice: false, sound: false }), 400);
     if (pick === "five") { five = t; FS.A.play("highfiveL", { sound: false }); AN.A.play("highfiveR", { sound: false }); }
-    if (pick === "dance") { FS.A.play("dance"); setTimeout(() => AN.A.play("dance", { voice: false }), 250); }
-    if (pick === "pointcrown") { FS.A.lookAt(.9, 0); FS.A.play("point", { voice: false }); setTimeout(() => AN.A.play("crown"), 600); }
-    if (pick === "cheer") { FS.A.play("cheer", { voice: false }); AN.A.play("cheer", { voice: false }); }
+    if (pick === "dance") { FS.A.play("dance", { voice: false, sound: false }); setTimeout(() => AN.A.play("dance", { voice: false, sound: false }), 250); }
+    if (pick === "pointcrown") { FS.A.lookAt(.9, 0); FS.A.play("point", { voice: false, sound: false }); setTimeout(() => AN.A.play("crown", { voice: false, sound: false }), 600); }
+    if (pick === "cheer") { FS.A.play("cheer", { voice: false, sound: false }); AN.A.play("cheer", { voice: false, sound: false }); }
   }
 
   /* layout: both stand on top of the letters */
@@ -86,7 +86,7 @@ async function init() {
       // drop-in with gravity, squash on landing
       if (intro && c.drop < 0) c.drop = t + c.delay;
       if (c.drop >= 0 && t >= c.drop && !c.landed) { c.J.root.visible = true; if (c.y === 0 && c.vy === 0) c.y = reduce ? 0 : 700; c.vy -= 3200 * dt; c.y += c.vy * dt;
-        if (c.y <= 0) { c.y = 0; c.vy = 0; c.landed = true; c.A.play("land", { voice: false }); fx.burst(c.x, c.feet + 4, 60, 26, 300, ["#F2EFE9", "#9a948a", "#FF4D1A"]); blip("thud");
+        if (c.y <= 0) { c.y = 0; c.vy = 0; c.landed = true; c.A.play("land", { voice: false, sound: false }); blip("land"); fx.burst(c.x, c.feet + 4, 60, 26, 300, ["#F2EFE9", "#9a948a", "#FF4D1A"]); blip("thud");
           setTimeout(() => c.A.play(c.k === "fs" ? (MOOD === "morning" ? "stretch" : MOOD === "night" ? "yawn" : "wave") : c.k === "me" ? "hello" : MOOD === "evening" ? "dance" : "hello", { voice: c.k === "fs" && MOOD !== "night" }), c.k === "fs" ? 650 : 900);
           if (c.k === "an") setTimeout(() => { if (!FS.A.busy()) { five = t; FS.A.play("highfiveL", { sound: false }); AN.A.play("highfiveR", { sound: false }); } }, 3000); } }
       // look at the cursor, or at each other when the cursor is away
@@ -100,7 +100,7 @@ async function init() {
       if (c.J.outfit) updateOutfit(c.J, t);
     }
     hero.style.cursor = hov ? "pointer" : "";
-    if (five >= 0 && t - five > .5) { five = -1; fx.burst((FS.x + AN.x) / 2, FS.feet + FS.size * 2.35, 50, 34, 420, ["#FFC34D", "#FF4D1A", "#ffffff"]); blip("spark"); say(Math.random() < .5 ? "fs" : "an", "five"); }
+    if (five >= 0 && t - five > .5) { five = -1; fx.burst((FS.x + AN.x) / 2, FS.feet + FS.size * 2.35, 50, 34, 420, ["#FFC34D", "#FF4D1A", "#ffffff"]); }
     if (FS.landed && AN.landed && t > nextDuo && now - mouse.last > 3000 && !FS.A.busy() && !AN.A.busy()) { duo(); nextDuo = t + 12 + Math.random() * 6; }
     fx.step(dt);
     S.renderer.render(scene, cam);

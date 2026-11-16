@@ -141,7 +141,23 @@
     <div class="lu-fits" role="group" aria-label="Game outfits"><span class="lu-fl">{{i:shirt}}<span data-i18n="lu.fit">Game outfits</span></span><button type="button" data-fit="" class="on" aria-label="No outfit">{{i:x}}</button>{{FITS}}</div>
     <button class="lu-mute" type="button" aria-pressed="true" aria-label="Sound on or off">{{i:volume-2}}{{i:volume-x}}</button>
     <div class="lu-dots" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i><i></i></div>
-    <div class="lu-hint" aria-hidden="true"><span data-i18n="lu.hint">move · click · say hi</span></div>
+    <div class="lu-emotes" role="group" aria-label="Emotes"></div>
+    <button class="lu-cam" type="button" aria-label="Photo mode">{{i:camera}}</button>
+    <div class="lu-photo" hidden>
+      <div class="lu-frame" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      <div class="lu-photo-bar">
+        <span class="lu-pl" data-i18n="lu.pose">Pose</span>
+        <div class="lu-poses" role="group" aria-label="Poses"></div>
+        <button class="btn fire lu-snap" type="button">{{i:camera}}<span data-i18n="lu.snap">Take photo</span></button>
+        <button class="lu-x" type="button" aria-label="Close photo mode">{{i:x}}</button>
+      </div>
+    </div>
+    <aside class="lu-lobby" hidden aria-live="polite">
+      <button class="lu-x lu-lclose" type="button" aria-label="Close">{{i:x}}</button>
+      <div class="lb-rank"></div><div class="lb-name"></div><div class="lb-role"></div>
+      <div class="lb-rows"></div><div class="lb-quote"></div>
+      <div class="lb-act"><button class="btn ghost lb-card" type="button"><span data-i18n="lu.card">Trading card</span>{{i:arrow-up-right}}</button><a class="btn fire lb-apply" href="#apply" hidden><span data-i18n="lu.c">Apply now</span>{{i:arrow-down}}</a></div>
+    </aside>
   </div>
 <div class="lu-cardwrap" hidden>
   <div class="lu-card" tabindex="-1" role="dialog" aria-modal="true" aria-label="Crew card">

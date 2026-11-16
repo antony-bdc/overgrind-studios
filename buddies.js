@@ -107,7 +107,7 @@ async function init() {
         if (b.leaving || !b.spot) { b.shown = false; b.J.root.visible = false; b.leaving = false; b.from = null; continue; }
         b.landedSpot = b.spot;
         b.A.setLoop(mode === "sit" ? "sit" : "idle");
-        if (mode !== "peek") { b.A.play("land", { voice: false, sound: false }); fx.burst(x, y + 4, 40, 18, 260, ["#F2EFE9", "#FF4D1A"]); blip("thud"); }
+        if (mode !== "peek") { b.A.play("land", { voice: false, sound: false }); fx.burst(x, y + 4, 40, 18, 260, ["#F2EFE9", "#FF4D1A"]); blip("land"); }
         const sp = b.spot; setTimeout(() => { if (b.spot === sp && sp.hello) b.A.play(sp.hello, { voice: false, sound: false }); }, 550);
       }
       // peekers hide behind the top edge of the form and come up further while you type
@@ -124,7 +124,7 @@ async function init() {
       const yaw = k < 1 ? (Math.abs(dx) > 30 ? Math.sign(dx) * 1.0 : .2) : mode === "peek" ? 0 : (x > innerWidth * .5 ? -.35 : .35);
       b.J.root.rotation.y += (yaw - b.J.root.rotation.y) * Math.min(1, dt * 10); b.J.root.rotation.x = mode === "sit" ? .12 : .05;
     }
-    const hv = hit(); if (hv !== prevHover) { prevHover = hv; document.documentElement.classList.toggle("buddy-hover", !!hv); if (hv && !hv.A.busy() && hv.k >= 1) { hv.A.play("hop", { voice: false, sound: false }); blip("tick"); } }
+    const hv = hit(); if (hv !== prevHover) { prevHover = hv; document.documentElement.classList.toggle("buddy-hover", !!hv); if (hv && !hv.A.busy() && hv.k >= 1) hv.A.play("hop", { voice: false, sound: false }); }
     fx.step(dt);
     if (any) renderer.render(scene, cam); else renderer.clear();
   }

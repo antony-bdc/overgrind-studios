@@ -71,7 +71,7 @@ export class Actor {
   play(name, { voice = true, sound = true } = {}) {
     if (!EMOTES[name]) return 0; this.em = name; this.et = 0; this.next = this.t + 6 + Math.random() * 5;
     if (voice && this.voice && VOICE[this.who] && VOICE[this.who][name]) say(this.who, VOICE[this.who][name]);
-    if (sound) blip(name === "jump" || name === "victory" || name === "land" ? "thud" : name === "freeze" || name === "cheer" ? "spark" : "pop");
+    if (sound) blip(name === "jump" || name === "victory" ? "jump" : name === "land" ? "land" : name === "freeze" || name === "cheer" ? "spark" : "pop");
     return EMOTES[name].d;
   }
   busy() { return !!this.em; }

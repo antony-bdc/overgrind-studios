@@ -1,14 +1,13 @@
 /* Overgrind extras: UI sounds everywhere, the hidden golden studs hunt,
    live Roblox member count and the click-to-load TikTok wall. */
-import { blip, isMuted, setMuted } from "./crew3d.js";
+import { blip, isMuted, setMuted, preloadSfx } from "./crew3d.js";
+preloadSfx();
 
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const fine = matchMedia("(hover: hover) and (pointer: fine)").matches; // hover ticks only with a mouse
 const de = () => document.documentElement.lang === "de";
 
 /* ---------- UI sounds on every button and card ---------- */
-document.addEventListener("pointerover", (e) => { if (!fine) return; const el = e.target.closest(".btn,.panel,.lu-fits button,.dl-item,.links a,.bld-sw button,.bld-faces button,.bld-fits button"); if (el && !el.contains(e.relatedTarget)) blip("tick"); });
-document.addEventListener("click", (e) => { if (e.target.closest(".btn,.panel,.lang button,.links a,.dl-play")) blip("pop"); }, true);
 const navMute = document.querySelector(".nav-mute");
 const syncMute = () => { if (navMute) { navMute.classList.toggle("off", isMuted()); navMute.setAttribute("aria-pressed", String(!isMuted())); } };
 if (navMute) navMute.addEventListener("click", () => { setMuted(!isMuted()); syncMute(); });
@@ -26,19 +25,19 @@ function syncStuds() {
 studs.forEach((s) => s.addEventListener("click", (e) => {
   e.preventDefault(); e.stopPropagation(); if (found.includes(s.dataset.gs)) return;
   found.push(s.dataset.gs); try { localStorage.setItem("og-studs", JSON.stringify(found)); } catch (er) {}
-  s.classList.add("pop"); blip("spark"); syncStuds();
+  s.classList.add("pop"); blip("coin"); syncStuds();
   if (badge) { badge.classList.remove("bump"); void badge.offsetWidth; badge.classList.add("bump"); }
   if (found.length >= total) setTimeout(secret, 500);
 }));
 function secret() {
   const w = document.querySelector(".gs-secret"); if (!w) return;
-  w.hidden = false; requestAnimationFrame(() => w.classList.add("open")); blip("spark");
+  w.hidden = false; requestAnimationFrame(() => w.classList.add("open")); blip("match");
   if (window.__luDance) window.__luDance();
   confetti();
 }
 const sw = document.querySelector(".gs-secret");
 if (sw) sw.addEventListener("click", (e) => { if (e.target === sw || e.target.closest(".c-close")) { sw.classList.remove("open"); setTimeout(() => (sw.hidden = true), 350); } });
-if (badge) badge.addEventListener("click", () => { if (found.length >= total && sw) secret(); else { blip("pop"); badge.title = de() ? "Goldene Noppen gefunden – such weiter auf der Startseite" : "Golden studs found, keep looking on the home page"; } });
+if (badge) badge.addEventListener("click", () => { if (found.length >= total && sw) secret(); else { badge.title = de() ? "Goldene Noppen gefunden – such weiter auf der Startseite" : "Golden studs found, keep looking on the home page"; } });
 syncStuds();
 function confetti() {
   if (reduce) return; const cv = document.createElement("canvas"); cv.className = "confetti"; document.body.appendChild(cv); const g = cv.getContext("2d");
@@ -79,7 +78,8 @@ if (rail) {
   const hero = document.querySelector(".hero");
   let ticking = false;
   const upd = () => { ticking = false; const H = innerHeight, mid = H * .45;
-    rail.classList.toggle("show", hero ? hero.getBoundingClientRect().bottom < H * .4 : true);
+    const busy = [".lineup", ".worlds"].some((q) => { const el = document.querySelector(q); if (!el) return false; const r = el.getBoundingClientRect(); return r.top < H * .2 && r.bottom > H * .8; });
+    rail.classList.toggle("show", (hero ? hero.getBoundingClientRect().bottom < H * .4 : true) && !busy);
     let act = -1; secs.forEach((s, i) => { if (s && s.getBoundingClientRect().top <= mid) act = i; });
     links.forEach((a, i) => { a.classList.toggle("on", i === act); a.classList.toggle("past", i < act);
       const s = secs[i]; if (!s) return; const r = s.getBoundingClientRect(), end = secs[i + 1] ? secs[i + 1].getBoundingClientRect().top : r.bottom;
