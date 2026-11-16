@@ -4,58 +4,11 @@
    2) Roadmap obby: floating stud platforms on the roadmap, FreshStatue jumps from "Now" to "Later" as you scroll. */
 import * as THREE from "./vendor/three.module.min.js";
 import { LITE, loadCrew, makeAvatar, setArm, setOutfit, updateOutfit, blip, say, clamp, sm } from "./crew3d.js";
+import { pxStage, studBrick, runPose, airPose, sparks } from "./stage.js";
+import { Actor } from "./anim.js";
 
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const desktop = matchMedia("(min-width: 861px)");
-
-function pxStage(canvas) {
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: "high-performance" });
-  renderer.setPixelRatio(Math.min(LITE ? 1 : 2, devicePixelRatio || 1));
-  renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.08;
-  renderer.setClearColor(0, 0);
-  const scene = new THREE.Scene(), cam = new THREE.OrthographicCamera(0, 1, 1, 0, -3000, 3000); cam.position.z = 1000;
-  scene.add(new THREE.HemisphereLight(0xf4f1ff, 0x1a0c06, 1.1));
-  const key = new THREE.DirectionalLight(0xfff1e4, 2.3); key.position.set(-.4, .9, 1); scene.add(key);
-  const rim = new THREE.DirectionalLight(0xff6a33, 1.8); rim.position.set(1, .3, -.8); scene.add(rim);
-  let W = 1, H = 1;
-  const size = () => { W = canvas.clientWidth || 1; H = canvas.clientHeight || 1; renderer.setSize(W, H, false); cam.right = W; cam.top = H; cam.updateProjectionMatrix(); };
-  size(); new ResizeObserver(size).observe(canvas);
-  return { renderer, scene, cam, get W() { return W; }, get H() { return H; }, key, rim };
-}
-
-/* one Roblox 2x? stud brick, width in studs, unit = px per stud */
-function studBrick(nx, nz, unit, color, hgt = .6) {
-  const g = new THREE.Group(), mat = new THREE.MeshPhysicalMaterial({ color, roughness: .32, clearcoat: .7, clearcoatRoughness: .3 });
-  const b = new THREE.Mesh(new THREE.BoxGeometry(nx * unit, hgt * unit, nz * unit), mat); b.position.y = -hgt * unit / 2; g.add(b);
-  const sg = new THREE.CylinderGeometry(unit * .3, unit * .3, unit * .2, 20), st = new THREE.InstancedMesh(sg, mat, nx * nz), m = new THREE.Matrix4(); let k = 0;
-  for (let i = 0; i < nx; i++) for (let j = 0; j < nz; j++) { m.makeTranslation((i - (nx - 1) / 2) * unit, unit * .1, (j - (nz - 1) / 2) * unit); st.setMatrixAt(k++, m); }
-  g.add(st); g.userData.mat = mat; return g;
-}
-
-/* shared avatar posing */
-function runPose(J, ph, amt) {
-  const s = Math.sin(ph);
-  J.legL.rotation.x = s * .75 * amt; J.legR.rotation.x = -s * .75 * amt;
-  setArm(J.armR, (s * 50) * amt + 4, 5, -1); setArm(J.armL, (-s * 50) * amt + 4, 5, 1);
-  J.body.position.y = Math.abs(Math.cos(ph)) * .07 * amt; J.body.rotation.x = .1 * amt;
-}
-function airPose(J, u) { // u: 0 take-off → 1 landing
-  J.legL.rotation.x = -.7; J.legR.rotation.x = .35; setArm(J.armR, 150 - 40 * u, 20, -1); setArm(J.armL, 150 - 40 * u, 20, 1);
-  J.body.position.y = 0; J.body.rotation.x = -.05 + .2 * u;
-}
-
-/* little additive spark bursts in px space */
-function sparks(scene, n = 160) {
-  const pos = new Float32Array(n * 3), col = new Float32Array(n * 3), P = [];
-  const geo = new THREE.BufferGeometry(); geo.setAttribute("position", new THREE.BufferAttribute(pos, 3)); geo.setAttribute("color", new THREE.BufferAttribute(col, 3));
-  const c = document.createElement("canvas"); c.width = c.height = 64; const g = c.getContext("2d"), r = g.createRadialGradient(32, 32, 0, 32, 32, 32); r.addColorStop(0, "#fff"); r.addColorStop(.35, "rgba(255,255,255,.5)"); r.addColorStop(1, "rgba(255,255,255,0)"); g.fillStyle = r; g.fillRect(0, 0, 64, 64);
-  const pts = new THREE.Points(geo, new THREE.PointsMaterial({ size: 9, map: new THREE.CanvasTexture(c), vertexColors: true, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, sizeAttenuation: false }));
-  pts.frustumCulled = false; scene.add(pts); for (let i = 0; i < n; i++) P.push({ life: 0 }); let head = 0; const tc = new THREE.Color();
-  return {
-    burst(x, y, z, k, speed, colors) { for (let i = 0; i < k; i++) { const p = P[head]; const a = Math.random() * Math.PI * 2, v = speed * (.3 + Math.random()); Object.assign(p, { life: .6 + Math.random() * .6, age: 0, x, y, z, vx: Math.cos(a) * v, vy: Math.sin(a) * v + speed * .4, c: colors[i % colors.length] }); head = (head + 1) % n; } },
-    step(dt) { for (let i = 0; i < n; i++) { const p = P[i]; if (p.life <= 0 || p.age >= p.life) { pos[i * 3 + 1] = -9999; continue; } p.age += dt; p.vy -= 900 * dt; p.x += p.vx * dt; p.y += p.vy * dt; const f = 1 - p.age / p.life; tc.set(p.c).multiplyScalar(f); pos[i * 3] = p.x; pos[i * 3 + 1] = p.y; pos[i * 3 + 2] = p.z; col[i * 3] = tc.r; col[i * 3 + 1] = tc.g; col[i * 3 + 2] = tc.b; } geo.attributes.position.needsUpdate = geo.attributes.color.needsUpdate = true; },
-  };
-}
 
 /* ============ 1) worlds runway ============ */
 async function runway() {
@@ -63,9 +16,10 @@ async function runway() {
   if (!canvas || !desktop.matches || reduce) return;
   const panels = [...rail.querySelectorAll(".panel")].map((p) => ({ el: p, key: (p.getAttribute("href") || "").split("/")[1], accent: p.dataset.accent || "#FF4D1A" }));
   const S = pxStage(canvas), { scene } = S;
-  const data = await loadCrew("", ["fs"]);
-  const J = makeAvatar("fs", data); scene.add(J.root);
-  const FSH = 112, sc = FSH / 2.05; J.root.scale.setScalar(sc);
+  const data = await loadCrew("", ["fs", "an"]);
+  const FSH = 112, sc = FSH / 2.05;
+  // FreshStatue leads, Andrin runs right behind him
+  const runners = [["fs", 0], ["an", -118]].map(([k, off]) => { const J = makeAvatar(k, data); J.root.scale.setScalar(sc * (k === "an" ? .96 : 1)); scene.add(J.root); return { k, J, A: new Actor(J, { voice: false }), off, world: -1, x: 0 }; });
   const fx = sparks(scene);
   // stud lane: a row of bricks that scrolls with the rail
   const U = 22, BW = 4, lane = new THREE.Group(); scene.add(lane);
@@ -84,7 +38,7 @@ async function runway() {
     g.add(ring, disc, frame); g.rotation.y = 1.05; scene.add(g); return { g, ring, disc, col, i };
   });
   // layout: lane sits right above the panels
-  let fsX = 0, laneY = 0, prevX = null, vel = 0, dir = 1, ph = 0, world = -1, jumpT = 1, active = false, last = performance.now();
+  let fsX = 0, laneY = 0, prevX = null, vel = 0, dir = 1, active = false, last = performance.now();
   function layout() {
     const top = rail.offsetTop - 208 + "px"; if (canvas.style.top !== top) canvas.style.top = top;
     const cr = canvas.getBoundingClientRect(), rr = rail.getBoundingClientRect();
@@ -104,21 +58,23 @@ async function runway() {
     const tw = BW * U, base = ((off % tw) + tw) % tw - tw;
     tiles.forEach((b, i) => { b.position.set(base + i * tw + tw / 2, laneY, 0); });
     // portals sit in the gaps between panels
-    let w = -1;
-    portals.forEach((P, i) => { const r = panels[i].el.getBoundingClientRect(); const x = r.left - cr.left - 14; P.g.position.set(x, laneY + 72, 0); P.ring.rotation.z = now / 900; P.disc.material.uniforms.uT.value = now / 1000; if (x < fsX) w = i; P.g.visible = x > -200 && x < S.W + 200; });
-    if (w !== world) {
-      if (world !== -1 || w >= 0) { const p = panels[Math.max(0, w)]; setOutfit(J, w >= 0 ? p.key : ""); if (world !== -1) { jumpT = 0; fx.burst(fsX, laneY + 70, 60, 46, 520, [p.accent, "#ffffff", "#FFC34D"]); blip("whoosh"); } }
-      world = w;
+    const gaps = portals.map((P, i) => { const r = panels[i].el.getBoundingClientRect(); const x = r.left - cr.left - 14; P.g.position.set(x, laneY + 72, 0); P.ring.rotation.z = now / 900; P.disc.material.uniforms.uT.value = now / 1000; P.g.visible = x > -200 && x < S.W + 200; return x; });
+    const run = clamp(speed / 900, 0, 1), moving = run > .05;
+    for (const R of runners) {
+      const tx = fsX + R.off * (dir > 0 ? 1 : -1); R.x = R.x ? R.x + (tx - R.x) * Math.min(1, dt * 3) : tx;
+      let w = -1; gaps.forEach((x, i) => { if (x < R.x) w = i; });
+      if (w !== R.world) {
+        const p = panels[Math.max(0, w)];
+        if (R.world !== -1 || w >= 0) { setOutfit(R.J, w >= 0 ? p.key : ""); if (R.world !== -1) { R.A.play("jump", { voice: false, sound: false }); fx.burst(R.x, laneY + 70, 60, 40, 520, [p.accent, "#ffffff", "#FFC34D"]); blip("whoosh"); } }
+        R.world = w;
+      }
+      R.A.setLoop(moving ? (run > .45 ? "run" : "walk") : "idle"); R.A.idle = !moving;
+      R.A.update(dt);
+      R.J.root.position.set(R.x, laneY, R.k === "fs" ? 30 : 10);
+      const yaw = moving ? dir * 1.1 : (R.k === "fs" ? .3 : -.2); R.J.root.rotation.y += (yaw - R.J.root.rotation.y) * Math.min(1, dt * 10); R.J.root.rotation.x = .12;
+      updateOutfit(R.J, now / 1000);
     }
-    // run / jump through the portal
-    const run = clamp(speed / 900, 0, 1); ph += dt * (6 + run * 10) * (run > .05 ? 1 : 0);
-    jumpT = Math.min(1, jumpT + dt / .55);
-    let y = laneY;
-    if (jumpT < 1) { y += Math.sin(jumpT * Math.PI) * 46; airPose(J, jumpT); } else if (run > .05) runPose(J, ph, Math.min(1, run * 1.6 + .3)); else { runPose(J, 0, 0); setArm(J.armR, 4 + Math.sin(now / 600) * 3, 4, -1); setArm(J.armL, 4 - Math.sin(now / 600) * 3, 4, 1); }
-    J.root.position.set(fsX, y, 30);
-    const yaw = run > .05 || jumpT < 1 ? dir * 1.1 : .35; J.root.rotation.y += (yaw - J.root.rotation.y) * Math.min(1, dt * 10); J.root.rotation.x = .12;
-    J.head.rotation.y = (run > .05 ? 0 : Math.sin(now / 1400) * .3);
-    updateOutfit(J, now / 1000); fx.step(dt);
+    fx.step(dt);
     S.renderer.render(scene, S.cam);
   }
   requestAnimationFrame(frame);
@@ -131,7 +87,7 @@ async function obby() {
   const items = [...steps.querySelectorAll(".step")];
   const S = pxStage(canvas), { scene } = S;
   const data = await loadCrew("", ["fs"]);
-  const J = makeAvatar("fs", data); scene.add(J.root);
+  const J = makeAvatar("fs", data); scene.add(J.root); const A = new Actor(J, { voice: false });
   const FSH = 104, sc = FSH / 2.05; J.root.scale.setScalar(sc);
   const fx = sparks(scene);
   road.classList.add("obby-on");
@@ -165,14 +121,14 @@ async function obby() {
     else { x = P1.x - W2 * .4 + ((f - .85) / .15) * W2 * .4; y = P1.y + 4; }
     if (shown >= .999) { x = L.x; y = L.y + 4; air = -1; }
     const moving = Math.abs(prog - shown) > .002;
-    if (air >= 0) airPose(J, air); else if (moving) runPose(J, now / 70, 1); else { runPose(J, 0, 0); setArm(J.armR, 4, 4, -1); setArm(J.armL, 4, 4, 1); }
+    A.setLoop(moving && air < 0 ? "run" : "idle"); A.idle = !moving; A.update(dt);
+    if (air >= 0) { J.body.position.set(0, 0, 0); J.body.rotation.set(0, 0, 0); airPose(J, air); }
     // land puffs + step highlight
     const landed = air < 0 ? (f >= .85 || shown >= .999 ? seg + 1 : seg) : -1;
-    if (landed >= 0 && landed !== lastSeg) { if (lastSeg !== -1) { fx.burst(x, y, 40, 22, 260, ["#" + new THREE.Color(COLS[landed]).getHexString(), "#ffffff"]); blip("thud"); } lastSeg = landed; items.forEach((el, i) => el.classList.toggle("hit", i <= landed)); }
-    if (shown >= .995 && !reached) { reached = true; flagMat.emissive.set(0x3ee07a); flagMat.color.set(0x1a6b38); fx.burst(L.x + 60, L.y + 90, 30, 60, 520, ["#3EE07A", "#FFC34D", "#ffffff"]); blip("spark"); }
+    if (landed >= 0 && landed !== lastSeg) { if (lastSeg !== -1) { fx.burst(x, y, 40, 22, 260, ["#" + new THREE.Color(COLS[landed]).getHexString(), "#ffffff"]); blip("thud"); } lastSeg = landed; items.forEach((el, i) => el.classList.toggle("hit", i <= landed)); A.play("land", { voice: false, sound: false }); }
+    if (shown >= .995 && !reached) { reached = true; dispatchEvent(new Event("og-obby-done")); A.play("victory", { voice: false, sound: false }); flagMat.emissive.set(0x3ee07a); flagMat.color.set(0x1a6b38); fx.burst(L.x + 60, L.y + 90, 30, 60, 520, ["#3EE07A", "#FFC34D", "#ffffff"]); blip("spark"); }
     if (shown < .9 && reached) { reached = false; flagMat.emissive.set(0x000000); flagMat.color.set(0x333333); }
     J.root.position.set(x, y, 40); J.root.rotation.y += ((moving || air >= 0 ? dirF * 1.1 : .3) - J.root.rotation.y) * Math.min(1, dt * 10); J.root.rotation.x = .1;
-    J.head.rotation.y = moving ? 0 : Math.sin(now / 1500) * .35;
     const cp = cloth.geometry.attributes.position.array; for (let i = 0; i < cp.length; i += 3) { const xx = clothBase[i] + 23; cp[i + 2] = Math.sin(xx * .12 - now / 160) * xx * .12; } cloth.geometry.attributes.position.needsUpdate = true;
     fx.step(dt);
     S.renderer.render(scene, S.cam);

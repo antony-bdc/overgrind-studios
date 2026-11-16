@@ -1,56 +1,13 @@
-/* Overgrind extras: stud cursor trail, UI sounds everywhere, the hidden golden studs hunt,
+/* Overgrind extras: UI sounds everywhere, the hidden golden studs hunt,
    live Roblox member count and the click-to-load TikTok wall. */
 import { blip, isMuted, setMuted } from "./crew3d.js";
 
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-const fine = matchMedia("(hover: hover) and (pointer: fine)").matches;
+const fine = matchMedia("(hover: hover) and (pointer: fine)").matches; // hover ticks only with a mouse
 const de = () => document.documentElement.lang === "de";
 
-/* ---------- stud trail + falling bricks ---------- */
-if (fine && !reduce) {
-  const cv = document.createElement("canvas"); cv.className = "stud-trail"; cv.setAttribute("aria-hidden", "true"); document.body.appendChild(cv);
-  const g = cv.getContext("2d"); let W = 0, H = 0, dpr = 1;
-  const resize = () => { dpr = Math.min(2, devicePixelRatio || 1); W = innerWidth; H = innerHeight; cv.width = W * dpr; cv.height = H * dpr; g.setTransform(dpr, 0, 0, dpr, 0, 0); };
-  resize(); addEventListener("resize", resize);
-  const P = []; let lx = 0, ly = 0, acc = 0;
-  const COLS = ["#FF4D1A", "#F2EFE9", "#FFC34D", "#2BD4E0", "#A47BFF"];
-  addEventListener("pointermove", (e) => {
-    const d = Math.hypot(e.clientX - lx, e.clientY - ly); acc += d; lx = e.clientX; ly = e.clientY;
-    while (acc > 26) { acc -= 26; P.push({ x: e.clientX + (Math.random() - .5) * 6, y: e.clientY + (Math.random() - .5) * 6, vx: (Math.random() - .5) * .6, vy: -.2 - Math.random() * .4, life: 1, s: 4 + Math.random() * 3, c: COLS[(Math.random() * COLS.length) | 0], brick: false }); }
-  }, { passive: true });
-  addEventListener("pointerdown", (e) => {
-    if (e.target.closest("a,button,input,select,textarea,label,canvas#lineup-gl,.lu-cardwrap,.gs,.bld")) return;
-    const inHero = e.target.closest(".hero");
-    if (inHero && window.__fsHover) return;
-    if (inHero && window.__dropBrick) { window.__dropBrick(e.clientX, e.clientY); blip("thud"); return; }
-    for (let k = 0; k < 3; k++) P.push({ x: e.clientX, y: e.clientY, vx: (Math.random() - .5) * 5, vy: -3 - Math.random() * 3, life: 1.4, s: 10 + Math.random() * 6, c: COLS[(Math.random() * COLS.length) | 0], brick: true, r: Math.random() * 6, vr: (Math.random() - .5) * .3 });
-    blip("pop");
-  });
-  function stud(x, y, s, c, a) {
-    if (!(s > .3) || !(a > 0)) return;
-    g.globalAlpha = a; g.fillStyle = c; g.beginPath(); g.ellipse(x, y + s * .25, s, s * .55, 0, 0, 7); g.fill();
-    g.fillStyle = "rgba(0,0,0,.25)"; g.beginPath(); g.ellipse(x, y + s * .35, s, s * .5, 0, 0, Math.PI); g.fill();
-    g.fillStyle = c; g.beginPath(); g.ellipse(x, y, s, s * .55, 0, 0, 7); g.fill();
-    g.fillStyle = "rgba(255,255,255,.55)"; g.beginPath(); g.ellipse(x - s * .3, y - s * .15, s * .35, s * .16, -.3, 0, 7); g.fill();
-  }
-  function brick(p, a) {
-    g.save(); g.translate(p.x, p.y); g.rotate(p.r); g.globalAlpha = a; const w = p.s * 2, h = p.s * 1.2;
-    g.fillStyle = p.c; g.fillRect(-w / 2, -h / 2, w, h); g.fillStyle = "rgba(0,0,0,.22)"; g.fillRect(-w / 2, h / 4, w, h / 4);
-    for (const sx of [-w / 4, w / 4]) { g.fillStyle = p.c; g.beginPath(); g.ellipse(sx, -h / 2, w / 7, w / 14, 0, 0, 7); g.fill(); g.fillStyle = "rgba(255,255,255,.4)"; g.beginPath(); g.ellipse(sx - 2, -h / 2 - 1, w / 16, w / 34, 0, 0, 7); g.fill(); }
-    g.restore();
-  }
-  (function loop() {
-    requestAnimationFrame(loop); g.clearRect(0, 0, W, H);
-    for (let i = P.length - 1; i >= 0; i--) { const p = P[i];
-      if (p.brick) { p.vy += .35; p.x += p.vx; p.y += p.vy; p.r += p.vr; p.life -= .012; if (p.y > H - p.s) { p.y = H - p.s; p.vy *= -.35; p.vx *= .7; p.vr *= .5; } if (p.life > 0) brick(p, Math.min(1, p.life)); }
-      else { p.x += p.vx; p.y += p.vy; p.life -= .025; stud(p.x, p.y, p.s * p.life, p.c, p.life * .85); }
-      if (p.life <= 0) P.splice(i, 1); }
-    if (P.length > 160) P.splice(0, P.length - 160);
-  })();
-}
-
 /* ---------- UI sounds on every button and card ---------- */
-document.addEventListener("pointerover", (e) => { if (!fine) return; const el = e.target.closest(".btn,.panel,.dive,.lu-fits button,.dl-item,.member,.lab-card,.links a"); if (el && !el.contains(e.relatedTarget)) blip("tick"); });
+document.addEventListener("pointerover", (e) => { if (!fine) return; const el = e.target.closest(".btn,.panel,.lu-fits button,.dl-item,.links a,.bld-sw button,.bld-faces button,.bld-fits button"); if (el && !el.contains(e.relatedTarget)) blip("tick"); });
 document.addEventListener("click", (e) => { if (e.target.closest(".btn,.panel,.lang button,.links a,.dl-play")) blip("pop"); }, true);
 const navMute = document.querySelector(".nav-mute");
 const syncMute = () => { if (navMute) { navMute.classList.toggle("off", isMuted()); navMute.setAttribute("aria-pressed", String(!isMuted())); } };

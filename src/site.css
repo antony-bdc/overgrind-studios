@@ -87,10 +87,9 @@ svg.i{width:1.05em;height:1.05em;fill:none;stroke:currentColor;stroke-width:2;st
 .wall{position:absolute;inset:-10% -10% -10% -10%;z-index:0;pointer-events:none}
 .wall .col{position:absolute;top:0;display:flex;flex-direction:column;gap:22px;width:clamp(240px,24vw,360px)}
 .wall img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:16px;filter:saturate(.95)}
-#bricks{position:absolute;inset:0;width:100%;height:100%;z-index:0;opacity:0;transition:opacity 1.6s ease}#bricks.on{opacity:1}
+#hero-gl{position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none;opacity:0;transition:opacity .8s ease}#hero-gl.on{opacity:1}
 .hero::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(11,11,13,.5) 0%,rgba(11,11,13,.05) 34%,rgba(11,11,13,.35) 62%,rgba(11,11,13,.94) 90%,var(--ink) 100%),radial-gradient(60% 50% at 25% 72%,rgba(11,11,13,.7),transparent)}
 .hero .wrap{position:relative;z-index:2}
-#sparks{position:absolute;inset:0;z-index:3;pointer-events:none}
 .eyebrow{display:flex;align-items:center;gap:12px;font:700 12px/1 var(--body);letter-spacing:.24em;text-transform:uppercase;color:var(--ash)}
 .eyebrow i{width:6px;height:6px;border-radius:50%;background:var(--ember);box-shadow:0 0 12px var(--ember)}
 .mark{position:relative;display:inline-block;margin:26px 0 0;font:900 clamp(44px,12vw,220px)/.8 var(--display);letter-spacing:-.065em;white-space:nowrap}
@@ -460,7 +459,7 @@ footer a:hover{color:var(--paper)}
 .gs-badge.done{border-color:#ffd23f;background:rgba(255,210,63,.12)}
 @keyframes gsBump{40%{transform:scale(1.25)}}
 /* golden studs hidden around the page */
-.manifesto,.lab,.road,.devlog,.studio,.builder,.dives,footer{position:relative}
+.manifesto,.road,.devlog,.studio,.builder,.apply,footer{position:relative}
 .gs{position:absolute;left:min(var(--x),calc(100% - 30px));top:var(--y);z-index:6;width:22px;height:22px;padding:0;border:0;border-radius:50%;cursor:pointer;background:radial-gradient(circle at 35% 30%,#fff6c9 0 12%,#ffd23f 35%,#c9930e 75%,#7a5806 100%);box-shadow:0 3px 0 #7a5806,0 0 0 0 rgba(255,210,63,.5);opacity:.7;transition:opacity .25s,transform .25s var(--ease);animation:gsGlint 4.5s ease-in-out infinite}
 .gs:hover{opacity:1;transform:translateY(-2px) scale(1.15)}
 .gs.inline{position:relative;left:auto;top:auto;display:inline-block;vertical-align:middle;margin-left:10px;width:14px;height:14px;box-shadow:0 2px 0 #7a5806}
@@ -472,8 +471,6 @@ footer a:hover{color:var(--paper)}
 .lu-card.t-gold .c-img img{filter:sepia(1) saturate(4.2) hue-rotate(-12deg) brightness(1.02) contrast(1.05) drop-shadow(0 18px 24px rgba(0,0,0,.6))}
 .confetti{position:fixed;inset:0;z-index:130;pointer-events:none}
 /* stud cursor trail */
-.stud-trail{position:fixed;inset:0;z-index:94;pointer-events:none}
-.cur .dot{width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:3px;background:#fff;box-shadow:inset 0 -2px 0 rgba(0,0,0,.25)}
 /* hero: live member count */
 .facts{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:max-content}
 .facts .live[hidden]{display:none}
@@ -493,11 +490,9 @@ footer a:hover{color:var(--paper)}
 .panel:hover::before{opacity:1;animation:portalSpin 2.4s linear infinite}
 @property --spin{syntax:"<angle>";inherits:false;initial-value:0deg}
 @keyframes portalSpin{to{--spin:360deg}}
-.panel .vortex{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0;background:radial-gradient(circle at 50% 50%,transparent 0 18%,color-mix(in srgb,var(--a) 55%,transparent) 30%,transparent 46%),repeating-conic-gradient(from var(--spin,0deg),color-mix(in srgb,var(--a) 30%,transparent) 0 10deg,transparent 10deg 30deg);mix-blend-mode:screen;transition:opacity .5s;-webkit-mask:radial-gradient(circle at 50% 50%,#000 0 40%,transparent 70%);mask:radial-gradient(circle at 50% 50%,#000 0 40%,transparent 70%)}
-.panel:hover .vortex{opacity:.55;animation:portalSpin 3s linear infinite}
 .panel img{transition:transform 1.2s var(--ease),filter 1.2s var(--ease)}
-.panel:hover img{transform:scale(1.06);filter:saturate(1.2)}
-@media (prefers-reduced-motion:reduce){.panel:hover::before,.panel:hover .vortex{animation:none}}
+.panel:hover img{transform:scale(1.03)}
+@media (prefers-reduced-motion:reduce){.panel:hover::before{animation:none}}
 /* roadmap obby */
 .obby-gl{display:none}
 @media (min-width:861px){
@@ -576,3 +571,10 @@ footer a:hover{color:var(--paper)}
   .gp-crew{width:min(40vw,600px);right:max(8px,calc((100vw - 1440px)/2 + 8px))}
 }
 @media (max-width:860px){.gp-hero{padding-top:min(56vh,460px)}.gp-crew{width:70vw;height:46vh;right:-4vw;top:84px}}
+.studio-p{margin-top:40px;max-width:52ch;font-size:clamp(18px,1.6vw,22px);color:rgba(242,239,233,.78)}
+/* hero duo: room above the wordmark for the crew */
+@media (max-width:860px){.hero{padding-top:min(40vh,330px)}.hero .eyebrow{display:none}}
+/* scroll buddies overlay */
+.buddies-gl{position:fixed;inset:0;width:100vw;height:100vh;z-index:60;pointer-events:none}
+.buddies-on .peekers{display:none}
+.buddy-hover body,.buddy-hover a{cursor:pointer}

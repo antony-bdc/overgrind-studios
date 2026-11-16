@@ -92,7 +92,7 @@ async function init() {
     paintFace(); paintTorso();
     if ((J.outfit && J.outfit.key) !== (S.fit || undefined)) setOutfit(J, S.fit);
     ring.material.color.set(S.fit && fitNames[S.fit] ? fitNames[S.fit].a : "#FF4D1A");
-    if (fx) { pop = 1; blip("pop"); } save(); syncUI();
+    if (fx) { pop = 1; blip("pop"); dispatchEvent(new Event("og-build")); } save(); syncUI();
   }
   await document.fonts.load("900 40px Unbounded").catch(() => {});
 

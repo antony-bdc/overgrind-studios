@@ -6,6 +6,7 @@ import { RenderPass } from "./vendor/addons/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "./vendor/addons/postprocessing/UnrealBloomPass.js";
 import { OutputPass } from "./vendor/addons/postprocessing/OutputPass.js";
 import { ShaderPass } from "./vendor/addons/postprocessing/ShaderPass.js";
+import { EMOTES as XE } from "./anim.js";
 import { LITE, loadCrew, makeAvatar, boxRig, setArm, setOutfit, updateOutfit, say, blip, isMuted, setMuted, preloadVoices, clamp, sm, hash } from "./crew3d.js";
 
 const section = document.querySelector(".lineup");
@@ -176,7 +177,7 @@ async function init() {
   canvas.addEventListener("pointerleave", () => { pointerIn = false; hovered = -1; canvas.style.cursor = ""; });
   canvas.addEventListener("click", (e) => { setMouse(e); const who = pick(); if (who >= 0) poke(who); });
   function pick() { ray.setFromCamera(mouse, camera); const hits = ray.intersectObjects(CREW.flatMap((c) => c.J.meshes), false); return hits.length ? hits[0].object.userData.who : -1; }
-  const EMOTES = { fs: ["freeze", "wave", "jump", "point"], an: ["spin", "wave", "jump", "point"], ex: ["glitch", "jump"], gi: ["glitch", "jump"], you: ["hello"] };
+  const EMOTES = { fs: ["freeze", "wave", "jump", "point", "dab", "victory", "clap"], an: ["spin", "wave", "jump", "point", "crown", "dab", "cheer"], ex: ["glitch", "jump"], gi: ["glitch", "jump"], you: ["hello"] };
   const VOICE = { fs: { freeze: "touch", wave: "hi", jump: "grind", point: "founder", dance: "built", five: "five" }, an: { spin: "spin", wave: "hi", jump: "go", point: "crown", dance: "go", five: "five" } };
   const clickTimes = {};
   function poke(who) {
@@ -281,13 +282,21 @@ async function init() {
       if (E === "dance") { const b = Math.sin(f * 9); rs = 70 + 70 * b; ls = 70 - 70 * b; rf = 30; lf = 30; y += Math.abs(Math.sin(f * 9)) * .12; rotY += Math.sin(f * 4.5) * .5; headR = .15 * Math.sin(f * 9); }
       if (E === "glitch") { xo = (hash(Math.floor(t * 40)) - .5) * .12 * (f < DUR.glitch ? 1 : 0); if (J.q) J.q.material.rotation = Math.sin(f * 30) * .3; }
       if (E === "hello") { const u = wv(f, 0, DUR.hello); rs = lerpA(rs, 150 + 20 * Math.sin(f * 12), u); ls = lerpA(ls, 150 + 20 * Math.sin(f * 12 + 1), u); }
-      if (f > (DUR[E] || 1.5)) { c.emote = null; if (c.key === "fs" || c.key === "an") J.mat.color.setScalar(1); if (J.extraMat) J.extraMat.color.set(0xcfccc6); }
+      let legL = 0, legR = 0;
+      if (XE[E] && !DUR[E]) { // extra emotes from the shared animation library
+        const q = { y: 0, x: 0, ry: 0, rx: 0, rz: 0, sx: 1, sy: 1, hx: 0, hy: 0, hz: 0, rf, rs, lf, ls, ll: 0, lr: 0, tint: 1 }; XE[E].f(f, q);
+        const u = Math.min(clamp(f / .18, 0, 1), 1 - clamp((f - (XE[E].d - .2)) / .2, 0, 1));
+        rf = lerpA(rf, q.rf, u); rs = lerpA(rs, q.rs, u); lf = lerpA(lf, q.lf, u); ls = lerpA(ls, q.ls, u); y += q.y; rotY += q.ry; headR += q.hz * u; body += q.rx * u; sq += (1 - q.sy) * u; xo += q.x;
+        legL = q.ll * u; legR = q.lr * u; c.extraHead = [q.hx * u, q.hy * u];
+      }
+      J.legL.rotation.x = legL; J.legR.rotation.x = legR;
+      if (f > (DUR[E] || (XE[E] ? XE[E].d : 1.5))) { c.emote = null; c.extraHead = null; J.legL.rotation.x = J.legR.rotation.x = 0; if (c.key === "fs" || c.key === "an") J.mat.color.setScalar(1); if (J.extraMat) J.extraMat.color.set(0xcfccc6); }
     }
     J.root.position.set(c.x + xo, y, c.z);
     J.root.rotation.y = rotY;
     J.body.scale.set(1 + sq * .5, 1 - sq + br, 1 + sq * .5);
     J.body.rotation.x = body;
-    J.head.rotation.set(c.pitch, c.yaw * .65, headR + Math.sin(t * .9 + i) * .02);
+    J.head.rotation.set(c.pitch + (c.extraHead ? c.extraHead[0] : 0), c.yaw * .65 + (c.extraHead ? c.extraHead[1] : 0), headR + Math.sin(t * .9 + i) * .02);
     const sw = Math.sin(t * 1.6 + i * 2) * 2;
     setArm(J.armR, rf + sw, rs, -1); setArm(J.armL, lf - sw, ls, 1);
     if (J.q) J.q.position.set(0, .52 + Math.sin(t * 2 + i) * .04, .21);
@@ -324,6 +333,10 @@ async function init() {
     ray.setFromCamera(mouse, camera); if (ray.ray.intersectPlane(plane, hit)) look.lerp(hit, Math.min(1, dt * 10));
     if (pointerIn && !small) { const h = pick(); if (h !== hovered) { hovered = h; canvas.style.cursor = h >= 0 ? "pointer" : ""; if (h >= 0) blip("pop"); } }
     if ((now - lastMove / 1000) > 4 && fiveT < 0 && t > nextFive && !CREW[0].emote && !CREW[1].emote) { fiveT = t; nextFive = t + 10; }
+    // idle life: random little moves for each crew member
+    CREW.forEach((c, i) => { if (c.ghost || c.emote || !c.landed) return; c.nextIdle = c.nextIdle || t + 3 + i * 1.7; if (t < c.nextIdle) return;
+      const pool = c.key === "fs" ? ["lookaround", "stretch", "phone", "tapfoot", "yawn", "think"] : c.key === "an" ? ["lookaround", "crown", "tapfoot", "dab", "shrug", "phone"] : ["lookaround", "shrug", "tapfoot"];
+      c.emote = pool[(Math.random() * pool.length) | 0]; c.et = 0; c.nextIdle = t + 6 + Math.random() * 6; });
     if (enterT >= 0 && neonOn < 0 && t - enterT > .9) neonOn = t;
     let nf = 0; if (neonOn >= 0) { const f = t - neonOn; nf = f > .9 ? 1 - (hash(Math.floor(t * 8)) > .97 ? .5 : 0) : [0, 1, 0, 0, 1, .3, 1, 0, 1][Math.floor(f * 10)] ?? 1; }
     neonMat.color.setScalar(nf * 1.25); wallGlow.material.opacity = nf;

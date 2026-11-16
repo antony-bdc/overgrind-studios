@@ -24,8 +24,6 @@
 </head>
 <body class="no-js">
 <script>document.body.classList.remove("no-js");</script>
-<div class="grain" aria-hidden="true"></div>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="liquid" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence id="liquid-t" type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="7"/><feDisplacementMap id="liquid-d" in="SourceGraphic" scale="0" xChannelSelector="R" yChannelSelector="G"/></filter></svg>
 <div class="loader" aria-hidden="true">
   <div class="ld-in">
     <div class="tile"><b>OG</b><i></i></div>
@@ -61,9 +59,8 @@
 
 <main id="top">
 <section class="hero" aria-labelledby="hero-title">
-  <canvas id="bricks" aria-hidden="true"></canvas>
-  <canvas id="sparks" aria-hidden="true"></canvas>
-  <div class="wrap">
+  <canvas id="hero-gl" aria-hidden="true"></canvas>
+    <div class="wrap">
     <div class="eyebrow"><i></i><span data-i18n="h.eyebrow">Roblox game studio · est. 2026</span></div>
     <h1 class="mark" id="hero-title"><span class="w">OVERGRIND</span><span class="bar" aria-hidden="true"></span></h1>
     <div class="studios">STUDIOS</div>
@@ -85,7 +82,6 @@
   <button class="gs" type="button" data-gs="1" aria-label="Golden stud" style="--x:91%;--y:17%"></button>
 </section>
 
-<div class="marquee" aria-hidden="true"><div class="track">{{MARQUEE}}</div></div>
 
 <section class="manifesto">
   <div class="wrap">
@@ -160,24 +156,11 @@
   <canvas class="runway-gl" aria-hidden="true"></canvas>
   <button class="gs" type="button" data-gs="3" aria-label="Golden stud" style="--x:58%;--y:132px"></button>
   <div class="rail">{{PANELS}}
-    <div class="end"><b data-i18n="w.end">And we're only getting started.</b><a class="btn ghost" href="#dives"><span data-i18n="w.endc">Read the details</span>{{i:arrow-down}}</a></div>
+    <div class="end"><b data-i18n="w.end">And we're only getting started.</b><a class="btn ghost" href="#road"><span data-i18n="w.endc">See the roadmap</span>{{i:arrow-down}}</a></div>
   </div>
 </section>
 
-<section class="dives" id="dives" aria-label="Games in detail">
-  <button class="gs" type="button" data-gs="4" aria-label="Golden stud" style="--x:96%;--y:60px"></button>
-  <div class="wrap"><div class="kicker" data-i18n="d.k">In detail</div><h2 class="sec-title" data-i18n="d.t">What we're building</h2></div>
-  {{DIVES}}
-</section>
 
-<section class="lab">
-  <div class="wrap">
-    <button class="gs" type="button" data-gs="5" aria-label="Golden stud" style="--x:1%;--y:70%"></button>
-    <div class="kicker" data-i18n="l.k">Early concepts</div>
-    <h2 class="sec-title" data-i18n="l.t">Still in the lab</h2>
-    <div class="lab-grid">{{LAB}}</div>
-  </div>
-</section>
 
 <section class="road" id="road" aria-labelledby="road-title">
   <div class="wrap">
@@ -239,18 +222,7 @@
       <button class="dl-play" type="button" aria-label="Play the community video with FreshStatue">{{i:play}}</button>
       <figcaption data-i18n="s.vid">FreshStatue introduces Overgrind: who we are, where the name comes from and who we are looking for.</figcaption>
     </figure>
-    <div class="grid">
-      <div class="copy">
-        <p data-i18n="s.p1">Overgrind is a shared Roblox community. Different creators publish under one name and hold each other to the same bar.</p>
-        <p data-i18n="s.p2">No copy-paste games, no first drafts on the front page. Every release has to be something we would actually play ourselves.</p>
-      </div>
-      <div class="ledger">
-        <div class="row"><span class="rank" data-count="254">254</span><span class="role">Founder</span><span class="who" data-i18n="s.r1">runs the label</span></div>
-        <div class="row"><span class="rank" data-count="200">200</span><span class="role">Lead Dev</span><span class="who" data-i18n="s.r2">leads a game</span></div>
-        <div class="row"><span class="rank" data-count="150">150</span><span class="role">Developer</span><span class="who" data-i18n="s.r3">builds with us</span></div>
-        <div class="row"><span class="rank" data-count="1">1</span><span class="role">Grinder</span><span class="who" data-i18n="s.r4">that's you</span></div>
-      </div>
-    </div>
+    <p class="studio-p" data-i18n="s.p1">Overgrind is a shared Roblox community. Different creators publish under one name and hold each other to the same bar.</p>
   </div>
 </section>
 
@@ -287,6 +259,7 @@
 
 <section class="apply" id="apply" aria-labelledby="apply-title">
   <div class="wrap">
+    <button class="gs" type="button" data-gs="4" aria-label="Golden stud" style="--x:97%;--y:8%"></button>
     <div class="kicker" data-i18n="a.k">Build with us</div>
     <h2 class="sec-title" id="apply-title" data-i18n="a.t">Want to grind with us?</h2>
     <div class="ap-grid">
@@ -313,6 +286,7 @@
 
 <section class="join" id="join" aria-labelledby="join-title">
   <div class="glow" aria-hidden="true"></div>
+  <button class="gs" type="button" data-gs="5" aria-label="Golden stud" style="--x:4%;--y:86%"></button>
   <div class="wrap">
     <h2 id="join-title"><span data-i18n="j.1">Get in before</span><br><span class="hot" data-i18n="j.2">the first drop.</span></h2>
     <p data-i18n="j.p">Join the Roblox community to hear first when a game opens up, and follow us on TikTok for devlogs and clips.</p>
@@ -353,11 +327,12 @@ var GAMES = {{GAMESJSON}};
 var DE = {{DEJSON}};
 </script>
 <script src="app.js"></script>
-<script type="module" src="bricks.js"></script>
+<script type="module" src="hero.js"></script>
 <script type="module" src="lineup.js"></script>
 <script type="module" src="scenes.js"></script>
 <script type="module" src="builder.js"></script>
 <script type="module" src="extras.js"></script>
+<script type="module" src="buddies.js"></script>
 <script src="transition.js"></script>
 {{GOAT}}
 </body>

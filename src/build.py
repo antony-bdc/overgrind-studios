@@ -52,7 +52,6 @@ for i,g in enumerate(GAMES):
     panels.append(f'''
     <a class="panel{' titled' if k=='seen' else ''}" href="games/{k}/" style="--a:{g['accent']}" data-bg="{g['bg']}" data-accent="{g['accent']}" data-cursor>
       <img src="assets/games/{k}.webp" srcset="assets/games/{k}-800.webp 800w, assets/games/{k}.webp 1600w" sizes="(max-width: 860px) 92vw, 60vw" width="1600" height="900" alt="{esc(g['title'])} key art" loading="lazy" decoding="async">
-      <span class="vortex" aria-hidden="true"></span>
       <span class="num">{n} / 07</span>
       <div class="meta"><div><div class="gen">{ico(g['icon'])}<span data-i18n="g.{k}.genre">{esc(g['genre'][0])}</span></div><h3>{esc(g['title'])}</h3><p class="tg" data-i18n="g.{k}.tag">{esc(g['tag'][0])}</p></div>{chip}</div>
     </a>''')

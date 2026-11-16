@@ -24,8 +24,6 @@
 </head>
 <body class="no-js">
 <script>document.body.classList.remove("no-js");</script>
-<div class="grain" aria-hidden="true"></div>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="liquid" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence id="liquid-t" type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="7"/><feDisplacementMap id="liquid-d" in="SourceGraphic" scale="0" xChannelSelector="R" yChannelSelector="G"/></filter></svg>
 <div class="loader" aria-hidden="true">
   <div class="ld-in">
     <div class="tile"><b>OG</b><i></i></div>
@@ -61,9 +59,8 @@
 
 <main id="top">
 <section class="hero" aria-labelledby="hero-title">
-  <canvas id="bricks" aria-hidden="true"></canvas>
-  <canvas id="sparks" aria-hidden="true"></canvas>
-  <div class="wrap">
+  <canvas id="hero-gl" aria-hidden="true"></canvas>
+    <div class="wrap">
     <div class="eyebrow"><i></i><span data-i18n="h.eyebrow">Roblox game studio · est. 2026</span></div>
     <h1 class="mark" id="hero-title"><span class="w">OVERGRIND</span><span class="bar" aria-hidden="true"></span></h1>
     <div class="studios">STUDIOS</div>
@@ -85,7 +82,6 @@
   <button class="gs" type="button" data-gs="1" aria-label="Golden stud" style="--x:91%;--y:17%"></button>
 </section>
 
-<div class="marquee" aria-hidden="true"><div class="track"><div class="item"><span>WYRMQUAKE</span><span class="star">✦</span><span class="o">NOSTALGIA RECESS</span><span class="star">✦</span><span>BRAINROT PIRATES</span><span class="star">✦</span><span class="o">SEEN ONLINE</span><span class="star">✦</span><span>ELEMENT CLASH: ARENA</span><span class="star">✦</span><span class="o">LANTERNFALL</span><span class="star">✦</span><span>THE LINE: DUBAI 2099</span><span class="star">✦</span></div><div class="item"><span>WYRMQUAKE</span><span class="star">✦</span><span class="o">NOSTALGIA RECESS</span><span class="star">✦</span><span>BRAINROT PIRATES</span><span class="star">✦</span><span class="o">SEEN ONLINE</span><span class="star">✦</span><span>ELEMENT CLASH: ARENA</span><span class="star">✦</span><span class="o">LANTERNFALL</span><span class="star">✦</span><span>THE LINE: DUBAI 2099</span><span class="star">✦</span></div></div></div>
 
 <section class="manifesto">
   <div class="wrap">
@@ -162,162 +158,44 @@
   <div class="rail">
     <a class="panel" href="games/wyrm/" style="--a:#8BE04E" data-bg="#0B140A" data-accent="#8BE04E" data-cursor>
       <img src="assets/games/wyrm.webp" srcset="assets/games/wyrm-800.webp 800w, assets/games/wyrm.webp 1600w" sizes="(max-width: 860px) 92vw, 60vw" width="1600" height="900" alt="WYRMQUAKE key art" loading="lazy" decoding="async">
-      <span class="vortex" aria-hidden="true"></span>
       <span class="num">01 / 07</span>
       <div class="meta"><div><div class="gen"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"></svg><span data-i18n="g.wyrm.genre">Dragon runner</span></div><h3>WYRMQUAKE</h3><p class="tg" data-i18n="g.wyrm.tag">Dive. Smash. Rise.</p></div><span class="chip dev"><i></i><span data-i18n="g.wyrm.status">In development · target winter 2026</span></span></div>
     </a>
     <a class="panel" href="games/recess/" style="--a:#FFB547" data-bg="#171007" data-accent="#FFB547" data-cursor>
       <img src="assets/games/recess.webp" srcset="assets/games/recess-800.webp 800w, assets/games/recess.webp 1600w" sizes="(max-width: 860px) 92vw, 60vw" width="1600" height="900" alt="NOSTALGIA RECESS key art" loading="lazy" decoding="async">
-      <span class="vortex" aria-hidden="true"></span>
       <span class="num">02 / 07</span>
       <div class="meta"><div><div class="gen"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 22v-4a2 2 0 1 0-4 0v4"/><path d="M18 5v17"/><path d="m4 6 7.106-3.553a2 2 0 0 1 1.788 0L20 6"/><path d="M6 5v17"/><circle cx="12" cy="9" r="2"/></svg><span data-i18n="g.recess.genre">Schoolyard multiplayer</span></div><h3>NOSTALGIA RECESS</h3><p class="tg" data-i18n="g.recess.tag">Recess never ended.</p></div><span class="chip test"><i></i><span data-i18n="g.recess.status">Friends playtest next</span></span></div>
     </a>
     <a class="panel" href="games/pirates/" style="--a:#2BD4E0" data-bg="#03141A" data-accent="#2BD4E0" data-cursor>
       <img src="assets/games/pirates.webp" srcset="assets/games/pirates-800.webp 800w, assets/games/pirates.webp 1600w" sizes="(max-width: 860px) 92vw, 60vw" width="1600" height="900" alt="BRAINROT PIRATES key art" loading="lazy" decoding="async">
-      <span class="vortex" aria-hidden="true"></span>
       <span class="num">03 / 07</span>
       <div class="meta"><div><div class="gen"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22V8"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/><circle cx="12" cy="5" r="3"/></svg><span data-i18n="g.pirates.genre">Pirate adventure</span></div><h3>BRAINROT PIRATES</h3><p class="tg" data-i18n="g.pirates.tag">Steal the seas.</p></div><span class="chip dev"><i></i><span data-i18n="g.pirates.status">In development</span></span></div>
     </a>
     <a class="panel titled" href="games/seen/" style="--a:#FF3B30" data-bg="#0D0F0E" data-accent="#FF3B30" data-cursor>
       <img src="assets/games/seen.webp" srcset="assets/games/seen-800.webp 800w, assets/games/seen.webp 1600w" sizes="(max-width: 860px) 92vw, 60vw" width="1600" height="900" alt="SEEN ONLINE key art" loading="lazy" decoding="async">
-      <span class="vortex" aria-hidden="true"></span>
       <span class="num">04 / 07</span>
       <div class="meta"><div><div class="gen"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="m12.5 17-.5-1-.5 1h1z"/><circle cx="15" cy="12" r="1"/><circle cx="9" cy="12" r="1"/></svg><span data-i18n="g.seen.genre">Horror</span></div><h3>SEEN ONLINE</h3><p class="tg" data-i18n="g.seen.tag">Some photos should stay offline.</p></div><span class="chip test"><i></i><span data-i18n="g.seen.status">Private beta next</span></span></div>
     </a>
     <a class="panel" href="games/clash/" style="--a:#A47BFF" data-bg="#100B1C" data-accent="#A47BFF" data-cursor>
       <img src="assets/games/clash.webp" srcset="assets/games/clash-800.webp 800w, assets/games/clash.webp 1600w" sizes="(max-width: 860px) 92vw, 60vw" width="1600" height="900" alt="ELEMENT CLASH: ARENA key art" loading="lazy" decoding="async">
-      <span class="vortex" aria-hidden="true"></span>
       <span class="num">05 / 07</span>
       <div class="meta"><div><div class="gen"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/><line x1="13" x2="19" y1="19" y2="13"/><line x1="16" x2="20" y1="16" y2="20"/><line x1="19" x2="21" y1="21" y2="19"/><polyline points="14.5 6.5 18 3 21 3 21 6 17.5 9.5"/><line x1="5" x2="9" y1="14" y2="18"/><line x1="7" x2="4" y1="17" y2="20"/><line x1="3" x2="5" y1="19" y2="21"/></svg><span data-i18n="g.clash.genre">Ranked elemental PvP</span></div><h3>ELEMENT CLASH: ARENA</h3><p class="tg" data-i18n="g.clash.tag">Pick an element. Climb the ranks.</p></div><span class="chip dev"><i></i><span data-i18n="g.clash.status">Season 1 in development</span></span></div>
     </a>
     <a class="panel" href="games/lantern/" style="--a:#FFC34D" data-bg="#070A15" data-accent="#FFC34D" data-cursor>
       <img src="assets/games/lantern.webp" srcset="assets/games/lantern-800.webp 800w, assets/games/lantern.webp 1600w" sizes="(max-width: 860px) 92vw, 60vw" width="1600" height="900" alt="LANTERNFALL key art" loading="lazy" decoding="async">
-      <span class="vortex" aria-hidden="true"></span>
       <span class="num">06 / 07</span>
       <div class="meta"><div><div class="gen"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 2h8l4 10H4L8 2Z"/><path d="M12 12v6"/><path d="M8 22v-2c0-1.1.9-2 2-2h4a2 2 0 0 1 2 2v2H8Z"/></svg><span data-i18n="g.lantern.genre">Co-op survival horror</span></div><h3>LANTERNFALL</h3><p class="tg" data-i18n="g.lantern.tag">Get through the dark together.</p></div><span class="chip dev"><i></i><span data-i18n="g.lantern.status">In development</span></span></div>
     </a>
     <a class="panel" href="games/line/" style="--a:#5EE7FF" data-bg="#120E08" data-accent="#5EE7FF" data-cursor>
       <img src="assets/games/line.webp" srcset="assets/games/line-800.webp 800w, assets/games/line.webp 1600w" sizes="(max-width: 860px) 92vw, 60vw" width="1600" height="900" alt="THE LINE: DUBAI 2099 key art" loading="lazy" decoding="async">
-      <span class="vortex" aria-hidden="true"></span>
       <span class="num">07 / 07</span>
       <div class="meta"><div><div class="gen"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/></svg><span data-i18n="g.line.genre">Story sci-fi</span></div><h3>THE LINE: DUBAI 2099</h3><p class="tg" data-i18n="g.line.tag">One city. One AI. One way up.</p></div><span class="chip dev"><i></i><span data-i18n="g.line.status">In development</span></span></div>
     </a>
-    <div class="end"><b data-i18n="w.end">And we're only getting started.</b><a class="btn ghost" href="#dives"><span data-i18n="w.endc">Read the details</span><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg></a></div>
+    <div class="end"><b data-i18n="w.end">And we're only getting started.</b><a class="btn ghost" href="#road"><span data-i18n="w.endc">See the roadmap</span><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg></a></div>
   </div>
 </section>
 
-<section class="dives" id="dives" aria-label="Games in detail">
-  <button class="gs" type="button" data-gs="4" aria-label="Golden stud" style="--x:96%;--y:60px"></button>
-  <div class="wrap"><div class="kicker" data-i18n="d.k">In detail</div><h2 class="sec-title" data-i18n="d.t">What we're building</h2></div>
-  
-  <article class="dive" id="g-wyrm" style="--a:#8BE04E" data-bg="#0B140A" data-accent="#8BE04E">
-    <div class="wrap grid">
-      <figure class="art" data-cursor><img src="assets/games/wyrm.webp" srcset="assets/games/wyrm-800.webp 800w, assets/games/wyrm.webp 1600w" sizes="(max-width: 860px) 92vw, 60vw" width="1600" height="900" alt="WYRMQUAKE key art" loading="lazy" decoding="async"><span class="badge"><span class="chip dev"><i></i><span data-i18n="g.wyrm.status">In development · target winter 2026</span></span></span></figure>
-      <div class="txt">
-        <div class="idx"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"></svg><span>01</span><span data-i18n="g.wyrm.genre">Dragon runner</span></div>
-        <h3><span class="ln">WYRMQUAKE</span></h3>
-        <p class="tag" data-i18n="g.wyrm.tag">Dive. Smash. Rise.</p>
-        <p class="desc" data-i18n="g.wyrm.desc">Ride a dragon straight into the ground, tunnel through the earth and burst out the other side, taking everything in your way with you. Every 1000 metres you pick a card, and some of them are a gamble.</p>
-        <ul><li data-i18n="g.wyrm.f0">Story: The Great Rift, with Overlord Quadrax and your rider Pip</li><li data-i18n="g.wyrm.f1">Bosses with weak points you have to find</li><li data-i18n="g.wyrm.f2">A hoard you fill with everything you dig up</li><li data-i18n="g.wyrm.f3">A daily route and live races with a league</li></ul>
-        <div class="fx"><div><small data-i18n="g.wyrm.fl0">Mode</small><b data-i18n="g.wyrm.fv0">Solo · live races</b></div><div><small data-i18n="g.wyrm.fl1">Look</small><b data-i18n="g.wyrm.fv1">Shiny cartoon</b></div></div>
-        <a class="btn ghost mag more" href="games/wyrm/"><span data-i18n="d.more">Open the game page</span><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
-      </div>
-    </div>
-  </article>
-  <article class="dive" id="g-recess" style="--a:#FFB547" data-bg="#171007" data-accent="#FFB547">
-    <div class="wrap grid">
-      <figure class="art" data-cursor><img src="assets/games/recess.webp" srcset="assets/games/recess-800.webp 800w, assets/games/recess.webp 1600w" sizes="(max-width: 860px) 92vw, 60vw" width="1600" height="900" alt="NOSTALGIA RECESS key art" loading="lazy" decoding="async"><span class="badge"><span class="chip test"><i></i><span data-i18n="g.recess.status">Friends playtest next</span></span></span></figure>
-      <div class="txt">
-        <div class="idx"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 22v-4a2 2 0 1 0-4 0v4"/><path d="M18 5v17"/><path d="m4 6 7.106-3.553a2 2 0 0 1 1.788 0L20 6"/><path d="M6 5v17"/><circle cx="12" cy="9" r="2"/></svg><span>02</span><span data-i18n="g.recess.genre">Schoolyard multiplayer</span></div>
-        <h3><span class="ln">NOSTALGIA RECESS</span></h3>
-        <p class="tag" data-i18n="g.recess.tag">Recess never ended.</p>
-        <p class="desc" data-i18n="g.recess.desc">Tag, hide and seek, bear cave: the schoolyard games you played between 2005 and 2017, back with your friends on one big playground. Every character gets their own look.</p>
-        <ul><li data-i18n="g.recess.f0">Bear cave, hide and seek and tag at launch</li><li data-i18n="g.recess.f1">A glossy cartoon world, no studs</li><li data-i18n="g.recess.f2">English first, then German and Spanish</li><li data-i18n="g.recess.f3">Weekly updates after release</li></ul>
-        <div class="fx"><div><small data-i18n="g.recess.fl0">Players</small><b data-i18n="g.recess.fv0">Multiplayer</b></div><div><small data-i18n="g.recess.fl1">For</small><b data-i18n="g.recess.fv1">Kids of 2005–2017</b></div></div>
-        <a class="btn ghost mag more" href="games/recess/"><span data-i18n="d.more">Open the game page</span><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
-      </div>
-    </div>
-  </article>
-  <article class="dive" id="g-pirates" style="--a:#2BD4E0" data-bg="#03141A" data-accent="#2BD4E0">
-    <div class="wrap grid">
-      <figure class="art" data-cursor><img src="assets/games/pirates.webp" srcset="assets/games/pirates-800.webp 800w, assets/games/pirates.webp 1600w" sizes="(max-width: 860px) 92vw, 60vw" width="1600" height="900" alt="BRAINROT PIRATES key art" loading="lazy" decoding="async"><span class="badge"><span class="chip dev"><i></i><span data-i18n="g.pirates.status">In development</span></span></span></figure>
-      <div class="txt">
-        <div class="idx"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22V8"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/><circle cx="12" cy="5" r="3"/></svg><span>03</span><span data-i18n="g.pirates.genre">Pirate adventure</span></div>
-        <h3><span class="ln">BRAINROT PIRATES</span></h3>
-        <p class="tag" data-i18n="g.pirates.tag">Steal the seas.</p>
-        <p class="desc" data-i18n="g.pirates.desc">An ocean built from tiny studs, with big rolling waves and white foam. Brainrot crews sail out of Brainrot Bay, trade, raid and swim wherever they want.</p>
-        <ul><li data-i18n="g.pirates.f0">Brainrot Bay: a big harbour island with real shops</li><li data-i18n="g.pirates.f1">Trash Tide West is safe water, Mistmouth North is raid territory</li><li data-i18n="g.pirates.f2">Caribbean daylight and golden-hour evenings</li><li data-i18n="g.pirates.f3">A brainrot crew with googly eyes, more funny than scary</li></ul>
-        <div class="fx"><div><small data-i18n="g.pirates.fl0">World</small><b data-i18n="g.pirates.fv0">Everything in studs</b></div><div><small data-i18n="g.pirates.fl1">Swimming</small><b data-i18n="g.pirates.fv1">Free, anywhere</b></div></div>
-        <a class="btn ghost mag more" href="games/pirates/"><span data-i18n="d.more">Open the game page</span><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
-      </div>
-    </div>
-  </article>
-  <article class="dive" id="g-seen" style="--a:#FF3B30" data-bg="#0D0F0E" data-accent="#FF3B30">
-    <div class="wrap grid">
-      <figure class="art" data-cursor><img src="assets/games/seen.webp" srcset="assets/games/seen-800.webp 800w, assets/games/seen.webp 1600w" sizes="(max-width: 860px) 92vw, 60vw" width="1600" height="900" alt="SEEN ONLINE key art" loading="lazy" decoding="async"><span class="badge"><span class="chip test"><i></i><span data-i18n="g.seen.status">Private beta next</span></span></span></figure>
-      <div class="txt">
-        <div class="idx"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="m12.5 17-.5-1-.5 1h1z"/><circle cx="15" cy="12" r="1"/><circle cx="9" cy="12" r="1"/></svg><span>04</span><span data-i18n="g.seen.genre">Horror</span></div>
-        <h3><span class="ln">SEEN ONLINE</span></h3>
-        <p class="tag" data-i18n="g.seen.tag">Some photos should stay offline.</p>
-        <p class="desc" data-i18n="g.seen.desc">You&#x27;re an archivist in a white lab coat with a number on your back. Your job is to track down the people who vanished from old photos. Some of them are still out there, and they have changed.</p>
-        <ul><li data-i18n="g.seen.f0">A real, usable PC in the lobby is your way into the worlds</li><li data-i18n="g.seen.f1">The Bell Man, the Swimmer and the thing in the field</li><li data-i18n="g.seen.f2">Built to play on phones as well</li><li data-i18n="g.seen.f3">Robux only for cosmetics: coat colours and flashlight light</li></ul>
-        <div class="fx"><div><small data-i18n="g.seen.fl0">Players</small><b data-i18n="g.seen.fv0">Co-op archivists</b></div><div><small data-i18n="g.seen.fl1">Platform</small><b data-i18n="g.seen.fv1">PC · Mobile</b></div></div>
-        <a class="btn ghost mag more" href="games/seen/"><span data-i18n="d.more">Open the game page</span><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
-      </div>
-    </div>
-  </article>
-  <article class="dive" id="g-clash" style="--a:#A47BFF" data-bg="#100B1C" data-accent="#A47BFF">
-    <div class="wrap grid">
-      <figure class="art" data-cursor><img src="assets/games/clash.webp" srcset="assets/games/clash-800.webp 800w, assets/games/clash.webp 1600w" sizes="(max-width: 860px) 92vw, 60vw" width="1600" height="900" alt="ELEMENT CLASH: ARENA key art" loading="lazy" decoding="async"><span class="badge"><span class="chip dev"><i></i><span data-i18n="g.clash.status">Season 1 in development</span></span></span></figure>
-      <div class="txt">
-        <div class="idx"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/><line x1="13" x2="19" y1="19" y2="13"/><line x1="16" x2="20" y1="16" y2="20"/><line x1="19" x2="21" y1="21" y2="19"/><polyline points="14.5 6.5 18 3 21 3 21 6 17.5 9.5"/><line x1="5" x2="9" y1="14" y2="18"/><line x1="7" x2="4" y1="17" y2="20"/><line x1="3" x2="5" y1="19" y2="21"/></svg><span>05</span><span data-i18n="g.clash.genre">Ranked elemental PvP</span></div>
-        <h3><span class="ln">ELEMENT CLASH</span><span class="ln">ARENA</span></h3>
-        <p class="tag" data-i18n="g.clash.tag">Pick an element. Climb the ranks.</p>
-        <p class="desc" data-i18n="g.clash.desc">Third-person elemental fights in ranked 1v1, 2v2 and 3v3, on PC and mobile. Outside the arena there&#x27;s a free-fight map in our own stud style, with a whole city to fight through.</p>
-        <ul><li data-i18n="g.clash.f0">Ranked 1v1 · 2v2 · 3v3</li><li data-i18n="g.clash.f1">Coins from matches, wins, quests and KOs</li><li data-i18n="g.clash.f2">Skins, auras, emotes, poses, KO effects and trails</li><li data-i18n="g.clash.f3">Season 1 at launch, Season 2 takes you into the Underworld</li></ul>
-        <div class="fx"><div><small data-i18n="g.clash.fl0">Modes</small><b data-i18n="g.clash.fv0">Ranked · Free fight</b></div><div><small data-i18n="g.clash.fl1">Platform</small><b data-i18n="g.clash.fv1">PC · Mobile</b></div></div>
-        <a class="btn ghost mag more" href="games/clash/"><span data-i18n="d.more">Open the game page</span><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
-      </div>
-    </div>
-  </article>
-  <article class="dive" id="g-lantern" style="--a:#FFC34D" data-bg="#070A15" data-accent="#FFC34D">
-    <div class="wrap grid">
-      <figure class="art" data-cursor><img src="assets/games/lantern.webp" srcset="assets/games/lantern-800.webp 800w, assets/games/lantern.webp 1600w" sizes="(max-width: 860px) 92vw, 60vw" width="1600" height="900" alt="LANTERNFALL key art" loading="lazy" decoding="async"><span class="badge"><span class="chip dev"><i></i><span data-i18n="g.lantern.status">In development</span></span></span></figure>
-      <div class="txt">
-        <div class="idx"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 2h8l4 10H4L8 2Z"/><path d="M12 12v6"/><path d="M8 22v-2c0-1.1.9-2 2-2h4a2 2 0 0 1 2 2v2H8Z"/></svg><span>06</span><span data-i18n="g.lantern.genre">Co-op survival horror</span></div>
-        <h3><span class="ln">LANTERNFALL</span></h3>
-        <p class="tag" data-i18n="g.lantern.tag">Get through the dark together.</p>
-        <p class="desc" data-i18n="g.lantern.desc">A co-op survival horror game for you and your friends. Nobody makes it through the dark alone, so you&#x27;d better stick together.</p>
-        <ul><li data-i18n="g.lantern.f0">Built for co-op from the start</li><li data-i18n="g.lantern.f1">Survival horror, built milestone by milestone</li></ul>
-        <div class="fx"><div><small data-i18n="g.lantern.fl0">Players</small><b data-i18n="g.lantern.fv0">Co-op</b></div><div><small data-i18n="g.lantern.fl1">Genre</small><b data-i18n="g.lantern.fv1">Survival horror</b></div></div>
-        <a class="btn ghost mag more" href="games/lantern/"><span data-i18n="d.more">Open the game page</span><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
-      </div>
-    </div>
-  </article>
-  <article class="dive" id="g-line" style="--a:#5EE7FF" data-bg="#120E08" data-accent="#5EE7FF">
-    <div class="wrap grid">
-      <figure class="art" data-cursor><img src="assets/games/line.webp" srcset="assets/games/line-800.webp 800w, assets/games/line.webp 1600w" sizes="(max-width: 860px) 92vw, 60vw" width="1600" height="900" alt="THE LINE: DUBAI 2099 key art" loading="lazy" decoding="async"><span class="badge"><span class="chip dev"><i></i><span data-i18n="g.line.status">In development</span></span></span></figure>
-      <div class="txt">
-        <div class="idx"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/></svg><span>07</span><span data-i18n="g.line.genre">Story sci-fi</span></div>
-        <h3><span class="ln">THE LINE</span><span class="ln">DUBAI 2099</span></h3>
-        <p class="tag" data-i18n="g.line.tag">One city. One AI. One way up.</p>
-        <p class="desc" data-i18n="g.line.desc">Dubai, 2099. The city is one vertical line in the desert, run by an AI called MOTHERLINE. You play Amir, a maintenance tech who is going to get his sister Layla back.</p>
-        <ul><li data-i18n="g.line.f0">A story-driven campaign</li><li data-i18n="g.line.f1">Realistic graphics with reflections and detail everywhere</li><li data-i18n="g.line.f2">A huge city with room after room to explore</li></ul>
-        <div class="fx"><div><small data-i18n="g.line.fl0">Hero</small><b data-i18n="g.line.fv0">Amir, maintenance tech</b></div><div><small data-i18n="g.line.fl1">Enemy</small><b data-i18n="g.line.fv1">MOTHERLINE</b></div></div>
-        <a class="btn ghost mag more" href="games/line/"><span data-i18n="d.more">Open the game page</span><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
-      </div>
-    </div>
-  </article>
-</section>
 
-<section class="lab">
-  <div class="wrap">
-    <button class="gs" type="button" data-gs="5" aria-label="Golden stud" style="--x:1%;--y:70%"></button>
-    <div class="kicker" data-i18n="l.k">Early concepts</div>
-    <h2 class="sec-title" data-i18n="l.t">Still in the lab</h2>
-    <div class="lab-grid"><div class="lab-card"><span class="chip"><i></i><span data-i18n="l.chip">Concept</span></span><div><b>BRAINROT DENTIST</b><p data-i18n="lab.0">Dental horror for brainrot patients.</p></div></div><div class="lab-card"><span class="chip"><i></i><span data-i18n="l.chip">Concept</span></span><div><b>BRAINROT CAGE BREAK</b><p data-i18n="lab.1">Cage puzzles, a ringmaster and drones.</p></div></div></div>
-  </div>
-</section>
 
 <section class="road" id="road" aria-labelledby="road-title">
   <div class="wrap">
@@ -379,18 +257,7 @@
       <button class="dl-play" type="button" aria-label="Play the community video with FreshStatue"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg></button>
       <figcaption data-i18n="s.vid">FreshStatue introduces Overgrind: who we are, where the name comes from and who we are looking for.</figcaption>
     </figure>
-    <div class="grid">
-      <div class="copy">
-        <p data-i18n="s.p1">Overgrind is a shared Roblox community. Different creators publish under one name and hold each other to the same bar.</p>
-        <p data-i18n="s.p2">No copy-paste games, no first drafts on the front page. Every release has to be something we would actually play ourselves.</p>
-      </div>
-      <div class="ledger">
-        <div class="row"><span class="rank" data-count="254">254</span><span class="role">Founder</span><span class="who" data-i18n="s.r1">runs the label</span></div>
-        <div class="row"><span class="rank" data-count="200">200</span><span class="role">Lead Dev</span><span class="who" data-i18n="s.r2">leads a game</span></div>
-        <div class="row"><span class="rank" data-count="150">150</span><span class="role">Developer</span><span class="who" data-i18n="s.r3">builds with us</span></div>
-        <div class="row"><span class="rank" data-count="1">1</span><span class="role">Grinder</span><span class="who" data-i18n="s.r4">that's you</span></div>
-      </div>
-    </div>
+    <p class="studio-p" data-i18n="s.p1">Overgrind is a shared Roblox community. Different creators publish under one name and hold each other to the same bar.</p>
   </div>
 </section>
 
@@ -427,6 +294,7 @@
 
 <section class="apply" id="apply" aria-labelledby="apply-title">
   <div class="wrap">
+    <button class="gs" type="button" data-gs="4" aria-label="Golden stud" style="--x:97%;--y:8%"></button>
     <div class="kicker" data-i18n="a.k">Build with us</div>
     <h2 class="sec-title" id="apply-title" data-i18n="a.t">Want to grind with us?</h2>
     <div class="ap-grid">
@@ -453,6 +321,7 @@
 
 <section class="join" id="join" aria-labelledby="join-title">
   <div class="glow" aria-hidden="true"></div>
+  <button class="gs" type="button" data-gs="5" aria-label="Golden stud" style="--x:4%;--y:86%"></button>
   <div class="wrap">
     <h2 id="join-title"><span data-i18n="j.1">Get in before</span><br><span class="hot" data-i18n="j.2">the first drop.</span></h2>
     <p data-i18n="j.p">Join the Roblox community to hear first when a game opens up, and follow us on TikTok for devlogs and clips.</p>
@@ -493,11 +362,12 @@ var GAMES = [{"key": "wyrm", "bg": "#0B140A", "accent": "#8BE04E"}, {"key": "rec
 var DE = {"ld": "Lade sieben Welten", "cur": "ANSEHEN", "n.games": "Games", "n.road": "Roadmap", "n.studio": "Studio", "n.join": "Mitmachen", "n.cta": "Auf Roblox beitreten", "h.eyebrow": "Roblox-Gamestudio · seit 2026", "h.lede": "Vier Roblox-Devs, sieben Games in der Werkstatt. Jedes wird so lange gebaut, bis es mehr als nur gut genug ist.", "s.crew": "Die Crew", "cr.f": "Founder", "cr.d": "Developer", "h.c1": "Community beitreten", "h.c2": "Games ansehen", "h.scroll": "Scrollen", "f.1": "Games in Entwicklung", "f.2": "Devs in der Crew", "f.3": "eine Crew aus der Schweiz und Deutschland", "m.k": "Warum Overgrind", "m.t": "Wir veröffentlichen nicht die erste Version, die funktioniert. Sondern die, die wir selbst spielen würden: nach der Schule, nach der Arbeit, um zwei Uhr nachts. Das ist der Grind.", "w.t": "Sieben Welten.<br>Eine Crew.", "w.p": "Jedes Game hat seinen eigenen Look, eigene Regeln und ein eigenes Team. Scroll durch alle und lies unten die Details.", "w.end": "Und das ist erst der Anfang.", "w.endc": "Details lesen", "d.k": "Im Detail", "d.t": "Woran wir bauen", "l.k": "Frühe Konzepte", "l.t": "Noch im Labor", "l.chip": "Konzept", "r.k": "Roadmap", "r.t": "Was als Nächstes kommt", "r.1s": "Jetzt", "r.1h": "Sieben Games in der Werkstatt", "r.1p": "Jedes Projekt entsteht gerade in Roblox Studio.", "r.2s": "Als Nächstes", "r.2h": "Erste Playtests", "r.2p": "Nostalgia Recess: Test mit Freunden.", "r.2q": "SEEN ONLINE: private Beta.", "r.3s": "Winter 2026", "r.3h": "Erste Releases", "r.3p": "Wyrmquake peilt den Winter an.", "r.3q": "Nostalgia Recess bekommt nach dem Start wöchentliche Updates.", "r.4s": "Später", "r.4h": "Seasons und mehr", "r.4p": "Element Clash startet mit Season 1. Season 2 führt in die Unterwelt.", "r.note": "Pläne können sich ändern. Tritt der Community bei, dann erfährst du es zuerst.", "s.k": "Das Studio", "s.t": "Ein Label.<br>Viele Creator.", "s.p1": "Overgrind ist eine gemeinsame Roblox-Community. Verschiedene Creator veröffentlichen unter einem Namen und messen sich am gleichen Anspruch.", "s.p2": "Keine Copy-Paste-Games, keine ersten Entwürfe auf der Startseite. Jeder Release muss etwas sein, das wir selbst spielen würden.", "s.r1": "führt das Label", "s.r2": "leitet ein Game", "s.r3": "baut mit uns", "s.r4": "das bist du", "j.1": "Sei dabei vor", "j.2": "dem ersten Drop.", "j.p": "Tritt der Roblox-Community bei, damit du zuerst erfährst, wenn ein Game aufgeht, und folg uns auf TikTok für Devlogs und Clips.", "j.c1": "Auf Roblox beitreten", "n.devlog": "Devlog", "n.apply": "Ins Team", "d.more": "Zur Game-Seite", "v.k": "Devlog", "v.t": "Hinter dem Grind", "v.ep": "Folge 0", "v.h": "Das ist Overgrind", "v.p": "Wer wir sind, was wir bauen und warum es gleich sieben Games sind. 28 Sekunden, ohne Füllstoff.", "v.c": "Mehr auf TikTok", "v.cr": "Stimme: ElevenLabs", "v.soon": "bald", "a.k": "Bau mit uns", "a.t": "Lust, mit uns zu grinden?", "a.p1": "Wir suchen immer Builder, Scripter, Modeler, UI- und VFX-Leute, denen Details genauso wichtig sind wie uns.", "a.p2": "Erzähl uns, wer du bist, und schick etwas, das du gebaut hast. Wir lesen jede Bewerbung.", "a.f1": "Dein Name", "a.f2": "Roblox-Benutzername", "a.f3": "Was du am besten kannst", "a.f4": "Portfolio oder Game-Link", "a.f5": "Ein paar Worte zu dir", "a.o": "Etwas anderes", "a.send": "Bewerbung senden", "a.note": "Öffnet dein Mailprogramm mit allem ausgefüllt. Auf dieser Seite wird nichts gespeichert.", "s.vid": "FreshStatue stellt Overgrind vor: wer wir sind, woher der Name kommt und wen wir suchen.", "gp.back": "Alle Games", "gp.follow": "Entwicklung verfolgen", "gp.k1": "Das Game", "gp.k2": "Galerie", "gp.soon": "Bald mehr Bilder", "gp.soonp": "Neue Screenshots und Clips kommen mit jedem Devlog.", "gp.next": "Nächste Welt", "ft.1": "Gebaut von freshstatue und der Crew", "ft.2": "Nicht mit der Roblox Corporation verbunden.", "g.wyrm.genre": "Drachen-Runner", "g.wyrm.tag": "Abtauchen. Zerschmettern. Aufsteigen.", "g.wyrm.status": "In Entwicklung · Ziel Winter 2026", "g.wyrm.desc": "Reite einen Drachen direkt in den Boden, grab dich durch die Erde und brich auf der anderen Seite wieder heraus. Alles, was im Weg steht, nimmst du mit. Alle 1000 Meter wählst du eine Karte, und manche davon sind ein Risiko.", "g.wyrm.f0": "Story „Der grosse Riss“ mit Overlord Quadrax und Reiterin Pip", "g.wyrm.f1": "Bosse mit Schwachpunkten, die du finden musst", "g.wyrm.f2": "Ein Hort, den du mit allem füllst, was du ausgräbst", "g.wyrm.f3": "Tägliche Strecke und Live-Rennen mit Liga", "g.wyrm.fl0": "Modus", "g.wyrm.fv0": "Solo · Live-Rennen", "g.wyrm.fl1": "Look", "g.wyrm.fv1": "Glänzender Cartoon", "g.recess.genre": "Schulhof-Multiplayer", "g.recess.tag": "Die Pause ist nie vorbei.", "g.recess.status": "Als Nächstes: Test mit Freunden", "g.recess.desc": "Fangen, Verstecken, Bärenhöhle: die Pausenspiele von 2005 bis 2017, zurück mit deinen Freunden auf einem grossen Schulhof. Jede Figur bekommt ihren eigenen Look.", "g.recess.f0": "Zum Start: Bärenhöhle, Verstecken und Fangen", "g.recess.f1": "Eine glänzende Cartoon-Welt, ganz ohne Noppen", "g.recess.f2": "Zuerst Englisch, dann Deutsch und Spanisch", "g.recess.f3": "Nach dem Release jede Woche Updates", "g.recess.fl0": "Spieler", "g.recess.fv0": "Multiplayer", "g.recess.fl1": "Für", "g.recess.fv1": "Kinder von 2005–2017", "g.pirates.genre": "Piraten-Abenteuer", "g.pirates.tag": "Erobere die Meere.", "g.pirates.status": "In Entwicklung", "g.pirates.desc": "Ein Ozean aus feinen Noppensteinen, mit grossen Wellen und weissem Schaum. Brainrot-Crews segeln aus der Brainrot Bay los, handeln, plündern und schwimmen, wohin sie wollen.", "g.pirates.f0": "Brainrot Bay: eine grosse Hafeninsel mit echten Läden", "g.pirates.f1": "Trash Tide West ist sicheres Wasser, Mistmouth Nord ist Raid-Gebiet", "g.pirates.f2": "Karibisches Tageslicht und Abende zur goldenen Stunde", "g.pirates.f3": "Eine Brainrot-Crew mit Glubschaugen, eher lustig als gruselig", "g.pirates.fl0": "Welt", "g.pirates.fv0": "Alles aus Noppen", "g.pirates.fl1": "Schwimmen", "g.pirates.fv1": "Frei, überall", "g.seen.genre": "Horror", "g.seen.tag": "Manche Fotos bleiben besser offline.", "g.seen.status": "Als Nächstes: private Beta", "g.seen.desc": "Du bist Archivar im weissen Laborkittel, mit einer Nummer auf dem Rücken. Deine Aufgabe: die Menschen finden, die aus alten Fotos verschwunden sind. Manche sind noch da draussen, und sie haben sich verändert.", "g.seen.f0": "Ein echt bedienbarer PC in der Lobby ist dein Weg in die Welten", "g.seen.f1": "Der Glockenmann, der Schwimmer und das Wesen im Feld", "g.seen.f2": "Auch fürs Spielen auf dem Handy gebaut", "g.seen.f3": "Robux nur für Kosmetik: Kittelfarben und Taschenlampenlicht", "g.seen.fl0": "Spieler", "g.seen.fv0": "Archivare im Team", "g.seen.fl1": "Plattform", "g.seen.fv1": "PC · Handy", "g.clash.genre": "Ranked-Elementkampf", "g.clash.tag": "Wähl dein Element. Steig im Rang.", "g.clash.status": "Season 1 in Entwicklung", "g.clash.desc": "Third-Person-Elementkämpfe im Ranked-Modus 1v1, 2v2 und 3v3, auf PC und Handy. Ausserhalb der Arena gibt es eine Free-Fight-Map im eigenen Noppen-Stil, mit einer ganzen Stadt zum Durchkämpfen.", "g.clash.f0": "Ranked 1v1 · 2v2 · 3v3", "g.clash.f1": "Coins für Matches, Siege, Quests und KOs", "g.clash.f2": "Skins, Auren, Emotes, Posen, KO-Effekte und Trails", "g.clash.f3": "Start mit Season 1, Season 2 führt in die Unterwelt", "g.clash.fl0": "Modi", "g.clash.fv0": "Ranked · Free Fight", "g.clash.fl1": "Plattform", "g.clash.fv1": "PC · Handy", "g.lantern.genre": "Koop-Survival-Horror", "g.lantern.tag": "Kommt gemeinsam durch die Dunkelheit.", "g.lantern.status": "In Entwicklung", "g.lantern.desc": "Ein Koop-Survival-Horror für dich und deine Freunde. Allein schafft es niemand durch die Dunkelheit, also bleibt besser zusammen.", "g.lantern.f0": "Von Anfang an für Koop gebaut", "g.lantern.f1": "Survival-Horror, Meilenstein für Meilenstein gebaut", "g.lantern.fl0": "Spieler", "g.lantern.fv0": "Koop", "g.lantern.fl1": "Genre", "g.lantern.fv1": "Survival-Horror", "g.line.genre": "Story-Sci-Fi", "g.line.tag": "Eine Stadt. Eine KI. Ein Weg nach oben.", "g.line.status": "In Entwicklung", "g.line.desc": "Dubai, 2099. Die Stadt ist eine einzige senkrechte Linie in der Wüste, gesteuert von einer KI namens MOTHERLINE. Du spielst Amir, einen Wartungstechniker, der seine Schwester Layla zurückholen will.", "g.line.f0": "Eine storybasierte Kampagne", "g.line.f1": "Realistische Grafik mit Reflexionen und Details überall", "g.line.f2": "Eine riesige Stadt mit Raum um Raum zum Erkunden", "g.line.fl0": "Held", "g.line.fv0": "Amir, Wartungstechniker", "g.line.fl1": "Gegner", "g.line.fv1": "MOTHERLINE", "lab.0": "Zahnarzt-Horror für Brainrot-Patienten.", "lab.1": "Käfig-Rätsel, ein Zirkusdirektor und Drohnen.", "n.crew": "Crew", "lu.r0": "Founder", "lu.r1": "Creator", "lu.r2": "Avatar lädt", "lu.r3": "Avatar lädt", "lu.you": "Du?", "lu.r4": "Freier Platz", "lu.k0": "Die Crew", "lu.t0": "Das sind<br>die Grinder.", "lu.p0": "Vier Devs aus der Schweiz und Deutschland. Beweg die Maus, sie schauen dir nach. Klick einen an und sag Hallo, tipp aufs Namensschild für seine Karte.", "lu.k1": "Founder", "lu.p1": "Führt das Label und baut die Games. Ja, er ist aus Marmor. Klick ihn an und schau, was passiert.", "lu.k2": "Creator", "lu.p2": "Noch kein Video, aber merk dir diesen Avatar. Die Krone kommt bald in deinen Feed.", "lu.k3": "Developer", "lu.p3": "Zwei weitere Devs aus der Crew. Ihre Avatare laden noch. Ihr Code nicht.", "lu.k4": "Freier Platz", "lu.t4": "Dieser Platz<br>gehört dir.", "lu.p4": "Builder, Scripter, Modeler, Designer: Rauf aufs Podest.", "lu.c": "Jetzt bewerben", "lu.hint": "bewegen · klicken · hallo sagen", "lu.fit": "Game-Outfits", "dl.0": "Das ist Overgrind", "dlw.0": "28 s", "dl.1": "Wyrmquake-Devlog", "dlw.1": "bald", "ld.t": "Trete Overgrind bei", "ld.by": "von freshstatue und der Crew", "ld.tip": "Tipp: Auf dieser Seite sind 10 goldene Noppen versteckt.", "f.4": "Mitglieder in der Community", "n.build": "Builder", "tt.h": "Frisch von TikTok", "tt.p": "Unsere neusten Clips und Devlogs direkt von TikTok. Sie laden von tiktok.com, dabei kann TikTok Cookies setzen.", "tt.c": "TikTok-Videos laden", "b.k": "Avatar-Builder", "b.t": "Bau deinen<br>Grinder.", "b.p": "Wähl Farben, ein Gesicht und ein Game-Outfit. Lade deine Crew-Karte runter, teil sie oder schick sie mit deiner Bewerbung.", "b.hint": "ziehen zum Drehen · klicken für ein Emote", "b.skin": "Haut", "b.shirt": "Shirt", "b.pants": "Hose", "b.face": "Gesicht", "b.fit": "Game-Outfit", "b.name": "Name auf der Karte", "b.role": "Rolle", "b.dl": "Karte runterladen", "b.share": "Teilen", "b.apply": "Mit diesem Avatar bewerben", "gs.role": "Du hast jede goldene Noppe gefunden", "gs.r1": "Noppen", "gs.r2": "Status", "gs.r2v": "Zertifizierter Grinder", "gs.q": "„Echte Grinder schauen in jede Ecke.“"};
 </script>
 <script src="app.js"></script>
-<script type="module" src="bricks.js"></script>
+<script type="module" src="hero.js"></script>
 <script type="module" src="lineup.js"></script>
 <script type="module" src="scenes.js"></script>
 <script type="module" src="builder.js"></script>
 <script type="module" src="extras.js"></script>
+<script type="module" src="buddies.js"></script>
 <script src="transition.js"></script>
 <script data-goatcounter="https://overgrind.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </body>
