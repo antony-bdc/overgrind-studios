@@ -54,6 +54,10 @@ export const LOOPS = {
   hang(t, p) { p.rs = p.ls = 172; p.rf = p.lf = 6; p.ll = Math.sin(t * 2) * .12; p.lr = -p.ll; p.rz = Math.sin(t * 1.3) * .05; },
 };
 
+/* time-of-day mood (visitor's clock): sleepy at night, stretchy in the morning, party in the evening */
+export function mood() { let h = new Date().getHours(); try { const q = new URLSearchParams(location.search).get("hour"); if (q) h = +q; } catch (e) {} return h >= 22 || h < 6 ? "night" : h < 11 ? "morning" : h >= 18 ? "evening" : "day"; }
+const MOOD_EXTRA = { night: ["yawn", "yawn", "stretch", "lookaround"], morning: ["stretch", "stretch", "yawn"], evening: ["dance", "cheer", "dance"], day: [] };
+LOOPS.sleepy = (t, p) => { p.sy = 1 + Math.sin(t * 1.2) * .012; p.hx = .16 + Math.sin(t * 1.2) * .04; p.hz = Math.sin(t * .5) * .05; p.rf = p.lf = 2; p.rs = p.ls = 2; p.rx = .03; };
 const IDLE = { fs: ["lookaround", "stretch", "phone", "tapfoot", "yawn", "shrug", "think"], an: ["lookaround", "crown", "tapfoot", "stretch", "dab", "shrug", "phone"], box: ["lookaround", "stretch", "tapfoot", "shrug"] };
 const VOICE = { fs: { wave: "hi", hello: "hi", freeze: "touch", jump: "grind", point: "founder", dance: "built", victory: "built", cheer: "five" }, an: { wave: "hi", hello: "hi", spin: "spin", jump: "go", point: "crown", dance: "go", crown: "crown", victory: "go", cheer: "five" } };
 
@@ -61,7 +65,7 @@ export class Actor {
   constructor(J, o = {}) {
     this.J = J; this.who = J.key; this.loop = o.loop || "idle"; this.idle = o.idle !== false; this.voice = o.voice !== false;
     this.t = Math.random() * 10; this.em = null; this.et = 0; this.next = 3 + Math.random() * 5; this.look = { yaw: 0, pitch: 0, ty: 0, tp: 0 };
-    this.p = P0(); this.prevLoop = null; this.loopW = 1;
+    this.p = P0(); this.prevLoop = null; this.loopW = 1; this.mood = mood();
   }
   setLoop(name) { if (name === this.loop) return; this.prevLoop = this.loop; this.loop = name; this.loopW = 0; }
   play(name, { voice = true, sound = true } = {}) {
@@ -75,13 +79,13 @@ export class Actor {
   update(dt) {
     this.t += dt; const t = this.t, J = this.J;
     // base loop (cross-fades when the loop changes)
-    const p = P0(); (LOOPS[this.loop] || LOOPS.idle)(t, p);
+    const p = P0(); (LOOPS[this.loop === "idle" && this.mood === "night" ? "sleepy" : this.loop] || LOOPS.idle)(t, p);
     if (this.prevLoop && this.loopW < 1) { this.loopW = Math.min(1, this.loopW + dt * 4); const q = P0(); (LOOPS[this.prevLoop] || LOOPS.idle)(t, q); for (const k of KEYS) p[k] = q[k] + (p[k] - q[k]) * sm(this.loopW); }
     // head follows the look target
     this.look.yaw += (this.look.ty - this.look.yaw) * Math.min(1, dt * 6); this.look.pitch += (this.look.tp - this.look.pitch) * Math.min(1, dt * 6);
     p.hy += this.look.yaw * .75; p.hx += this.look.pitch; p.ry += this.look.yaw * .2;
     // emote on top
-    if (!this.em && this.idle && (this.loop === "idle" || this.loop === "sit") && t > this.next) { const pool = this.idlePool || IDLE[this.who] || IDLE.box; this.play(pool[(hash(Math.floor(t * 7)) * pool.length) | 0], { voice: false, sound: false }); }
+    if (!this.em && this.idle && (this.loop === "idle" || this.loop === "sit") && t > this.next) { const pool = this.idlePool || (IDLE[this.who] || IDLE.box).concat(MOOD_EXTRA[this.mood] || []); this.play(pool[(hash(Math.floor(t * 7)) * pool.length) | 0], { voice: false, sound: false }); }
     if (this.em) {
       const E = EMOTES[this.em]; this.et += dt; const f = this.et, w = Math.min(clamp(f / .18, 0, 1), 1 - clamp((f - (E.d - .2)) / .2, 0, 1));
       const q = { ...p }; E.f(f, q, this);

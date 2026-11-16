@@ -97,6 +97,18 @@
   var counter = { v: 0 };
   var load = gsap.timeline();
   var ldBar = loader.querySelector(".ld-foot"), ldRun = loader.querySelector(".ld-run i");
+  /* crew lines while loading */
+  var QUOTES = [
+    ["FreshStatue", "First version? We don't ship that.", "Erste Version? Die veröffentlichen wir nicht."],
+    ["Andrin", "Remember the crown.", "Merk dir die Krone."],
+    ["Tip", "There are 10 golden studs hidden on this site.", "Auf dieser Seite sind 10 goldene Noppen versteckt."],
+    ["FreshStatue", "Statues don't sleep. Neither do we.", "Statuen schlafen nicht. Wir auch nicht."],
+    ["Andrin", "Click us. We react.", "Klick uns an. Wir reagieren."],
+    ["FreshStatue", "Build your own grinder further down.", "Weiter unten kannst du deinen eigenen Grinder bauen."]
+  ], qWho = loader.querySelector(".ld-who"), qTxt = loader.querySelector(".ld-q"), qi = Math.floor(Math.random() * QUOTES.length);
+  function showQuote(){ var q = QUOTES[qi % QUOTES.length], de = startLang === "de"; qWho.textContent = q[0] === "Tip" ? (de ? "Tipp" : "Tip") : q[0]; qTxt.textContent = de ? q[2] : q[1]; qi++;
+    gsap.fromTo([qWho, qTxt], { y: 8, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: .45, stagger: .05, ease: "power3.out" }); }
+  showQuote(); var qTimer = setInterval(showQuote, 1300);
   load.to(".loader .tile i", { scaleX: 1, duration: .7, ease: "power3.inOut" }, 0)
       .to(counter, { v: 100, duration: reduce || seen ? 0 : 1.5, ease: "power1.inOut", onUpdate: function(){ var v = Math.round(counter.v); count.textContent = v; ldBar.style.setProperty("--p", counter.v.toFixed(2)); } }, 0);
   ready.then(function(){
@@ -112,7 +124,7 @@
         tl.to(".hero .wrap, #hero-gl", { scale: 1, duration: 1.6, ease: "expo.out", clearProps: "transform" }, T + .15);
       }
       tl.to(loader, { scale: fast ? 1 : 2.4, autoAlpha: 0, duration: fast ? 0 : .7, ease: "expo.in" }, T)
-        .set(loader, { display: "none" }, T + (fast ? 0 : .7))
+        .set(loader, { display: "none", onComplete: function(){ clearInterval(qTimer); } }, T + (fast ? 0 : .7))
         .add(function(){ if (window.__bricksIntro) window.__bricksIntro(); }, T + .1);
       if (chars) tl.to(chars, { yPercent: 0, duration: 1.1, stagger: .045 }, T + .25);
       tl.to(".mark .bar", { scaleX: 1, duration: .75, ease: "power4.inOut" }, T + .9)
@@ -154,9 +166,19 @@
 
   /* ---------- titles, lab, roadmap, ranks, join ---------- */
   if (!reduce){
-    gsap.utils.toArray(".sec-title, .worlds-head h2").forEach(function(h){
-      gsap.from(h, { yPercent: 30, autoAlpha: 0, duration: 1.2, ease: "expo.out", scrollTrigger: { trigger: h, start: "top 85%" } });
-    });
+    // titles rise line by line out of a clean mask
+    var splits = [];
+    var buildTitles = function(){
+      gsap.utils.toArray(".sec-title, .worlds-head h2, .tt-head h3").forEach(function(h){
+        if (!window.SplitText){ gsap.from(h, { yPercent: 30, autoAlpha: 0, duration: 1.2, ease: "expo.out", scrollTrigger: { trigger: h, start: "top 85%" } }); return; }
+        var st = SplitText.create(h, { type: "lines", mask: "lines", linesClass: "tl" });
+        var tw = gsap.from(st.lines, { yPercent: 108, duration: 1.15, stagger: .09, ease: "expo.out", scrollTrigger: { trigger: h, start: "top 86%", once: true } });
+        splits.push({ st: st, tw: tw });
+      });
+    };
+    (document.fonts ? document.fonts.ready : Promise.resolve()).then(buildTitles);
+    // a language switch rewrites the titles: drop the splits, the new text is simply visible
+    document.addEventListener("og-lang", function(){ splits.forEach(function(o){ if (o.tw.scrollTrigger) o.tw.scrollTrigger.kill(); o.tw.kill(); }); splits = []; });
     gsap.to(".steps .rule i", { scaleX: 1, ease: "none", scrollTrigger: { trigger: ".steps", start: "top 75%", end: "bottom 55%", scrub: .6 } });
     gsap.from(".step", { y: 40, autoAlpha: 0, duration: .9, stagger: .15, ease: "power3.out", scrollTrigger: { trigger: ".steps", start: "top 75%" } });
     document.querySelectorAll(".rank[data-count]").forEach(function(r){

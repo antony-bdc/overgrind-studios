@@ -71,3 +71,55 @@ if (tt) tt.querySelector(".tt-load").addEventListener("click", () => {
   tt.querySelector(".tt-slot").innerHTML = '<blockquote class="tiktok-embed" cite="https://www.tiktok.com/@overgrindstudios" data-unique-id="overgrindstudios" data-embed-type="creator" style="max-width:780px;min-width:288px;"><section><a target="_blank" rel="noopener" href="https://www.tiktok.com/@overgrindstudios">@overgrindstudios</a></section></blockquote>';
   const s = document.createElement("script"); s.async = true; s.src = "https://www.tiktok.com/embed.js"; document.body.appendChild(s);
 });
+
+/* ---------- chapter rail: where am I on the page ---------- */
+const rail = document.querySelector(".chapters");
+if (rail) {
+  const links = [...rail.querySelectorAll("a")], secs = links.map((a) => document.querySelector(a.getAttribute("href")));
+  const hero = document.querySelector(".hero");
+  let ticking = false;
+  const upd = () => { ticking = false; const H = innerHeight, mid = H * .45;
+    rail.classList.toggle("show", hero ? hero.getBoundingClientRect().bottom < H * .4 : true);
+    let act = -1; secs.forEach((s, i) => { if (s && s.getBoundingClientRect().top <= mid) act = i; });
+    links.forEach((a, i) => { a.classList.toggle("on", i === act); a.classList.toggle("past", i < act);
+      const s = secs[i]; if (!s) return; const r = s.getBoundingClientRect(), end = secs[i + 1] ? secs[i + 1].getBoundingClientRect().top : r.bottom;
+      const p = Math.max(0, Math.min(1, (mid - r.top) / Math.max(1, end - r.top))); a.querySelector("b").style.transform = `scaleY(${i < act ? 1 : i === act ? p : 0})`; }); };
+  addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(upd); } }, { passive: true }); addEventListener("resize", upd); upd();
+}
+
+/* ---------- ambient music: a soft synth pad, generated live (no audio file, nothing licensed) ---------- */
+const musicBtn = document.querySelector(".nav-music");
+if (musicBtn) {
+  let AC = null, master = null, playing = false, timer = null, step = 0;
+  const CH = [[48, 55, 59, 64, 71], [45, 52, 57, 60, 67], [41, 48, 53, 57, 64], [43, 50, 55, 59, 62]]; // Cmaj7 · Am9 · Fmaj7 · G6
+  const hz = (m) => 440 * Math.pow(2, (m - 69) / 12);
+  function setup() {
+    AC = new (window.AudioContext || window.webkitAudioContext)();
+    master = AC.createGain(); master.gain.value = 0;
+    const lp = AC.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 900; lp.Q.value = .4;
+    const lfo = AC.createOscillator(), lfoG = AC.createGain(); lfo.frequency.value = .05; lfoG.gain.value = 380; lfo.connect(lfoG).connect(lp.frequency); lfo.start();
+    // simple reverb from a decaying noise burst
+    const len = AC.sampleRate * 3.2, ir = AC.createBuffer(2, len, AC.sampleRate);
+    for (let c = 0; c < 2; c++) { const d = ir.getChannelData(c); for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2.6); }
+    const rev = AC.createConvolver(); rev.buffer = ir; const wet = AC.createGain(); wet.gain.value = .55;
+    lp.connect(master); lp.connect(rev); rev.connect(wet).connect(master); master.connect(AC.destination);
+    setup.bus = lp;
+  }
+  function chord() {
+    const t = AC.currentTime, notes = CH[step % CH.length]; step++;
+    notes.forEach((m, i) => { for (const det of [-6, 6]) { const o = AC.createOscillator(), g = AC.createGain(); o.type = i === 0 ? "sine" : "triangle"; o.frequency.value = hz(m); o.detune.value = det;
+      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(i === 0 ? .1 : .045, t + 2.2); g.gain.setValueAtTime(i === 0 ? .1 : .045, t + 6.2); g.gain.linearRampToValueAtTime(0, t + 9);
+      o.connect(g).connect(setup.bus); o.start(t); o.stop(t + 9.1); } });
+    for (let k = 0; k < 4; k++) { const m = notes[1 + ((k * 3 + step) % 4)] + 12, at = t + 1 + k * 1.6 + Math.random() * .2, o = AC.createOscillator(), g = AC.createGain(); // soft plucks on top
+      o.type = "sine"; o.frequency.value = hz(m); g.gain.setValueAtTime(0, at); g.gain.linearRampToValueAtTime(.035, at + .02); g.gain.exponentialRampToValueAtTime(.0001, at + 1.6); o.connect(g).connect(setup.bus); o.start(at); o.stop(at + 1.7); }
+  }
+  function start() { if (!AC) setup(); AC.resume(); playing = true; chord(); timer = setInterval(chord, 8000); master.gain.cancelScheduledValues(AC.currentTime); master.gain.linearRampToValueAtTime(isMuted() ? 0 : .5, AC.currentTime + 2); sync(); }
+  function stop() { playing = false; clearInterval(timer); if (AC) { master.gain.cancelScheduledValues(AC.currentTime); master.gain.linearRampToValueAtTime(0, AC.currentTime + .8); } sync(); }
+  function sync() { musicBtn.classList.toggle("on", playing); musicBtn.setAttribute("aria-pressed", String(playing)); }
+  musicBtn.addEventListener("click", () => { playing ? stop() : start(); try { localStorage.setItem("og-music", playing ? "1" : "0"); } catch (e) {} });
+  document.addEventListener("og-mute", () => { if (AC && playing) master.gain.linearRampToValueAtTime(isMuted() ? 0 : .5, AC.currentTime + .4); });
+  // it was on last time: resume after the first interaction (browsers block sound before that)
+  let want = false; try { want = localStorage.getItem("og-music") === "1"; } catch (e) {}
+  if (want) addEventListener("pointerdown", (e) => { if (!playing && !e.target.closest(".nav-music")) start(); }, { once: true });
+  addEventListener("visibilitychange", () => { if (AC && playing) document.hidden ? AC.suspend() : AC.resume(); });
+}

@@ -33,7 +33,7 @@
   <div class="ld-foot">
     <div class="ld-bar"><div class="ld-studs"></div><div class="ld-fill"></div><div class="ld-run"><i></i></div></div>
     <div class="ld-row"><span class="lbl" data-i18n="ld">Loading seven worlds</span><span class="count">0</span></div>
-    <div class="ld-tip" data-i18n="ld.tip">Tip: there are 10 golden studs hidden on this site.</div>
+    <div class="ld-tip"><b class="ld-who">Tip</b><span class="ld-q">There are 10 golden studs hidden on this site.</span></div>
   </div>
 </div>
 <div class="cur" aria-hidden="true"><div class="dot"></div><div class="ring"><span data-i18n="cur">VIEW</span></div></div>
@@ -50,6 +50,7 @@
       <a href="#builder" data-i18n="n.build">Builder</a>
       <a href="#join" data-i18n="n.join">Join</a>
       <button class="gs-badge" type="button" hidden aria-label="Golden studs found"><i class="gs-ico"></i><b>0/10</b></button>
+      <button class="nav-music" type="button" aria-pressed="false" aria-label="Ambient music on or off" title="Music">{{i:music}}<span class="eq" aria-hidden="true"><i></i><i></i><i></i></span></button>
       <button class="nav-mute" type="button" aria-pressed="true" aria-label="Sound on or off">{{i:volume-2}}{{i:volume-x}}</button>
       <div class="lang" role="group" aria-label="Language"><button data-lang="en" class="on">EN</button><button data-lang="de">DE</button></div>
       <a class="btn fire sm" href="{{ROBLOX}}" target="_blank" rel="noopener"><span data-i18n="n.cta">Join on Roblox</span>{{i:arrow-up-right}}</a>
@@ -57,6 +58,14 @@
   </div>
 </header>
 
+<nav class="chapters" aria-label="Chapters">
+  <a href="#crew"><i><b></b></i><em>01</em><span data-i18n="n.crew">Crew</span></a>
+  <a href="#worlds"><i><b></b></i><em>02</em><span data-i18n="n.games">Games</span></a>
+  <a href="#road"><i><b></b></i><em>03</em><span data-i18n="n.road">Roadmap</span></a>
+  <a href="#devlog"><i><b></b></i><em>04</em><span data-i18n="n.devlog">Devlog</span></a>
+  <a href="#builder"><i><b></b></i><em>05</em><span data-i18n="n.build">Builder</span></a>
+  <a href="#join"><i><b></b></i><em>06</em><span data-i18n="n.join">Join</span></a>
+</nav>
 <main id="top">
 <section class="hero" aria-labelledby="hero-title">
   <canvas id="hero-gl" aria-hidden="true"></canvas>
@@ -180,6 +189,13 @@
 </section>
 
 
+<section class="updates" id="updates" aria-labelledby="up-title">
+  <div class="wrap">
+    <div class="up-head"><div><div class="kicker" data-i18n="up.k">Update log</div><h2 class="sec-title" id="up-title" data-i18n="up.h">What's new</h2></div><p data-i18n="up.p">What changed at Overgrind lately.</p></div>
+    <div class="up-list">{{UPDATES}}</div>
+  </div>
+</section>
+
 <section class="devlog" id="devlog" aria-labelledby="devlog-title">
   <div class="wrap">
     <div class="kicker" data-i18n="v.k">Devlog</div>
@@ -212,7 +228,7 @@
   </div>
 </section>
 
-<section class="studio" id="studio" aria-labelledby="studio-title">
+<section class="studio sec-light" id="studio" aria-labelledby="studio-title">
   <div class="wrap">
     <button class="gs" type="button" data-gs="8" aria-label="Golden stud" style="--x:2%;--y:6%"></button>
     <div class="kicker" data-i18n="s.k">The studio</div>
@@ -227,7 +243,7 @@
 </section>
 
 
-<section class="builder" id="builder" aria-labelledby="bld-title">
+<section class="builder sec-light" id="builder" aria-labelledby="bld-title">
   <div class="wrap">
     <div class="bld-head">
       <div><div class="kicker" data-i18n="b.k">Avatar builder</div>

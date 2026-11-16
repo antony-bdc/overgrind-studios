@@ -107,11 +107,22 @@ DE.update({"ld.t":"Trete Overgrind bei","ld.by":"von freshstatue und der Crew","
  "b.hint":"ziehen zum Drehen · klicken für ein Emote","b.skin":"Haut","b.shirt":"Shirt","b.pants":"Hose","b.face":"Gesicht","b.fit":"Game-Outfit",
  "b.name":"Name auf der Karte","b.role":"Rolle","b.dl":"Karte runterladen","b.share":"Teilen","b.apply":"Mit diesem Avatar bewerben",
  "gs.role":"Du hast jede goldene Noppe gefunden","gs.r1":"Noppen","gs.r2":"Status","gs.r2v":"Zertifizierter Grinder","gs.q":"„Echte Grinder schauen in jede Ecke.“"})
+
+# update log (edit src/updates.json to add entries, newest first)
+UPD = json.load(open('src/updates.json'))
+upd_html = []
+for i, u in enumerate(UPD):
+    DE[f"up.{i}.t"] = u['t'][1]
+    lis = ''.join(f'<li data-i18n="up.{i}.{j}">{esc(it[0])}</li>' for j, it in enumerate(u['items']))
+    for j, it in enumerate(u['items']): DE[f"up.{i}.{j}"] = it[1]
+    new = '<span class="up-new" data-i18n="up.new">NEW</span>' if u.get('new') else ''
+    upd_html.append(f'<article class="up{" latest" if i == 0 else ""}"><header><span class="up-v">{esc(u["v"])}</span>{new}<time>{esc(u["date"])}</time></header><h3 data-i18n="up.{i}.t">{esc(u["t"][0])}</h3><ul>{lis}</ul></article>')
+DE.update({"up.new": "NEU", "up.k": "Update-Log", "up.h": "Was ist neu", "up.p": "Was sich bei Overgrind zuletzt geändert hat."})
 GOAT='<script data-goatcounter="https://overgrind.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>'
 item='<div class="item">'+''.join(mq)+'</div>'
 s=open('src/index.tpl.html').read()
 rep={'{{WALL}}':''.join(wall_cols),'{{PANELS}}':''.join(panels),'{{DIVES}}':''.join(dives),'{{LAB}}':lab,'{{MARQUEE}}':item*2,
-     '{{DEVLOGS}}':devlogs,'{{GOAT}}':GOAT,'{{ROBLOX}}':ROBLOX,'{{CREW}}':crew_html,'{{FITS}}':''.join(f'<button type="button" data-fit="{g["key"]}" title="{esc(g["title"])}"><img src="assets/games/{g["key"]}-800.webp" alt="{esc(g["title"])} outfit" loading="lazy"></button>' for g in GAMES),'{{LDJSON}}':json.dumps(LD,ensure_ascii=False).replace('</','<\\/'),'{{TIKTOK}}':TIKTOK,'{{GAMESJSON}}':json.dumps([dict(key=g['key'],bg=g['bg'],accent=g['accent']) for g in GAMES]),
+     '{{DEVLOGS}}':devlogs,'{{UPDATES}}':''.join(upd_html),'{{GOAT}}':GOAT,'{{ROBLOX}}':ROBLOX,'{{CREW}}':crew_html,'{{FITS}}':''.join(f'<button type="button" data-fit="{g["key"]}" title="{esc(g["title"])}"><img src="assets/games/{g["key"]}-800.webp" alt="{esc(g["title"])} outfit" loading="lazy"></button>' for g in GAMES),'{{LDJSON}}':json.dumps(LD,ensure_ascii=False).replace('</','<\\/'),'{{TIKTOK}}':TIKTOK,'{{GAMESJSON}}':json.dumps([dict(key=g['key'],bg=g['bg'],accent=g['accent']) for g in GAMES]),
      '{{DEJSON}}':json.dumps(DE,ensure_ascii=False)}
 for a,b in rep.items(): s=s.replace(a,b)
 s=re.sub(r'\{\{i:([a-z0-9-]+)\}\}',lambda m:ico(m.group(1)),s)
