@@ -119,15 +119,17 @@
   if (window.SplitText && !reduce){ chars = new SplitText(mark, { type: "chars" }).chars; gsap.set(chars, { yPercent: 115 }); }
   gsap.set([".eyebrow", ".studios", ".lede", ".hero .cta", ".facts > div", ".scroll-cue"], { autoAlpha: 0, y: 24 });
 
-  var ready = Promise.all([document.fonts ? document.fonts.ready : Promise.resolve(), new Promise(function(r){ setTimeout(r, reduce ? 0 : 900); })]);
+  var seen = false; try { seen = sessionStorage.getItem("og-seen") === "1"; sessionStorage.setItem("og-seen", "1"); } catch(e){}
+  if (seen){ loader.style.display = "none"; }
+  var ready = Promise.all([document.fonts ? document.fonts.ready : Promise.resolve(), new Promise(function(r){ setTimeout(r, reduce || seen ? 0 : 900); })]);
   var counter = { v: 0 };
   var load = gsap.timeline();
   load.to(".loader .tile i", { scaleX: 1, duration: .7, ease: "power3.inOut" }, 0)
-      .to(counter, { v: 100, duration: reduce ? 0 : 1.1, ease: "power2.inOut", onUpdate: function(){ count.textContent = Math.round(counter.v); } }, 0);
+      .to(counter, { v: 100, duration: reduce || seen ? 0 : 1.1, ease: "power2.inOut", onUpdate: function(){ count.textContent = Math.round(counter.v); } }, 0);
   ready.then(function(){
     load.then(function(){
       var tl = gsap.timeline({ defaults: { ease: "expo.out" } });
-      tl.to(loader, { clipPath: "inset(0 0 100% 0)", duration: reduce ? 0 : 1, ease: "expo.inOut" })
+      tl.to(loader, { clipPath: "inset(0 0 100% 0)", duration: reduce || seen ? 0 : 1, ease: "expo.inOut" })
         .set(loader, { display: "none" })
         .add(function(){ if (window.__bricksIntro) window.__bricksIntro(); }, "-=.6");
       if (chars) tl.to(chars, { yPercent: 0, duration: 1.1, stagger: .045 }, "-=1.8");
@@ -264,6 +266,31 @@
       c.addEventListener("mousemove", function(e){ var r = c.getBoundingClientRect(); ry(((e.clientX - r.left) / r.width - .5) * 16); rx(-((e.clientY - r.top) / r.height - .5) * 16); });
       c.addEventListener("mouseleave", function(){ rx(0); ry(0); });
     });
+  }
+
+
+  /* ---------- devlog video ---------- */
+  var vfig = document.querySelector(".dl-video"), vid = document.getElementById("intro-video");
+  if (vfig && vid){
+    vid.removeAttribute("controls");
+    vfig.querySelector(".dl-play").addEventListener("click", function(){ vid.controls = true; vid.play(); });
+    vid.addEventListener("play", function(){ vfig.classList.add("playing"); });
+    vid.addEventListener("ended", function(){ vfig.classList.remove("playing"); vid.controls = false; });
+    if (!reduce) gsap.from(vfig, { y: 80, rotate: -3, autoAlpha: 0, duration: 1.3, ease: "expo.out", scrollTrigger: { trigger: ".devlog", start: "top 70%" } });
+  }
+
+  /* ---------- team application (mailto, nothing stored) ---------- */
+  var form = document.getElementById("apply-form");
+  if (form){
+    form.addEventListener("submit", function(e){
+      e.preventDefault();
+      var f = form.elements, bad = false;
+      ["name", "roblox"].forEach(function(n){ var ok = f[n].value.trim().length > 1; f[n].classList.toggle("bad", !ok); if (!ok) bad = true; });
+      if (bad){ gsap.fromTo(form, { x: -8 }, { x: 0, duration: .5, ease: "elastic.out(1,.3)" }); return; }
+      var body = "Name: " + f.name.value.trim() + "\nRoblox: " + f.roblox.value.trim() + "\nRole: " + f.role.value + "\nPortfolio: " + f.link.value.trim() + "\n\n" + f.msg.value.trim();
+      location.href = "mailto:overgrindstudios@outlook.com?subject=" + encodeURIComponent("Dev application: " + f.name.value.trim() + " (" + f.role.value + ")") + "&body=" + encodeURIComponent(body);
+    });
+    if (!reduce) gsap.from(".ap-form > *", { y: 24, autoAlpha: 0, duration: .8, stagger: .05, ease: "power3.out", scrollTrigger: { trigger: ".ap-form", start: "top 80%" } });
   }
 
   /* re-measure once images settle */

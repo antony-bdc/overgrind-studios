@@ -30,7 +30,12 @@ DE = {
  "s.p2":"Keine Copy-Paste-Games, keine ersten Entwürfe auf der Startseite. Jeder Release muss etwas sein, das wir selbst spielen würden.",
  "s.r1":"führt das Label","s.r2":"leitet ein Game","s.r3":"baut mit uns","s.r4":"das bist du",
  "j.1":"Sei dabei vor","j.2":"dem ersten Drop.","j.p":"Tritt der Roblox-Community bei, damit du zuerst erfährst, wenn ein Game aufgeht, und folg uns auf TikTok für Devlogs und Clips.",
- "j.c1":"Auf Roblox beitreten","ft.1":"Gebaut von freshstatue und der Crew","ft.2":"Nicht mit der Roblox Corporation verbunden.",
+ "j.c1":"Auf Roblox beitreten",
+ "n.devlog":"Devlog","n.apply":"Ins Team","d.more":"Zur Game-Seite",
+ "v.k":"Devlog","v.t":"Hinter dem Grind","v.ep":"Folge 0","v.h":"Das ist Overgrind","v.p":"Wer wir sind, was wir bauen und warum es gleich sieben Games sind. 28 Sekunden, ohne Füllstoff.","v.c":"Mehr auf TikTok","v.cr":"Stimme: ElevenLabs","v.soon":"bald",
+ "a.k":"Bau mit uns","a.t":"Lust, mit uns zu grinden?","a.p1":"Wir suchen immer Builder, Scripter, Modeler, UI- und VFX-Leute, denen Details genauso wichtig sind wie uns.","a.p2":"Erzähl uns, wer du bist, und schick etwas, das du gebaut hast. Wir lesen jede Bewerbung.",
+ "a.f1":"Dein Name","a.f2":"Roblox-Benutzername","a.f3":"Was du am besten kannst","a.f4":"Portfolio oder Game-Link","a.f5":"Ein paar Worte zu dir","a.o":"Etwas anderes","a.send":"Bewerbung senden","a.note":"Öffnet dein Mailprogramm mit allem ausgefüllt. Auf dieser Seite wird nichts gespeichert.",
+ "gp.back":"Alle Games","gp.follow":"Entwicklung verfolgen","gp.k1":"Das Game","gp.k2":"Galerie","gp.soon":"Bald mehr Bilder","gp.soonp":"Neue Screenshots und Clips kommen mit jedem Devlog.","gp.next":"Nächste Welt","ft.1":"Gebaut von freshstatue und der Crew","ft.2":"Nicht mit der Roblox Corporation verbunden.",
 }
 wall_cols, panels, dives, mq = [], [], [], []
 keys=[g['key'] for g in GAMES]
@@ -45,7 +50,7 @@ for i,g in enumerate(GAMES):
     for j,(l_en,l_de,v_en,v_de) in enumerate(g['facts']): DE[f"g.{k}.fl{j}"]=l_de; DE[f"g.{k}.fv{j}"]=v_de
     chip=f'<span class="chip {g["st"]}"><i></i><span data-i18n="g.{k}.status">{esc(g["status"][0])}</span></span>'
     panels.append(f'''
-    <a class="panel{' titled' if k=='seen' else ''}" href="#g-{k}" style="--a:{g['accent']}" data-bg="{g['bg']}" data-accent="{g['accent']}" data-cursor>
+    <a class="panel{' titled' if k=='seen' else ''}" href="games/{k}/" style="--a:{g['accent']}" data-bg="{g['bg']}" data-accent="{g['accent']}" data-cursor>
       <img src="assets/games/{k}.webp" srcset="assets/games/{k}-800.webp 800w, assets/games/{k}.webp 1600w" sizes="(max-width: 860px) 92vw, 60vw" width="1600" height="900" alt="{esc(g['title'])} key art" loading="lazy" decoding="async">
       <span class="num">{n} / 07</span>
       <div class="meta"><div><div class="gen">{ico(g['icon'])}<span data-i18n="g.{k}.genre">{esc(g['genre'][0])}</span></div><h3>{esc(g['title'])}</h3><p class="tg" data-i18n="g.{k}.tag">{esc(g['tag'][0])}</p></div>{chip}</div>
@@ -64,6 +69,7 @@ for i,g in enumerate(GAMES):
         <p class="desc" data-i18n="g.{k}.desc">{esc(g['desc'][0])}</p>
         <ul>{feats}</ul>
         <div class="fx">{facts}</div>
+        <a class="btn ghost mag more" href="games/{k}/"><span data-i18n="d.more">Open the game page</span>{ico('arrow-right')}</a>
       </div>
     </div>
   </article>''')
@@ -84,13 +90,42 @@ LD={"@context":"https://schema.org","@type":"Organization","name":"Overgrind Stu
     "sameAs":[ROBLOX,TIKTOK],"description":"A small crew of Roblox devs with seven games in the workshop.",
     "subjectOf":[{"@type":"VideoGame","name":g['title'],"genre":g['genre'][0],"description":g['desc'][0],"gamePlatform":"Roblox","image":f"https://antony-bdc.github.io/overgrind-studios/assets/games/{g['key']}.jpg"} for g in GAMES]}
 
+DEVLOGS=[("EP 00","Meet Overgrind","Das ist Overgrind","28 s","28 s"),("EP 01","Wyrmquake devlog","Wyrmquake-Devlog","soon","bald")]
+devlogs=''.join(f'<div class="dl-item"><b>{e}</b><span data-i18n="dl.{j}">{esc(t)}</span><em data-i18n="dlw.{j}">{w}</em></div>' for j,(e,t,td,w,wd) in enumerate(DEVLOGS))
+for j,(e,t,td,w,wd) in enumerate(DEVLOGS): DE[f"dl.{j}"]=td; DE[f"dlw.{j}"]=wd
+GOAT='<script data-goatcounter="https://overgrind.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>'
 item='<div class="item">'+''.join(mq)+'</div>'
 s=open('src/index.tpl.html').read()
 rep={'{{WALL}}':''.join(wall_cols),'{{PANELS}}':''.join(panels),'{{DIVES}}':''.join(dives),'{{LAB}}':lab,'{{MARQUEE}}':item*2,
-     '{{ROBLOX}}':ROBLOX,'{{CREW}}':crew_html,'{{LDJSON}}':json.dumps(LD,ensure_ascii=False).replace('</','<\\/'),'{{TIKTOK}}':TIKTOK,'{{GAMESJSON}}':json.dumps([dict(key=g['key'],bg=g['bg'],accent=g['accent']) for g in GAMES]),
+     '{{DEVLOGS}}':devlogs,'{{GOAT}}':GOAT,'{{ROBLOX}}':ROBLOX,'{{CREW}}':crew_html,'{{LDJSON}}':json.dumps(LD,ensure_ascii=False).replace('</','<\\/'),'{{TIKTOK}}':TIKTOK,'{{GAMESJSON}}':json.dumps([dict(key=g['key'],bg=g['bg'],accent=g['accent']) for g in GAMES]),
      '{{DEJSON}}':json.dumps(DE,ensure_ascii=False)}
 for a,b in rep.items(): s=s.replace(a,b)
 s=re.sub(r'\{\{i:([a-z0-9-]+)\}\}',lambda m:ico(m.group(1)),s)
 assert '{{' not in s, re.findall(r'\{\{[^}]*\}\}',s)
 open('index.html','w').write(s)
 print(len(s)//1024,'KB')
+
+# shared stylesheet
+open('assets/site.css','w').write(open('src/site.css').read())
+
+# one page per game
+gt=open('src/game.tpl.html').read()
+for i,g in enumerate(GAMES):
+    k=g['key']; nx=GAMES[(i+1)%len(GAMES)]
+    parts=g['title'].split(': ',1)
+    if len(parts)==1 and ' ' in parts[0] and len(parts[0])>11: parts=parts[0].split(' ',1)
+    tl=''.join(f'<span class="ln"><span>{esc(w)}</span></span>' for w in parts)
+    feats=''.join(f'<div class="feat"><b>{j+1:02d}</b><p data-i18n="g.{k}.f{j}">{esc(en)}</p></div>' for j,(en,de) in enumerate(g['feats']))
+    facts=''.join(f'<div><small data-i18n="g.{k}.fl{j}">{esc(l)}</small><b data-i18n="g.{k}.fv{j}">{esc(v)}</b></div>' for j,(l,_,v,__) in enumerate(g['facts']))
+    ld={"@context":"https://schema.org","@type":"VideoGame","name":g['title'],"genre":g['genre'][0],"description":g['desc'][0],"gamePlatform":"Roblox",
+        "image":f"https://antony-bdc.github.io/overgrind-studios/assets/games/{k}.jpg","publisher":{"@type":"Organization","name":"Overgrind Studios"}}
+    s=gt.replace('{{ICON}}',g['icon'])
+    rep={'{{TITLE}}':esc(g['title']),'{{DESC}}':esc(g['desc'][0]),'{{DESCR}}':esc(g['desc'][0]),'{{TAG}}':esc(g['tag'][0]),'{{BG}}':g['bg'],'{{ACCENT}}':g['accent'],'{{KEY}}':k,
+         '{{NUM}}':f"{i+1:02d}",'{{GENRE}}':esc(g['genre'][0]),'{{TITLELINES}}':tl,'{{ST}}':g['st'],'{{STATUS}}':esc(g['status'][0]),'{{FEATS}}':feats,'{{FACTS}}':facts,
+         '{{NEXTKEY}}':nx['key'],'{{NEXTACCENT}}':nx['accent'],'{{NEXTTITLE}}':esc(nx['title']),'{{ROBLOX}}':ROBLOX,'{{TIKTOK}}':TIKTOK,'{{GOAT}}':GOAT,
+         '{{LDJSON}}':json.dumps(ld,ensure_ascii=False).replace('</','<\\/'),'{{DEJSON}}':json.dumps(DE,ensure_ascii=False)}
+    for a,v in rep.items(): s=s.replace(a,v)
+    s=re.sub(r'\{\{i:([a-z0-9-]+)\}\}',lambda m:ico(m.group(1)),s)
+    assert '{{' not in s, (k,re.findall(r'\{\{[^}]*\}\}',s))
+    os.makedirs(f'games/{k}',exist_ok=True); open(f'games/{k}/index.html','w').write(s)
+print('game pages ok')
