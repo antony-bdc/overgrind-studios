@@ -1,15 +1,65 @@
 [
-  {"v": "Site 2.1", "date": "16.11.2026", "new": true,
-   "t": ["The crew moved in", "Die Crew ist eingezogen"],
-   "items": [
-     ["FreshStatue and Andrin now hang out all over the site, from the hero to the footer.", "FreshStatue und Andrin sind jetzt überall auf der Seite unterwegs, vom Hero bis zum Footer."],
-     ["Avatar builder: make your own grinder and download your crew card.", "Avatar-Builder: Bau deinen eigenen Grinder und lade deine Crew-Karte runter."],
-     ["10 golden studs are hidden somewhere on this page.", "Irgendwo auf dieser Seite sind 10 goldene Noppen versteckt."]
-   ]},
-  {"v": "Site 2.0", "date": "11.2026",
-   "t": ["Studio video and game outfits", "Studio-Video und Game-Outfits"],
-   "items": [
-     ["FreshStatue introduces Overgrind in the new studio video.", "FreshStatue stellt Overgrind im neuen Studio-Video vor."],
-     ["Every game got its own outfit for the crew.", "Jedes Game hat sein eigenes Outfit für die Crew bekommen."]
-   ]}
+ {
+  "v": "Site 3.0",
+  "date": "17.11.2026",
+  "new": true,
+  "t": [
+   "Full crew, new look",
+   "Ganze Crew, neuer Look"
+  ],
+  "items": [
+   [
+    "All four creators are on the site now as their real Roblox avatars: FreshStatue, Andrin, Gino and excess.",
+    "Alle vier Creator sind jetzt als ihre echten Roblox-Avatare auf der Seite: FreshStatue, Andrin, Gino und excess."
+   ],
+   [
+    "New white design with one colour per creator.",
+    "Neues weisses Design mit einer Farbe pro Creator."
+   ],
+   [
+    "Click a creator in the header and they react.",
+    "Klick oben einen Creator an, und er reagiert."
+   ]
+  ]
+ },
+ {
+  "v": "Site 2.1",
+  "date": "16.11.2026",
+  "t": [
+   "The crew moved in",
+   "Die Crew ist eingezogen"
+  ],
+  "items": [
+   [
+    "FreshStatue and Andrin now hang out all over the site, from the hero to the footer.",
+    "FreshStatue und Andrin sind jetzt überall auf der Seite unterwegs, vom Hero bis zum Footer."
+   ],
+   [
+    "Avatar builder: make your own grinder and download your crew card.",
+    "Avatar-Builder: Bau deinen eigenen Grinder und lade deine Crew-Karte runter."
+   ],
+   [
+    "10 golden studs are hidden somewhere on this page.",
+    "Irgendwo auf dieser Seite sind 10 goldene Noppen versteckt."
+   ]
+  ]
+ },
+ {
+  "v": "Site 2.0",
+  "date": "11.2026",
+  "t": [
+   "Studio video and game outfits",
+   "Studio-Video und Game-Outfits"
+  ],
+  "items": [
+   [
+    "FreshStatue introduces Overgrind in the new studio video.",
+    "FreshStatue stellt Overgrind im neuen Studio-Video vor."
+   ],
+   [
+    "Every game got its own outfit for the crew.",
+    "Jedes Game hat sein eigenes Outfit für die Crew bekommen."
+   ]
+  ]
+ }
 ]

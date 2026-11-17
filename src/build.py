@@ -127,8 +127,10 @@ rep={'{{WALL}}':''.join(wall_cols),'{{PANELS}}':''.join(panels),'{{DIVES}}':''.j
 for a,b in rep.items(): s=s.replace(a,b)
 s=re.sub(r'\{\{i:([a-z0-9-]+)\}\}',lambda m:ico(m.group(1)),s)
 assert '{{' not in s, re.findall(r'\{\{[^}]*\}\}',s)
-open('index.html','w').write(s)
+# the previous dark homepage template stays in src/index.tpl.html for reference; it is no longer published
 print(len(s)//1024,'KB')
+from home_build import build_home
+build_home(GAMES, DE, upd_html, LD, ROBLOX, TIKTOK, GOAT, ico, esc)
 
 # shared stylesheet
 open('assets/site.css','w').write(open('src/site.css').read())
