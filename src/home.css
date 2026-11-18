@@ -586,3 +586,14 @@ html.lobby-on .hero-foot{opacity:.25;transition:opacity .6s}
 .ft-mark.bw span{visibility:hidden}
 .ft-mark .bw-canvas{position:absolute;left:0;right:0;top:-18%;bottom:-18%;width:100%;height:136%;pointer-events:auto}
 .mark .og-c{transform-style:preserve-3d}
+/* playground + sound switch */
+.join .play{position:absolute;inset:0;z-index:0;pointer-events:none}
+.join.grab{cursor:grab}.join.grabbing{cursor:grabbing;user-select:none}
+.snd{width:40px;height:40px;border-radius:50%;border:0;background:transparent;display:grid;place-items:center;cursor:pointer;color:var(--ink)}
+.snd:hover{background:var(--line2)}
+.snd-bars{display:flex;align-items:flex-end;gap:2px;height:14px}
+.snd-bars i{width:3px;background:currentColor;border-radius:2px;animation:sndb 1s ease-in-out infinite}
+.snd-bars i:nth-child(1){height:6px;animation-delay:-.2s}.snd-bars i:nth-child(2){height:12px;animation-delay:-.5s}.snd-bars i:nth-child(3){height:8px;animation-delay:-.1s}.snd-bars i:nth-child(4){height:11px;animation-delay:-.7s}
+@keyframes sndb{50%{transform:scaleY(.35)}}
+.snd.off .snd-bars i{animation:none;transform:scaleY(.25)}
+@media (prefers-reduced-motion:reduce){.snd-bars i{animation:none}}

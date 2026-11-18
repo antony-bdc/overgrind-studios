@@ -135,7 +135,7 @@ async function init() {
   function openLobby(i){ focus = i; const it = items[i]; focusCol.set(it.c); const card = document.querySelector('.card[data-k="' + (it.key === "fs" ? "fs" : it.key) + '"]');
     if (panel){ panel.style.setProperty("--c", it.c); panel.querySelector(".lb-name").textContent = it.name; panel.querySelector(".lb-role").textContent = card?.querySelector(".c-role")?.textContent || it.role; panel.querySelector(".lb-bio").textContent = card?.querySelector("p")?.textContent || "";
       panel.querySelector(".lb-no").textContent = String(i + 1).padStart(2, "0"); panel.hidden = false; requestAnimationFrame(() => panel.classList.add("on")); }
-    document.documentElement.classList.add("lobby-on"); }
+    document.documentElement.classList.add("lobby-on"); window.ogSfx && window.ogSfx("open"); }
   function closeLobby(){ focus = -1; if (panel){ panel.classList.remove("on"); setTimeout(() => { if (focus < 0) panel.hidden = true; }, 500); } document.documentElement.classList.remove("lobby-on"); }
   panel?.querySelector(".lb-close")?.addEventListener("click", closeLobby);
   addEventListener("keydown", (e) => { if (e.key === "Escape" && focus >= 0) closeLobby(); });

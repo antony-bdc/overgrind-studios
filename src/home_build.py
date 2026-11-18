@@ -48,8 +48,8 @@ def build_home(GAMES, DE, upd_html, LD, ROBLOX, TIKTOK, GOAT, ico, esc):
     for a,b in rep.items(): hs=hs.replace(a,b)
     hs=re.sub(r'\{\{i:([a-z0-9-]+)\}\}',lambda m:ico(m.group(1)),hs)
     import hashlib
-    V=hashlib.md5((open('src/home.css').read()+open('home.js').read()+open('gear3d.js').read()+open('crewstage.js').read()+open('gearmodel.js').read()+open('brickword.js').read()+open('portal.js').read()).encode()).hexdigest()[:8]
-    hs=hs.replace('href="assets/home.css"','href="assets/home.css?v='+V+'"').replace('src="home.js"','src="home.js?v='+V+'"').replace('src="gear3d.js"','src="gear3d.js?v='+V+'"').replace('src="brickword.js"','src="brickword.js?v='+V+'"').replace('src="portal.js"','src="portal.js?v='+V+'"').replace('src="crewstage.js"','src="crewstage.js?v='+V+'"')
+    V=hashlib.md5((open('src/home.css').read()+open('home.js').read()+open('gear3d.js').read()+open('crewstage.js').read()+open('gearmodel.js').read()+open('brickword.js').read()+open('portal.js').read()+open('sfx.js').read()+open('playground.js').read()).encode()).hexdigest()[:8]
+    hs=hs.replace('href="assets/home.css"','href="assets/home.css?v='+V+'"').replace('src="home.js"','src="home.js?v='+V+'"').replace('src="gear3d.js"','src="gear3d.js?v='+V+'"').replace('src="brickword.js"','src="brickword.js?v='+V+'"').replace('src="sfx.js"','src="sfx.js?v='+V+'"').replace('src="playground.js"','src="playground.js?v='+V+'"').replace('src="portal.js"','src="portal.js?v='+V+'"').replace('src="crewstage.js"','src="crewstage.js?v='+V+'"')
     assert '{{' not in hs, re.findall(r'\{\{[^}]*\}\}',hs)
     open('index.html','w').write(hs); print('home',len(hs)//1024,'KB')
     open('assets/home.css','w').write(open('src/home.css').read())

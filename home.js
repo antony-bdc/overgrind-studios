@@ -72,7 +72,7 @@
       function paint(){ track.style.transform = "translateZ(" + (-R) + "px) rotateY(" + (-ring.a) + "deg)";
         var f = ((ring.a % 360) + 360) % 360 / step, i = Math.round(f) % N;
         cards.forEach(function(c, j){ var d = Math.abs(((j - f) % N + N + N / 2) % N - N / 2); c.style.setProperty("--d", Math.min(1, d).toFixed(3)); c.classList.toggle("front", j === i); });
-        var s = String(i + 1).padStart(2, "0"); if (cnt.textContent !== s){ cnt.textContent = s; reelEl.style.setProperty("--glow", getComputedStyle(cards[i]).getPropertyValue("--a")); } }
+        var s = String(i + 1).padStart(2, "0"); if (cnt.textContent !== s){ cnt.textContent = s; reelEl.style.setProperty("--glow", getComputedStyle(cards[i]).getPropertyValue("--a")); window.ogSfx && window.ogSfx("lock"); } }
       place(); addEventListener("resize", place);
       var st = ScrollTrigger.create({ trigger: ".reel", start: "top top", end: function(){ return "+=" + innerHeight * 4.2; }, pin: ".reel-pin", scrub: 1.2, anticipatePin: 1,
         onUpdate: function(self){ bar.style.setProperty("--p", self.progress.toFixed(4)); gsap.to(ring, { a: self.progress * step * (N - 1), duration: .5, ease: "power3", overwrite: true, onUpdate: paint }); } });
