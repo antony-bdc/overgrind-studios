@@ -45,8 +45,8 @@ async function init(){
   const ease = (x) => 1 - Math.pow(1 - Math.min(1, Math.max(0, x)), 3);
   function frame(){
     requestAnimationFrame(frame); const dt = Math.min(.05, clock.getDelta()); if (!vis) return;
-    const r = host.getBoundingClientRect(), target = reduce ? 1 : Math.min(1, Math.max(0, (innerHeight - r.top) / (innerHeight * .75 + r.height * .3)));
-    p += (target - p) * Math.min(1, dt * 4);
+    const r = host.getBoundingClientRect(), seen = Math.max(0, Math.min(r.bottom, innerHeight) - Math.max(r.top, 0)) / r.height;
+    if (reduce) p = 1; else if (seen > .45) p = Math.min(1, p + dt / 1.8); else if (seen <= 0) p = 0;
     if (mouse.x < 10){ ray.setFromCamera(mouse, cam); ray.ray.intersectPlane(plane, hit) ? mp.copy(hit) : mp.set(9e3, 9e3, 0); } else mp.set(9e3, 9e3, 0);
     for (let i = 0; i < N; i++){
       const k = ease((p - D[i]) / .4), d = Math.hypot(T[i].x - mp.x, T[i].y - mp.y); lift[i] += ((d < 6 ? (1 - d / 6) * 2.2 : 0) - lift[i]) * Math.min(1, dt * 8);
