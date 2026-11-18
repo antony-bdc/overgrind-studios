@@ -597,3 +597,28 @@ html.lobby-on .hero-foot{opacity:.25;transition:opacity .6s}
 @keyframes sndb{50%{transform:scaleY(.35)}}
 .snd.off .snd-bars i{animation:none;transform:scaleY(.25)}
 @media (prefers-reduced-motion:reduce){.snd-bars i{animation:none}}
+
+/* =========================================================
+   Site 3.6 – the journey through the seven worlds
+   ========================================================= */
+.journey{background:#f1ede4}
+.jn-pin{position:relative;height:100svh;min-height:600px;overflow:hidden}
+.jn-gl{position:absolute;inset:0;width:100%;height:100%;display:block}
+.jn-head{position:absolute;left:0;right:0;top:96px;z-index:2;display:flex;align-items:center;gap:20px;pointer-events:none}
+.jn-head p{margin:0;font:500 15px/1.3 var(--body);color:var(--ink2)}
+.jn-stations{position:absolute;inset:0;z-index:2;pointer-events:none}
+.jn-st{position:absolute;left:max(var(--pad),calc((100vw - var(--max))/2 + var(--pad)));bottom:clamp(90px,14vh,150px);display:flex;flex-direction:column;gap:10px;max-width:min(620px,86vw);padding:26px 28px 24px;border-radius:26px;background:rgba(255,255,255,.78);backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);box-shadow:0 0 0 1px var(--line2),0 40px 80px -40px rgba(15,15,16,.45);opacity:0;transform:translateY(24px);transition:opacity .5s var(--ease),transform .7s var(--ease);pointer-events:none}
+.jn-st.on{opacity:calc(.35 + var(--k,1) * .65);transform:none;pointer-events:auto}
+.jn-st::before{content:"";position:absolute;left:0;top:24px;bottom:24px;width:5px;border-radius:0 5px 5px 0;background:var(--a)}
+.jn-no{font:700 12px/1 var(--mono);letter-spacing:.1em;color:var(--mute)}
+.jn-st b{font:900 clamp(34px,4.6vw,76px)/.88 var(--display);letter-spacing:-.055em;color:var(--ink)}
+.jn-st em{font-size:clamp(18px,1.6vw,24px);color:var(--ink2)}
+.jn-go{display:inline-flex;align-self:flex-start;margin-top:6px;padding:10px 16px;border-radius:999px;background:var(--a);color:#fff;font:700 14px/1 var(--body);transition:transform .35s var(--ease)}
+.jn-st:hover .jn-go{transform:translateX(4px)}
+.jn-ui{position:absolute;left:0;right:0;bottom:36px;z-index:2;display:flex;align-items:center;gap:18px}
+.jn-count{font:700 13px/1 var(--mono);letter-spacing:.08em;color:var(--mute)}.jn-count b{color:var(--ink)}
+.jn-bar{flex:1;height:2px;background:rgba(15,15,16,.12);border-radius:2px;overflow:hidden}
+.jn-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--an),var(--fs),var(--gi),var(--ex));transform-origin:0 50%;transform:scaleX(0)}
+.jn-fallback .jn-st{position:relative;opacity:1;transform:none;pointer-events:auto;margin:10px var(--pad)}
+.jn-fallback .jn-pin{height:auto;padding:120px 0 60px}
+@media (prefers-reduced-motion:reduce){.jn-st{transition:none}}

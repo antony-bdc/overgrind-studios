@@ -100,6 +100,15 @@
   </div>
 </section>
 
+<section class="journey" id="journey" aria-label="A flight through all seven worlds">
+  <div class="jn-pin">
+    <canvas class="jn-gl" aria-hidden="true"></canvas>
+    <div class="jn-head wrap"><span class="kicker"><b>✦</b><span data-i18n="jn.k">The journey</span></span><p data-i18n="jn.p">Scroll to fly through all seven worlds.</p></div>
+    <div class="jn-stations">{{JOURNEY}}</div>
+    <div class="jn-ui wrap" aria-hidden="true"><span class="jn-count"><b>01</b> / 07</span><span class="jn-bar"><i></i></span></div>
+  </div>
+</section>
+
 <section class="worlds" id="worlds" aria-labelledby="worlds-title">
   <div class="wrap">
     <div class="sec-head">
@@ -239,6 +248,7 @@
 <script type="module" src="crewstage.js"></script>
 <script type="module" src="gear3d.js"></script>
 <script type="module" src="brickword.js"></script>
+<script type="module" src="journey.js"></script>
 {{GOAT}}
 </body>
 </html>

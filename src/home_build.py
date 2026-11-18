@@ -31,7 +31,7 @@ def build_home(GAMES, DE, upd_html, LD, ROBLOX, TIKTOK, GOAT, ico, esc):
                     f'<div class="rc-side"><span class="rc-gen">{ico(g["icon"])}<span data-i18n="g.{k}.genre">{esc(g["genre"][0])}</span></span>'
                     f'<span class="rc-st"><i></i><span data-i18n="g.{k}.status">{esc(g["status"][0])}</span></span></div>'
                     f'<span class="rc-go">{ico("arrow-up-right")}</span></div></a>')
-    DE["w.hint"]="weiter scrollen"; DE["ft.about"]="Eine Roblox-Crew aus vier Creatorn aus der Schweiz und Deutschland. Wir bauen, bis es mehr als nur gut genug ist."; DE["ft.h1"]="Studio"; DE["ft.h3"]="Community"; DE["ft.up"]="Nach oben"; DE["lb.crew"]="Zur Crew"; DE["lb.back"]="Zurück"
+    DE["w.hint"]="weiter scrollen"; DE["ft.about"]="Eine Roblox-Crew aus vier Creatorn aus der Schweiz und Deutschland. Wir bauen, bis es mehr als nur gut genug ist."; DE["ft.h1"]="Studio"; DE["ft.h3"]="Community"; DE["ft.up"]="Nach oben"; DE["lb.crew"]="Zur Crew"; DE["lb.back"]="Zurück"; DE["jn.k"]="Die Reise"; DE["jn.p"]="Scroll und flieg durch alle sieben Welten."; DE["jn.go"]="Diese Welt betreten"
     cols=["#E2202E","#E8A400","#2450FF","#7B45F5"]
     tick=''.join(f'<span>{esc(g["title"])}</span><i style="--c:{cols[i%4]}"></i>' for i,g in enumerate(GAMES))
     DE.update({"n.apply":"Ins Team","h.m1":"Roblox-Gamestudio","h.m2":"Seit 2026","h.hint":"klick einen Creator an",
@@ -43,13 +43,13 @@ def build_home(GAMES, DE, upd_html, LD, ROBLOX, TIKTOK, GOAT, ico, esc):
      "s.st":"Ein Label, viele Creator. Wir veröffentlichen nicht die erste Version, die funktioniert. Sondern die, die wir selbst spielen würden: nach der Schule, nach der Arbeit, um zwei Uhr nachts.",
      "a.ta":"Lust, mit uns","a.tb":"zu grinden?"})
     hs=open('src/home.tpl.html').read()
-    rep={'{{CREWCARDS}}':''.join(cards),'{{GAMEROWS}}':''.join(rows),'{{REELCARDS}}':''.join(reel),'{{FTGAMES}}':''.join(f'<a href="games/{g["key"]}/">{esc(g["title"])}</a>' for g in GAMES),'{{TICKER}}':tick*3,'{{UPDATES}}':''.join(upd_html[:1]),'{{ROBLOX}}':ROBLOX,'{{TIKTOK}}':TIKTOK,'{{GOAT}}':GOAT,
+    rep={'{{CREWCARDS}}':''.join(cards),'{{GAMEROWS}}':''.join(rows),'{{REELCARDS}}':''.join(reel),'{{JOURNEY}}':''.join(f'\n      <a class="jn-st" href="games/{g["key"]}/" data-a="{g["accent"]}" data-img="assets/games/{g["key"]}-800.webp" style="--a:{g["accent"]}"><span class="jn-no">{i+1:02d} / 07</span><b>{esc(g["title"])}</b><em data-i18n="g.{g["key"]}.tag">{esc(g["tag"][0])}</em><span class="jn-go"><span data-i18n="jn.go">Enter this world</span> →</span></a>' for i,g in enumerate(GAMES)),'{{FTGAMES}}':''.join(f'<a href="games/{g["key"]}/">{esc(g["title"])}</a>' for g in GAMES),'{{TICKER}}':tick*3,'{{UPDATES}}':''.join(upd_html[:1]),'{{ROBLOX}}':ROBLOX,'{{TIKTOK}}':TIKTOK,'{{GOAT}}':GOAT,
          '{{LDJSON}}':json.dumps(LD,ensure_ascii=False).replace('</','<\\/'),'{{DEJSON}}':json.dumps(DE,ensure_ascii=False)}
     for a,b in rep.items(): hs=hs.replace(a,b)
     hs=re.sub(r'\{\{i:([a-z0-9-]+)\}\}',lambda m:ico(m.group(1)),hs)
     import hashlib
-    V=hashlib.md5((open('src/home.css').read()+open('home.js').read()+open('gear3d.js').read()+open('crewstage.js').read()+open('gearmodel.js').read()+open('brickword.js').read()+open('portal.js').read()+open('sfx.js').read()+open('playground.js').read()).encode()).hexdigest()[:8]
-    hs=hs.replace('href="assets/home.css"','href="assets/home.css?v='+V+'"').replace('src="home.js"','src="home.js?v='+V+'"').replace('src="gear3d.js"','src="gear3d.js?v='+V+'"').replace('src="brickword.js"','src="brickword.js?v='+V+'"').replace('src="sfx.js"','src="sfx.js?v='+V+'"').replace('src="playground.js"','src="playground.js?v='+V+'"').replace('src="portal.js"','src="portal.js?v='+V+'"').replace('src="crewstage.js"','src="crewstage.js?v='+V+'"')
+    V=hashlib.md5((open('src/home.css').read()+open('home.js').read()+open('gear3d.js').read()+open('crewstage.js').read()+open('gearmodel.js').read()+open('brickword.js').read()+open('portal.js').read()+open('sfx.js').read()+open('playground.js').read()+open('journey.js').read()).encode()).hexdigest()[:8]
+    hs=hs.replace('href="assets/home.css"','href="assets/home.css?v='+V+'"').replace('src="home.js"','src="home.js?v='+V+'"').replace('src="gear3d.js"','src="gear3d.js?v='+V+'"').replace('src="brickword.js"','src="brickword.js?v='+V+'"').replace('src="journey.js"','src="journey.js?v='+V+'"').replace('src="sfx.js"','src="sfx.js?v='+V+'"').replace('src="playground.js"','src="playground.js?v='+V+'"').replace('src="portal.js"','src="portal.js?v='+V+'"').replace('src="crewstage.js"','src="crewstage.js?v='+V+'"')
     assert '{{' not in hs, re.findall(r'\{\{[^}]*\}\}',hs)
     open('index.html','w').write(hs); print('home',len(hs)//1024,'KB')
     open('assets/home.css','w').write(open('src/home.css').read())
