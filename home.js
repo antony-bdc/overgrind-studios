@@ -61,19 +61,27 @@
   /* ---------- motion pass: reel, tilt, roadmap line, shutters, magnetic buttons, ticker speed ---------- */
   function motionPass(){
     var mm = gsap.matchMedia();
-    /* the seven games as a pinned, horizontal reel */
+    /* the seven games on a 3D ring: scroll turns the carousel, the front game is lit */
     mm.add("(min-width: 901px)", function(){
       var track = document.querySelector(".reel-track"), cards = gsap.utils.toArray(".rc"), cnt = document.querySelector(".reel-count b"), bar = document.querySelector(".reel-bar"), reelEl = document.querySelector(".reel");
       if (!track) return;
-      var dist = function(){ return Math.max(0, track.scrollWidth - innerWidth); };
-      var tw = gsap.to(track, { x: function(){ return -dist(); }, ease: "none", scrollTrigger: { trigger: ".reel", start: "top top", end: function(){ return "+=" + dist(); }, pin: ".reel-pin", scrub: 1, invalidateOnRefresh: true, anticipatePin: 1,
-        onUpdate: function(self){ var i = Math.min(cards.length - 1, Math.round(self.progress * (cards.length - 1))); bar.style.setProperty("--p", self.progress.toFixed(4)); var s = String(i + 1).padStart(2, "0"); if (cnt.textContent !== s){ cnt.textContent = s; reelEl.style.setProperty("--glow", getComputedStyle(cards[i]).getPropertyValue("--a")); } } } });
-      cards.forEach(function(c){
-        gsap.fromTo(c.querySelector(".rc-img img"), { xPercent: -7 }, { xPercent: 7, ease: "none", scrollTrigger: { trigger: c, containerAnimation: tw, start: "left right", end: "right left", scrub: true } });
-        gsap.fromTo(c, { scale: .86, rotate: 2.5, autoAlpha: .45 }, { scale: 1, rotate: 0, autoAlpha: 1, ease: "none", scrollTrigger: { trigger: c, containerAnimation: tw, start: "left 95%", end: "center 55%", scrub: true } });
-        gsap.to(c, { scale: .92, autoAlpha: .55, ease: "none", scrollTrigger: { trigger: c, containerAnimation: tw, start: "center 35%", end: "right left", scrub: true } });
-      });
+      var N = cards.length, step = 360 / N, R = 0, ring = { a: 0 };
+      reelEl.classList.add("ring");
+      function place(){ var w = cards[0].offsetWidth; R = (w / 2) / Math.tan(Math.PI / N) + 40;
+        cards.forEach(function(c, i){ c.style.transform = "rotateY(" + (i * step) + "deg) translateZ(" + R + "px)"; }); paint(); }
+      function paint(){ track.style.transform = "translateZ(" + (-R) + "px) rotateY(" + (-ring.a) + "deg)";
+        var f = ((ring.a % 360) + 360) % 360 / step, i = Math.round(f) % N;
+        cards.forEach(function(c, j){ var d = Math.abs(((j - f) % N + N + N / 2) % N - N / 2); c.style.setProperty("--d", Math.min(1, d).toFixed(3)); c.classList.toggle("front", j === i); });
+        var s = String(i + 1).padStart(2, "0"); if (cnt.textContent !== s){ cnt.textContent = s; reelEl.style.setProperty("--glow", getComputedStyle(cards[i]).getPropertyValue("--a")); } }
+      place(); addEventListener("resize", place);
+      var st = ScrollTrigger.create({ trigger: ".reel", start: "top top", end: function(){ return "+=" + innerHeight * 4.2; }, pin: ".reel-pin", scrub: 1.2, anticipatePin: 1,
+        onUpdate: function(self){ bar.style.setProperty("--p", self.progress.toFixed(4)); gsap.to(ring, { a: self.progress * step * (N - 1), duration: .5, ease: "power3", overwrite: true, onUpdate: paint }); } });
+      /* liquid hover on the key art */
+      var disp = document.querySelector("#og-liquid feDisplacementMap"), lq = { s: 0 };
+      cards.forEach(function(c){ var img = c.querySelector(".rc-img");
+        c.addEventListener("pointerenter", function(){ if (!disp) return; img.style.filter = "url(#og-liquid)"; gsap.fromTo(lq, { s: 60 }, { s: 0, duration: 1.1, ease: "power3.out", onUpdate: function(){ disp.setAttribute("scale", lq.s.toFixed(1)); }, onComplete: function(){ img.style.filter = ""; } }); }); });
       gsap.from(".reel-track", { y: 80, autoAlpha: 0, duration: 1.2, ease: "expo.out", scrollTrigger: { trigger: ".reel", start: "top 80%" } });
+      return function(){ reelEl.classList.remove("ring"); track.style.transform = ""; cards.forEach(function(c){ c.style.transform = ""; }); removeEventListener("resize", place); };
     });
     /* crew cards: tilt towards the pointer with a soft glare */
     if (matchMedia("(hover: hover)").matches) document.querySelectorAll(".card:not(.you)").forEach(function(c){

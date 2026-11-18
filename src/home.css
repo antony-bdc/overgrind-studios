@@ -567,3 +567,11 @@ html.lobby-on .hero-foot{opacity:.25;transition:opacity .6s}
 .lb-name{font-size:clamp(28px,2.6vw,44px);overflow-wrap:anywhere}
 .lobby{width:min(380px,30vw)}
 @media (min-width:1600px){.lobby{right:calc((100vw - var(--max))/2 + var(--pad))}}
+/* games on a 3D ring */
+.reel.ring .reel-pin{perspective:2200px;perspective-origin:50% 42%}
+.reel.ring .reel-track{position:relative;width:min(46vw,760px);height:calc(min(46vw,760px) * .5625 + 120px);margin:0 auto;padding:0;transform-style:preserve-3d;will-change:transform}
+.reel.ring .rc{position:absolute;left:0;top:0;width:100%;backface-visibility:hidden;transform-style:preserve-3d;opacity:calc(1 - var(--d,0) * .55);filter:saturate(calc(1 - var(--d,0) * .7)) brightness(calc(1 - var(--d,0) * .35));transition:opacity .3s,filter .3s}
+.reel.ring .rc-meta{opacity:calc(1 - var(--d,0) * 1.2)}
+.reel.ring .rc.front .rc-img{box-shadow:0 60px 120px -40px color-mix(in srgb,var(--a) 55%,transparent),0 0 0 1px rgba(255,255,255,.12)}
+.reel.ring .rc-img img{width:100%;left:0}
+.reel.ring .reel-ui{width:min(46vw,760px);margin:clamp(28px,5vh,56px) auto 0;padding:0}
