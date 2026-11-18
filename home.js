@@ -50,19 +50,12 @@
 
   /* ---------- intro: the brick wall in the crew colours drops away once per visit ---------- */
   function introDelay(){
-    var el = document.querySelector(".intro"), go; window.ogIntro = new Promise(function(r){ go = r; }); if (!el){ go(); return .1; }
+    var el = document.querySelector(".intro"), go; window.ogIntro = new Promise(function(r){ go = r; });
+    addEventListener("og:intro-done", function(){ go(); }); setTimeout(function(){ go(); var it = document.querySelector(".intro"); if (it && !it.classList.contains("done")) it.classList.add("done"); }, 7000);
+    if (!el){ go(); return .1; }
     var seen = false; try { seen = sessionStorage.getItem("og-intro") === "1"; sessionStorage.setItem("og-intro", "1"); } catch(e){}
-    if (seen || reduce || !window.gsap){ el.classList.add("done"); go(); return .1; }
-    var cols = innerWidth < 700 ? 5 : 9, size = innerWidth / cols, rows = Math.ceil(innerHeight / size), wall = el.querySelector(".intro-bricks"), pal = ["#E2202E", "#E8A400", "#2450FF", "#7B45F5"], html = "";
-    wall.style.setProperty("--ic", cols); wall.style.gridAutoRows = size + "px";
-    for (var j = 0; j < rows; j++) for (var i = 0; i < cols; i++) html += '<b style="--c:' + pal[(i * 7 + j * 3) % 4] + '"></b>';
-    wall.innerHTML = html;
-    var tl = gsap.timeline({ onComplete: function(){ el.classList.add("done"); go(); } });
-    tl.from(".intro-gear", { rotate: -200, scale: .3, autoAlpha: 0, duration: .7, ease: "back.out(1.6)" })
-      .to(".intro-gear", { rotate: "+=120", duration: .5, ease: "power2.inOut" })
-      .to(".intro-gear", { scale: 2.4, autoAlpha: 0, duration: .45, ease: "power3.in" }, "-=.1")
-      .to(wall.children, { scale: 0, rotate: 25, duration: .55, ease: "power3.in", stagger: { grid: [rows, cols], from: "center", amount: .45 } }, "<");
-    return 1.45;
+    if (seen || reduce || !window.gsap){ el.classList.add("done"); return .1; }
+    window.__ogIntro3d = true; return 2.15;
   }
 
   /* ---------- motion pass: reel, tilt, roadmap line, shutters, magnetic buttons, ticker speed ---------- */
@@ -138,7 +131,6 @@
       gsap.from(".ap-form", { y: 50, autoAlpha: 0, duration: 1.1, ease: "expo.out", scrollTrigger: { trigger: ".ap-form", start: "top 85%" } });
       motionPass();
       // the gear logo turns as you scroll into the last section, like it drives the page
-      gsap.fromTo(".join-gear", { rotate: -120, scale: .8, autoAlpha: 0 }, { rotate: 60, scale: 1, autoAlpha: matchMedia("(max-width:640px)").matches ? .3 : 1, ease: "none", scrollTrigger: { trigger: ".join", start: "top bottom", end: "bottom bottom", scrub: .8 } });
     ScrollTrigger.refresh(); }); }
     addEventListener("load", function(){ ScrollTrigger.refresh(); });
     if (window.ResizeObserver){ var rt; new ResizeObserver(function(){ clearTimeout(rt); rt = setTimeout(function(){ ScrollTrigger.refresh(); }, 200); }).observe(document.querySelector("main")); }

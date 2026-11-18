@@ -25,7 +25,7 @@
 <body>
 <a class="skip" href="#crew">Skip to content</a>
 <div class="grain" aria-hidden="true"></div><div class="progress" aria-hidden="true"><i></i></div>
-<div class="intro" aria-hidden="true"><div class="intro-bricks"></div><img class="intro-gear" src="assets/logo/emblem-640.png" alt="" width="640" height="531"></div>
+<div class="intro" aria-hidden="true"></div>
 <header class="nav">
   <div class="wrap">
     <a class="brand" href="#top" aria-label="Overgrind Studios home"><img class="og-logo" src="assets/logo/emblem-128.png" width="34" height="28" alt="" aria-hidden="true">Overgrind<em>Studios</em></a>
@@ -79,6 +79,7 @@
   <div class="wrap">
     <div class="sec-head">
       <span class="kicker"><b>01</b><span data-i18n="lu.k0">The crew</span></span>
+      <span class="g-slot" data-g="head" aria-hidden="true"></span>
       <h2 class="h2" id="crew-title"><span data-i18n="lu.t0a">Meet the</span> <em data-i18n="lu.t0b">grinders.</em></h2>
       <p class="sec-p" data-i18n="cr.p">Four creators from Switzerland and Germany, one label. Everyone here builds, everyone here plays what we ship.</p>
     </div>
@@ -96,6 +97,7 @@
   <div class="wrap">
     <div class="sec-head">
       <span class="kicker"><b>02</b><span data-i18n="n.games">Games</span></span>
+      <span class="g-slot" data-g="head" aria-hidden="true"></span>
       <h2 class="h2" id="worlds-title"><span data-i18n="w.ta">Seven worlds.</span> <em data-i18n="w.tb">One crew.</em></h2>
       <p class="sec-p" data-i18n="w.p2">Every game has its own look, its own rules and its own team. Open one to see what we're building.</p>
     </div>
@@ -115,7 +117,7 @@
       <span class="kicker"><b>03</b><span data-i18n="r.k">Roadmap</span></span>
       <h2 class="h2" id="road-title"><span data-i18n="r.ta">What's</span> <em data-i18n="r.tb">next.</em></h2>
     </div>
-    <ol class="steps">
+    <ol class="steps" data-g="roll">
       <li class="now"><span class="s-k" data-i18n="r.1s">Now</span><h3 data-i18n="r.1h">Seven games in the workshop</h3><p data-i18n="r.1p">Every project is being built in Roblox Studio right now.</p></li>
       <li><span class="s-k" data-i18n="r.2s">Next</span><h3 data-i18n="r.2h">First playtests</h3><p data-i18n="r.2p">Nostalgia Recess: test with friends.</p><p data-i18n="r.2q">SEEN ONLINE: private beta.</p></li>
       <li><span class="s-k" data-i18n="r.3s">Winter 2026</span><h3 data-i18n="r.3h">First releases</h3><p data-i18n="r.3p">Wyrmquake is aiming for winter.</p><p data-i18n="r.3q">Nostalgia Recess gets weekly updates after launch.</p></li>
@@ -133,6 +135,7 @@
   <div class="wrap">
     <div class="sec-head">
       <span class="kicker"><b>04</b><span data-i18n="v.k">Devlog</span></span>
+      <span class="g-slot" data-g="head" aria-hidden="true"></span>
       <h2 class="h2" id="devlog-title"><span data-i18n="v.ta">Behind the</span> <em data-i18n="v.tb">grind.</em></h2>
     </div>
     <div class="dl-grid">
@@ -158,6 +161,7 @@
   <div class="wrap">
     <span class="kicker"><b>05</b><span data-i18n="s.k">The studio</span></span>
     <h2 class="statement" id="studio-title"><span data-i18n="s.st">One label, many creators. We don't ship the first version that works. We ship the one we'd play ourselves, after school, after work, at two in the morning.</span></h2>
+    <span class="g-slot g-studio" data-g="big" aria-hidden="true"></span>
     <p class="studio-p" data-i18n="s.p2">No copy-paste games, no first drafts on the front page. Every release has to be something we'd play ourselves.</p>
   </div>
 </section>
@@ -184,7 +188,7 @@
 </section>
 
 <section class="join" id="join" aria-labelledby="join-title">
-  <img class="join-gear" src="assets/logo/emblem-640.png" alt="" aria-hidden="true" width="640" height="531" loading="lazy" decoding="async">
+  <span class="join-gear g-slot" data-g="big" aria-hidden="true"></span>
   <div class="wrap">
     <h2 id="join-title"><span data-i18n="j.1">Get in before</span> <em data-i18n="j.2">the first drop.</em></h2>
     <div class="join-row">
@@ -222,6 +226,7 @@
 <script>var DE = {{DEJSON}};</script>
 <script src="home.js"></script>
 <script type="module" src="crewstage.js"></script>
+<script type="module" src="gear3d.js"></script>
 {{GOAT}}
 </body>
 </html>

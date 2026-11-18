@@ -529,3 +529,19 @@ footer a:hover{color:var(--paper)}
 .ft-mark{font-size:min(240px,calc((100vw - 2 * var(--pad)) / 7.6))}
 @media (max-width:640px){.ft-top{grid-template-columns:1fr 1fr;gap:32px 24px}.ft-about{grid-column:1/-1}}
 .card.you .c-ghost{height:44%;margin-top:40px}
+
+/* =========================================================
+   Site 3.4 – the 3D gear
+   ========================================================= */
+.gear3d{position:fixed;left:0;top:0;width:100vw;height:100vh;z-index:45;pointer-events:none;opacity:0;will-change:opacity}
+.gear3d.on-intro{z-index:210;opacity:1}
+.intro{background:var(--paper)}
+.intro::before,.intro::after{display:none}
+.g-slot{display:block;pointer-events:none}
+.sec-head .g-slot{position:absolute;left:0;bottom:4px;width:132px;height:132px}
+.studio .wrap{position:relative}
+.g-studio{position:absolute;right:calc(var(--pad) * -.2);top:50%;width:min(36vw,500px);aspect-ratio:1;transform:translateY(-58%)}
+.studio::after{display:none}
+.join-gear{right:-4vw;top:50%;transform:translateY(-50%);width:min(38vw,560px);aspect-ratio:1;height:auto;filter:none}
+@media (max-width:1180px){.sec-head .g-slot{left:auto;right:0;top:12px;bottom:auto;width:84px;height:84px}}
+@media (max-width:900px){.g-studio{position:relative;right:auto;top:auto;transform:none;width:58vw;margin:30px auto 0}.join-gear{width:46vw;right:-8vw;top:18%;transform:none}}
