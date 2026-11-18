@@ -58,7 +58,7 @@ const pxSize = (p) => p / H * 2 * halfH();
 /* state: screen centre (px), radius (px), opacity, tilt */
 const S = { x: W * .5, y: H * .5, r: 0, o: 0, rx: 0, ry: 0, spin: 0 };
 const mouse = { x: 0, y: 0 }; addEventListener("pointermove", (e) => { mouse.x = e.clientX / W - .5; mouse.y = e.clientY / H - .5; }, { passive: true });
-let lastY = scrollY, vel = 0, mode = "intro", introTL = null;
+let lastY = scrollY, vel = 0, mode = "intro", introTL = null, introStart = performance.now();
 
 function slotTarget(){
   const slots = document.querySelectorAll("[data-g]"); let best = null, bestV = 0;
@@ -97,7 +97,7 @@ if (window.__ogIntro3d && !reduce){ runIntro(); try { R.compile(scene, cam); } c
 const clock = new THREE.Clock(); let rollA = 0, prevX = null;
 function frame(){
   const dt = Math.min(.05, clock.getDelta()), t = clock.elapsedTime;
-  if (mode === "intro" && introTL && !window.__gearHold) introTL.time(Math.min(introTL.duration(), introTL.time() + Math.min(dt, 1 / 30)), false);
+  if (mode === "intro" && introTL && !window.__gearHold){ introTL.time(Math.min(introTL.duration(), introTL.time() + Math.min(dt, 1 / 10)), false); if (performance.now() - introStart > 6200) introTL.progress(1); }
   vel += ((scrollY - lastY) - vel) * .2; lastY = scrollY;
   if (mode === "scroll"){
     const T = slotTarget(), k = 1 - Math.pow(.0009, dt);
