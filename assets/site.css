@@ -735,7 +735,7 @@ p,li,figcaption{text-wrap:pretty}
 .ft-bot{grid-template-columns:repeat(3,auto) 1fr;gap:28px;align-items:center;padding-block:22px;border-top:1px solid var(--line);font-size:13.5px}
 .ft-up{justify-self:end;color:var(--paper)}
 @media (max-width:860px){.ft-top{grid-template-columns:1fr 1fr}.ft-about{grid-column:1/-1}.ft-bot{grid-template-columns:1fr}.ft-up{justify-self:start}}
-.gp-hero h1{max-width:none!important;font-size:min(clamp(48px,10vw,170px),calc((100vw - 2 * var(--pad)) / (var(--n,8) * .8)))!important;white-space:nowrap}
+.gp-hero h1{max-width:none!important;font-size:min(clamp(48px,10vw,170px),calc((100vw - 2 * var(--pad)) / (var(--n,8) * .98)))!important;white-space:nowrap}
 
 /* portal transitions */
 .portal{position:fixed;inset:0;z-index:300;display:none;pointer-events:none;perspective:900px}

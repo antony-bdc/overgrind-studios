@@ -154,5 +154,7 @@ for i,g in enumerate(GAMES):
     for a,v in rep.items(): s=s.replace(a,v)
     s=re.sub(r'\{\{i:([a-z0-9-]+)\}\}',lambda m:ico(m.group(1)),s)
     assert '{{' not in s, (k,re.findall(r'\{\{[^}]*\}\}',s))
+    import hashlib; _V=hashlib.md5((open('src/site.css').read()+open('portal.js').read()+open('game.js').read()).encode()).hexdigest()[:8]
+    s=s.replace('assets/site.css"','assets/site.css?v='+_V+'"').replace('portal.js"','portal.js?v='+_V+'"').replace('game.js"','game.js?v='+_V+'"')
     os.makedirs(f'games/{k}',exist_ok=True); open(f'games/{k}/index.html','w').write(s)
 print('game pages ok')
