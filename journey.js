@@ -45,7 +45,7 @@ async function init(){
     ST.push({ g, bb, bits, lamp, col, side });
     /* camera passes in front of the billboard, a bit to the outside */
     const bw = new THREE.Vector3(); bb.getWorldPosition(bw);
-    camPts.push(new THREE.Vector3(x - side * 4, y + 8.5, z + 25)); lookPts.push(bw.clone());
+    camPts.push(new THREE.Vector3(x - side * 4 - 3, y + 8.5, z + 28)); lookPts.push(bw.clone().add(new THREE.Vector3(innerWidth > 900 ? -7.5 : 0, -1, 0)));
   }
   camPts.unshift(camPts[0].clone().add(new THREE.Vector3(0, 6, 30))); lookPts.unshift(lookPts[0].clone());
   camPts.push(camPts[camPts.length - 1].clone().add(new THREE.Vector3(0, 10, -30))); lookPts.push(lookPts[lookPts.length - 1].clone().add(new THREE.Vector3(0, 0, -40)));

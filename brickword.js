@@ -54,7 +54,7 @@ async function init(){
       e0.set(RO[i].x * (1 - k), RO[i].y * (1 - k), RO[i].z * (1 - k) + lift[i] * .15); q.setFromEuler(e0); m4.compose(pos, q, one);
       IB.setMatrixAt(i, m4); IS.setMatrixAt(i, m4);
     }
-    IB.instanceMatrix.needsUpdate = IS.instanceMatrix.needsUpdate = true; R.render(sc, cam); window.__bw = { p, N, W0, H0, cam: cam.position.toArray(), W, H };
+    IB.instanceMatrix.needsUpdate = IS.instanceMatrix.needsUpdate = true; R.render(sc, cam);
   }
   frame();
 }
