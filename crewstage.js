@@ -48,7 +48,7 @@ async function init() {
     const st = new THREE.Mesh(studG, b.material); st.scale.setScalar(s * 1.4); st.position.y = s * .3 + .05; b.add(st);
     const sx = i % 2 ? 1 : -1; b.userData = { p: new THREE.Vector3(sx * (13 + hsh(i + 9) * 7), -3 + hsh(i + 3) * 9, -6 - hsh(i + 5) * 12), ph: hsh(i) * 6 }; sc.add(b); chunks.push(b); }
   /* ---- the gear rises behind them like a sun ---- */
-  const G = makeGear(); const sun = G.gear; sun.position.set(0, 1.6, -30); sun.scale.setScalar(6.2); sc.add(sun);
+  const G = makeGear(); const sun = G.gear; sun.position.set(0, 2.8, -30); sun.scale.setScalar(6.6); sc.add(sun);
   const sunL = new THREE.PointLight(0xffd9a0, 0, 60, 1.2); sunL.position.set(0, 6, -10); sc.add(sunL);
 
   // founder plinth: a gold studded brick
@@ -178,14 +178,14 @@ async function init() {
     }
     ghost.children.forEach((c) => c.isLineSegments && (c.material.opacity = 0.45 + Math.sin(t * 2) * 0.15));
     /* world: gear sun turns, chunks float */
-    sun.rotation.z = t * .12; sun.position.y = 1.6 + Math.sin(t * .5) * .25 + rise * 0;
+    sun.rotation.z = t * .12; sun.position.y = 2.8 + Math.sin(t * .5) * .25 + rise * 0;
     chunks.forEach((b) => { const u = b.userData; b.position.set(u.p.x, u.p.y + Math.sin(t * .8 + u.ph) * .4, u.p.z); b.rotation.set(Math.sin(t * .3 + u.ph) * .3, t * .2 + u.ph, 0); });
     /* camera: orbit with the cursor, dive under the island while you scroll, or fly to the chosen creator */
     const heroH = canvas.closest(".hero")?.offsetHeight || H, dive = Math.min(1, Math.max(0, scrollY / heroH));
     const yaw = aimS.x * .16, pitch = aimS.y * .05;
     let px = Math.sin(yaw) * base.d, py = base.y - pitch * 6 - dive * 7.5, pz = Math.cos(yaw) * base.d + dive * 3;
     let lx = 0, ly = base.ly - dive * 1.5, lz = 0;
-    if (focus >= 0){ const it = items[focus], gp = it.g.position, f = mobile ? 9 : 8.6; px = gp.x + Math.sin(it.ry) * f + aimS.x * .6; py = gp.y + 3.4; pz = gp.z + Math.cos(it.ry) * f; lx = gp.x + (mobile ? 0 : 1.2); ly = gp.y + 2.7; lz = gp.z; }
+    if (focus >= 0){ const it = items[focus], gp = it.g.position, f = mobile ? 15 : 13.5; px = gp.x + Math.sin(it.ry * .6) * f + aimS.x * .8 + (mobile ? 0 : 1.6); py = gp.y + 3.3; pz = gp.z + Math.cos(it.ry * .6) * f; lx = gp.x + (mobile ? 0 : 2.6); ly = gp.y + (mobile ? 1.6 : 2.6); lz = gp.z; }
     const kk = 1 - Math.pow(.02, clockDt);
     camP.lerp(v.set(px, py, pz), kk); camL.lerp(v.set(lx, ly, lz), kk);
     cam.position.copy(camP); cam.lookAt(camL);

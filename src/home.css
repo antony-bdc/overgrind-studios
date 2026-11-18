@@ -564,3 +564,6 @@ footer a:hover{color:var(--paper)}
 html.lobby-on .mark{opacity:.08!important;transition:opacity .6s}
 html.lobby-on .hero-foot{opacity:.25;transition:opacity .6s}
 @media (max-width:760px){.lobby{left:12px;right:12px;width:auto;top:auto;bottom:12px;transform:translateY(30px)}.lobby.on{transform:none}}
+.lb-name{font-size:clamp(28px,2.6vw,44px);overflow-wrap:anywhere}
+.lobby{width:min(380px,30vw)}
+@media (min-width:1600px){.lobby{right:calc((100vw - var(--max))/2 + var(--pad))}}
