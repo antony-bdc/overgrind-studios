@@ -45,7 +45,7 @@ async function init(){
     ST.push({ g, bb, bits, lamp, col, side });
     /* camera passes in front of the billboard, a bit to the outside */
     const bw = new THREE.Vector3(); bb.getWorldPosition(bw);
-    camPts.push(new THREE.Vector3(x - side * 13, y + 9, z + 22)); lookPts.push(bw.clone());
+    camPts.push(new THREE.Vector3(x - side * 6, y + 10, z + 34)); lookPts.push(bw.clone());
   }
   camPts.unshift(camPts[0].clone().add(new THREE.Vector3(0, 6, 30))); lookPts.unshift(lookPts[0].clone());
   camPts.push(camPts[camPts.length - 1].clone().add(new THREE.Vector3(0, 10, -30))); lookPts.push(lookPts[lookPts.length - 1].clone().add(new THREE.Vector3(0, 0, -40)));
@@ -56,8 +56,8 @@ async function init(){
   /* scroll */
   let target = 0, p = 0, visible = false; new IntersectionObserver((es) => es.forEach((e) => (visible = e.isIntersecting))).observe(sec);
   if (window.ScrollTrigger){
-    ScrollTrigger.create({ trigger: sec, start: "top top", end: () => "+=" + innerHeight * (N + 1) * .9, pin: ".jn-pin", scrub: true, anticipatePin: 1, onUpdate: (s) => { target = s.progress; } });
-    ScrollTrigger.refresh();
+    ScrollTrigger.create({ refreshPriority: 1, trigger: sec, start: "top top", end: () => "+=" + innerHeight * (N + 1) * .9, pin: ".jn-pin", scrub: true, anticipatePin: 1, onUpdate: (s) => { target = s.progress; } });
+    ScrollTrigger.sort(); ScrollTrigger.refresh();
   }
   const bar = sec.querySelector(".jn-bar i"), cnt = sec.querySelector(".jn-count b"), aim = new THREE.Vector2(), aimS = new THREE.Vector2(), tmp = new THREE.Vector3(), lk = new THREE.Vector3(), clock = new THREE.Clock();
   addEventListener("pointermove", (e) => aim.set(e.clientX / innerWidth - .5, e.clientY / innerHeight - .5), { passive: true });
