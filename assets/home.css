@@ -48,6 +48,7 @@ em{font-family:var(--serif);font-style:italic;font-weight:400;letter-spacing:-.0
 .nav.scrolled{background:rgba(244,242,237,.86);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);box-shadow:0 1px 0 var(--line)}
 .brand{display:flex;align-items:center;gap:10px;font:800 16px/1 var(--display);letter-spacing:-.02em}
 .brand em{font-size:19px;margin-left:-4px}
+.og-logo{width:34px;height:auto;display:block;transition:transform .6s cubic-bezier(.2,.8,.2,1)}.brand:hover .og-logo{transform:rotate(60deg)}
 .og{display:grid;grid-template-columns:1fr 1fr;gap:3px;width:26px;height:26px}
 .og i{border-radius:3px}
 .og i:nth-child(1){background:var(--an)}.og i:nth-child(2){background:var(--fs)}.og i:nth-child(3){background:var(--gi)}.og i:nth-child(4){background:var(--ex)}

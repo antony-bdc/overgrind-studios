@@ -712,3 +712,5 @@ p,li,figcaption{text-wrap:pretty}
 .lineup.flash .lu-sticky::after{animation:flash .5s ease}
 @keyframes flash{0%{background:rgba(255,255,255,.85);height:100%}100%{background:transparent;height:100%}}
 @media (max-width:860px){.lu-photo-bar{left:var(--pad);right:var(--pad);transform:none;flex-wrap:wrap;border-radius:20px;justify-content:center}.lu-pl{display:none}.lu-poses{overflow-x:auto;scrollbar-width:none}}
+
+.og-logo{width:34px;height:auto;display:block;transition:transform .6s cubic-bezier(.2,.8,.2,1)}.brand:hover .og-logo{transform:rotate(60deg)}

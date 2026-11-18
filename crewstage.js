@@ -2,6 +2,8 @@
    They drop in one after another, watch your cursor, react when you click them and do small things on their own. */
 import * as THREE from "./vendor/three.module.min.js";
 import { loadCrew4, pose } from "./crew4.js";
+import { fsBlockify } from "./fsblock.js";
+import { RoomEnvironment } from "./vendor/addons/environments/RoomEnvironment.js";
 
 const canvas = document.getElementById("stage-gl");
 
@@ -19,7 +21,8 @@ async function init() {
   R.toneMapping = THREE.ACESFilmicToneMapping; R.toneMappingExposure = 1.02;
   R.shadowMap.enabled = true; R.shadowMap.type = THREE.PCFSoftShadowMap;
   const sc = new THREE.Scene();
-  sc.add(new THREE.HemisphereLight(0xffffff, 0xbdb6a8, 1.55));
+  { const pm = new THREE.PMREMGenerator(R); sc.environment = pm.fromScene(new RoomEnvironment(), .04).texture; sc.environmentIntensity = .45; pm.dispose(); } // reflections for marble, gold and clearcoat
+  sc.add(new THREE.HemisphereLight(0xffffff, 0xbdb6a8, 1.15));
   const key = new THREE.DirectionalLight(0xfff3e2, 2.5); key.position.set(5, 11, 9); key.castShadow = true;
   key.shadow.mapSize.set(2048, 2048); Object.assign(key.shadow.camera, { left: -12, right: 12, top: 9, bottom: -4, near: 1, far: 40 }); key.shadow.radius = 5; key.shadow.bias = -0.0004; sc.add(key);
   const rim = new THREE.DirectionalLight(0xffffff, 1.3); rim.position.set(-6, 6, -8); sc.add(rim);
@@ -51,6 +54,8 @@ async function init() {
   // load all four
   const items = await Promise.all(CREW.map(async (c, i) => {
     const J = await loadCrew4("assets/crew4/" + c.key);
+    if (c.key === "fs") fsBlockify(J);
+    if (c.key === "excess" && !J.pet) { try { const Jb = await loadCrew4("assets/crew4/excessbee"); if (Jb.pet) { Jb.pet.parent.remove(Jb.pet); J.B.UpperTorso.add(Jb.pet); J.pet = Jb.pet; } } catch (e) {} }
     const g = new THREE.Group(); g.add(J.root); g.position.set(c.x, c.plinth || 0, c.z); g.rotation.y = c.ry; sc.add(g);
     const hit = new THREE.Mesh(new THREE.BoxGeometry(3.2, 5.4, 1.8), new THREE.MeshBasicMaterial({ visible: false })); hit.position.y = 2.7; hit.userData.i = i; g.add(hit);
     return { ...c, J, g, hit, act: null, t0: 0, i, baseY: c.plinth || 0, phase: i * 1.7, drop: 0 };

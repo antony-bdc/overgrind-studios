@@ -32,7 +32,7 @@ DE = {
  "j.1":"Sei dabei vor","j.2":"dem ersten Drop.","j.p":"Tritt der Roblox-Community bei, damit du zuerst erfährst, wenn ein Game aufgeht, und folg uns auf TikTok für Devlogs und Clips.",
  "j.c1":"Auf Roblox beitreten",
  "n.devlog":"Devlog","n.apply":"Ins Team","d.more":"Zur Game-Seite",
- "v.k":"Devlog","v.t":"Hinter dem Grind","v.ep":"Folge 0","v.h":"Das ist Overgrind","v.p":"Wer wir sind, was wir bauen und warum es gleich sieben Games sind. 28 Sekunden, ohne Füllstoff.","v.c":"Mehr auf TikTok","v.cr":"Stimme: ElevenLabs","v.soon":"bald",
+ "v.k":"Devlog","v.t":"Hinter dem Grind","v.ep":"Folge 0","v.h":"Das ist Overgrind","v.p":"Wer wir sind, was wir bauen und warum es gleich sieben Games sind. Eine Minute, fünf Welten, ohne Füllstoff.","v.c":"Mehr auf TikTok","v.cr":"Stimme: ElevenLabs","v.soon":"bald",
  "a.k":"Bau mit uns","a.t":"Lust, mit uns zu grinden?","a.p1":"Wir suchen immer Builder, Scripter, Modeler, UI- und VFX-Leute, denen Details genauso wichtig sind wie uns.","a.p2":"Erzähl uns, wer du bist, und schick etwas, das du gebaut hast. Wir lesen jede Bewerbung.",
  "a.f1":"Dein Name","a.f2":"Roblox-Benutzername","a.f3":"Was du am besten kannst","a.f4":"Portfolio oder Game-Link","a.f5":"Ein paar Worte zu dir","a.o":"Etwas anderes","a.send":"Bewerbung senden","a.note":"Öffnet dein Mailprogramm mit allem ausgefüllt. Auf dieser Seite wird nichts gespeichert.",
  "s.vid":"FreshStatue stellt Overgrind vor: wer wir sind, woher der Name kommt und wen wir suchen.","gp.back":"Alle Games","gp.follow":"Entwicklung verfolgen","gp.k1":"Das Game","gp.k2":"Galerie","gp.soon":"Bald mehr Bilder","gp.soonp":"Neue Screenshots und Clips kommen mit jedem Devlog.","gp.next":"Nächste Welt","ft.1":"Gebaut von freshstatue und der Crew","ft.2":"Nicht mit der Roblox Corporation verbunden.",
@@ -96,7 +96,7 @@ DE.update({"n.crew":"Crew","lu.r0":"Founder","lu.r1":"Creator","lu.r2":"Avatar l
  "lu.k2":"Creator","lu.p2":"Noch kein Video, aber merk dir diesen Avatar. Die Krone kommt bald in deinen Feed.",
  "lu.k3":"Developer","lu.p3":"Zwei weitere Devs aus der Crew. Ihre Avatare laden noch. Ihr Code nicht.",
  "lu.k4":"Freier Platz","lu.t4":"Dieser Platz<br>gehört dir.","lu.p4":"Builder, Scripter, Modeler, Designer: Rauf aufs Podest.","lu.c":"Jetzt bewerben","lu.hint":"bewegen · klicken · hallo sagen","lu.fit":"Game-Outfits","lu.p0":"Vier Devs aus der Schweiz und Deutschland. Beweg die Maus, sie schauen dir nach. Klick einen an und sag Hallo, tipp aufs Namensschild für seine Karte."})
-DEVLOGS=[("EP 00","Meet Overgrind","Das ist Overgrind","28 s","28 s"),("EP 01","Wyrmquake devlog","Wyrmquake-Devlog","soon","bald")]
+DEVLOGS=[("EP 00","Meet Overgrind","Das ist Overgrind","1 min","1 Min."),("EP 01","Wyrmquake devlog","Wyrmquake-Devlog","soon","bald")]
 devlogs=''.join(f'<div class="dl-item"><b>{e}</b><span data-i18n="dl.{j}">{esc(t)}</span><em data-i18n="dlw.{j}">{w}</em></div>' for j,(e,t,td,w,wd) in enumerate(DEVLOGS))
 for j,(e,t,td,w,wd) in enumerate(DEVLOGS): DE[f"dl.{j}"]=td; DE[f"dlw.{j}"]=wd
 

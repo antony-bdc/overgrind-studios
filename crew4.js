@@ -9,9 +9,14 @@ export async function loadCrew4(base) {
   const pos = take(Float32Array, 3, 4), nor = take(Int8Array, 4, 1), uv = take(Uint16Array, 2, 2), si = take(Uint8Array, 4, 1), sw = take(Uint8Array, 4, 1);
   const idx = new Uint32Array(bin, o, meta.ni);
   const tex = await new THREE.TextureLoader().loadAsync(base + ".jpg"); tex.colorSpace = THREE.SRGBColorSpace; tex.flipY = true; tex.anisotropy = 8;
-  const mat = new THREE.MeshStandardMaterial({ map: tex, roughness: .6, metalness: 0 });
+  tex.anisotropy = 16; tex.generateMipmaps = true; tex.minFilter = THREE.LinearMipmapLinearFilter;
+  let nrm = null; try { nrm = await new THREE.TextureLoader().loadAsync(base + "_n.jpg"); nrm.flipY = true; nrm.anisotropy = 16; } catch (e) { nrm = null; }
+  const marble = base.endsWith("/fs");
+  const mat = new THREE.MeshPhysicalMaterial({ map: tex, roughness: marble ? .32 : .58, metalness: 0, side: THREE.DoubleSide,
+    clearcoat: marble ? .55 : .12, clearcoatRoughness: marble ? .18 : .5, sheen: marble ? 0 : .35, sheenRoughness: .6, sheenColor: new THREE.Color(0x9aa0b0), envMapIntensity: marble ? 1.0 : .7 });
+  if (nrm) { mat.normalMap = nrm; mat.normalScale.set(.9, .9); }
   const root = new THREE.Group(), flip = new THREE.Group(); flip.rotation.y = Math.PI; root.add(flip);
-  const B = {}, bones = [], abs = {}; let pet = null; const meshes = [];
+  const B = {}, bones = [], abs = {}; let pet = null, hat = null; const meshes = [];
   for (const b of meta.bones) { const bone = new THREE.Bone(); bone.name = b.name; B[b.name] = bone; abs[b.name] = b.pos; bones.push(bone);
     if (b.parent) { const pp = abs[b.parent]; bone.position.set(b.pos[0] - pp[0], b.pos[1] - pp[1], b.pos[2] - pp[2]); B[b.parent].add(bone); } else { bone.position.set(...b.pos); flip.add(bone); }
     bone.userData.rest = bone.position.clone(); }
@@ -20,14 +25,14 @@ export async function loadCrew4(base) {
   for (const p of meta.parts) {
     const g = new THREE.BufferGeometry(); g.setAttribute("position", P); g.setAttribute("normal", N); g.setAttribute("uv", U);
     g.setIndex(new THREE.BufferAttribute(idx.slice(p.start, p.start + p.count), 1));
-    if (p.pet) { // flying companion: rigid, follows the upper torso and bobs on its own
-      const ut = abs.UpperTorso, g2 = g.clone(), a = g2.attributes.position = new THREE.BufferAttribute(pos.slice(), 3);
+    if (p.pet || p.hat) { // rigid extras: the bee follows the upper torso, the hat sits on the head bone (and can fly off)
+      const ut = p.hat ? abs.Head : abs.UpperTorso, g2 = g.clone(), a = g2.attributes.position = new THREE.BufferAttribute(pos.slice(), 3);
       for (let i = 0; i < a.count; i++) a.setXYZ(i, a.getX(i) - ut[0], a.getY(i) - ut[1], a.getZ(i) - ut[2]);
-      const m = new THREE.Mesh(g2, mat), pg = new THREE.Group(); pg.add(m); B.UpperTorso.add(pg); pet = pg; m.castShadow = true; meshes.push(m); continue; }
+      const m = new THREE.Mesh(g2, mat), pg = new THREE.Group(); pg.add(m); (p.hat ? B.Head : B.UpperTorso).add(pg); if (p.hat) hat = pg; else pet = pg; m.castShadow = true; m.frustumCulled = false; meshes.push(m); continue; }
     g.setAttribute("skinIndex", new THREE.BufferAttribute(si, 4)); g.setAttribute("skinWeight", new THREE.BufferAttribute(sw, 4, true));
     const m = new THREE.SkinnedMesh(g, mat); m.castShadow = m.receiveShadow = true; m.frustumCulled = false; flip.add(m); m.bind(skel); meshes.push(m);
   }
-  return { root, B, meshes, pet, mat, armRest: meta.armRest || 0, height: meta.height, hipY: meta.hipY };
+  return { root, B, meshes, pet, hat, mat, armRest: meta.armRest || 0, height: meta.height, hipY: meta.hipY };
 }
 
 /* ---------- pose model ---------- */
