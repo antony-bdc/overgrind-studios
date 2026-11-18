@@ -37,7 +37,7 @@ async function init(){
   let W = 1, H = 1; function layout(){ const r = host.getBoundingClientRect(); W = Math.max(1, r.width); H = Math.max(1, r.height); R.setSize(W, H, false); cam.aspect = W / H;
     const dist = (W0 / 2 * 1.04) / Math.tan(THREE.MathUtils.degToRad(cam.fov / 2)) / cam.aspect; cam.position.set(0, -2, Math.max(dist, (H0 / 2 + 2) / Math.tan(THREE.MathUtils.degToRad(cam.fov / 2)))); cam.lookAt(0, 0, 0); cam.updateProjectionMatrix(); }
   layout(); addEventListener("resize", layout); if (window.ResizeObserver) new ResizeObserver(layout).observe(host);
-  let p = reduce ? 1 : 0, vis = false; new IntersectionObserver((es) => es.forEach((e) => (vis = e.isIntersecting))).observe(host);
+  let p = reduce ? 1 : 0, vis = false, tSeen = 0; new IntersectionObserver((es) => es.forEach((e) => (vis = e.isIntersecting))).observe(host);
   const mouse = new THREE.Vector2(9e3, 9e3), ray = new THREE.Raycaster(), plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0), hit = new THREE.Vector3(), mp = new THREE.Vector3(9e3, 9e3, 0);
   host.addEventListener("pointermove", (e) => { const r = cv.getBoundingClientRect(); mouse.set((e.clientX - r.left) / r.width * 2 - 1, -(e.clientY - r.top) / r.height * 2 + 1); });
   host.addEventListener("pointerleave", () => mouse.set(9e3, 9e3));
@@ -46,7 +46,7 @@ async function init(){
   function frame(){
     requestAnimationFrame(frame); const dt = Math.min(.05, clock.getDelta()); if (!vis) return;
     const r = host.getBoundingClientRect(), seen = Math.max(0, Math.min(r.bottom, innerHeight) - Math.max(r.top, 0)) / r.height;
-    if (reduce) p = 1; else if (seen > .45) p = Math.min(1, p + dt / 1.8); else if (seen <= 0) p = 0;
+    if (reduce) p = 1; else if (seen > .45){ if (!tSeen) tSeen = performance.now(); p = Math.min(1, (performance.now() - tSeen) / 1900); } else if (seen <= 0){ p = 0; tSeen = 0; }
     if (mouse.x < 10){ ray.setFromCamera(mouse, cam); ray.ray.intersectPlane(plane, hit) ? mp.copy(hit) : mp.set(9e3, 9e3, 0); } else mp.set(9e3, 9e3, 0);
     for (let i = 0; i < N; i++){
       const k = ease((p - D[i]) / .4), d = Math.hypot(T[i].x - mp.x, T[i].y - mp.y); lift[i] += ((d < 6 ? (1 - d / 6) * 2.2 : 0) - lift[i]) * Math.min(1, dt * 8);
