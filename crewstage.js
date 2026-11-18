@@ -4,6 +4,7 @@ import * as THREE from "./vendor/three.module.min.js";
 import { loadCrew4, pose } from "./crew4.js";
 import { fsBlockify } from "./fsblock.js";
 import { RoomEnvironment } from "./vendor/addons/environments/RoomEnvironment.js";
+await (window.ogIntro || Promise.resolve()); // let the intro play smoothly before the 3D crew loads
 
 const canvas = document.getElementById("stage-gl");
 

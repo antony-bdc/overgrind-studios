@@ -1,8 +1,31 @@
 [
  {
-  "v": "Site 3.1",
+  "v": "Site 3.2",
   "date": "18.11.2026",
   "new": true,
+  "t": [
+   "The games get the big stage",
+   "Die Games bekommen die grosse Bühne"
+  ],
+  "items": [
+   [
+    "All seven games now run as a full-screen reel: scroll and they slide past one by one.",
+    "Alle sieben Games laufen jetzt als grosse Galerie: Beim Scrollen fahren sie eins nach dem anderen vorbei."
+   ],
+   [
+    "New motion everywhere: the wordmark builds itself, headlines rise in, the roadmap draws itself and the crew cards tilt towards your cursor.",
+    "Überall neue Bewegung: Der Schriftzug baut sich auf, Überschriften steigen ein, die Roadmap zeichnet sich selbst und die Crew-Karten neigen sich zu deinem Cursor."
+   ],
+   [
+    "A short brick intro in the crew colours on your first visit.",
+    "Beim ersten Besuch ein kurzes Noppen-Intro in den Crew-Farben."
+   ]
+  ]
+ },
+ {
+  "v": "Site 3.1",
+  "date": "18.11.2026",
+  "new": false,
   "t": [
    "New crew, new logo, new film",
    "Neue Crew, neues Logo, neuer Film"

@@ -308,3 +308,89 @@ footer a:hover{color:var(--paper)}
   .js .rv{opacity:1;transform:none}
   .statement .w{opacity:1}
 }
+
+/* =========================================================
+   Site 3.2 – motion pass: intro, split headlines, game reel,
+   tilt cards, drawn roadmap, magnetic buttons
+   ========================================================= */
+/* intro: a wall of studded bricks in the crew colours, the gear spins, then the wall drops away */
+.intro{position:fixed;inset:0;z-index:200;pointer-events:none;display:none}
+.js .intro{display:block}
+.intro-bricks{position:absolute;inset:0;display:grid;grid-template-columns:repeat(var(--ic,8),1fr);grid-auto-rows:1fr}
+.intro-bricks b{position:relative;background:var(--c);display:block}
+.intro-bricks b::after{content:"";position:absolute;left:50%;top:50%;width:46%;aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(circle at 38% 34%,rgba(255,255,255,.35),rgba(255,255,255,0) 55%),var(--c);box-shadow:inset 0 -6px 0 rgba(0,0,0,.16),0 4px 0 rgba(0,0,0,.12)}
+.intro-gear{position:absolute;left:50%;top:50%;width:min(34vw,240px);height:auto;translate:-50% -50%;filter:drop-shadow(0 20px 40px rgba(0,0,0,.35))}
+.intro.done{display:none}
+
+/* split headlines: words rise out of a mask */
+.h2 .og-w,.join h2 .og-w{display:inline-block}
+.mark .og-c{display:inline-block;will-change:transform}
+
+/* hero: wordmark gets pushed back as the crew comes forward */
+.mark{will-change:transform,opacity}
+
+/* ticker reacts to scroll speed */
+.tk{will-change:transform}
+.ticker .tk span{display:inline-block;transform:skewX(var(--sk,0deg));transition:transform .1s}
+
+/* ---------- the game reel (pinned, horizontal) ---------- */
+.reel{position:relative;background:var(--ink);color:var(--paper);margin-top:clamp(40px,6vw,80px);overflow:hidden}
+.reel::before{content:"";position:absolute;inset:0;background:radial-gradient(60% 50% at 70% 40%,color-mix(in srgb,var(--glow,#E8A400) 22%,transparent),transparent 70%);transition:background .8s;pointer-events:none}
+.reel-pin{position:relative;height:100svh;min-height:640px;display:flex;flex-direction:column;justify-content:center}
+.reel-track{display:flex;gap:clamp(20px,3vw,48px);padding:0 calc(var(--pad) + max(0px,(100vw - var(--max))/2));width:max-content;will-change:transform}
+.rc{position:relative;flex:none;width:min(64vw,1040px);display:flex;flex-direction:column;gap:22px;color:var(--paper);transform-origin:50% 60%}
+.rc-img{position:relative;aspect-ratio:16/9;border-radius:var(--r);overflow:hidden;background:#1b1b1d;box-shadow:0 50px 90px -40px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.06)}
+.rc-img img{position:absolute;inset:0;width:118%;max-width:none;height:100%;left:-9%;object-fit:cover;will-change:transform;transition:scale .9s var(--ease)}
+.rc-img::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.35));pointer-events:none}
+.rc:hover .rc-img img{scale:1.04}
+.rc-meta{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;align-items:center;gap:22px}
+.rc-no{font:700 13px/1 var(--mono);color:rgba(244,242,237,.5);align-self:start;padding-top:8px}
+.rc-t{display:flex;flex-direction:column;gap:6px;min-width:0}
+.rc-t b{font:800 clamp(26px,3.2vw,54px)/.92 var(--display);letter-spacing:-.045em}
+.rc-t em{font-size:clamp(18px,1.5vw,22px);color:rgba(244,242,237,.7)}
+.rc-side{display:flex;flex-direction:column;gap:8px;align-items:flex-end;text-align:right}
+.rc-gen{display:flex;align-items:center;gap:8px;font:500 13px/1.3 var(--mono);color:rgba(244,242,237,.7)}
+.rc-st{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--paper)}
+.rc-st i{width:8px;height:8px;border-radius:50%;background:var(--a);box-shadow:0 0 0 3px color-mix(in srgb,var(--a) 30%,transparent),0 0 14px var(--a);flex:none}
+.rc-go{width:52px;height:52px;border-radius:50%;border:1.5px solid rgba(244,242,237,.4);display:grid;place-items:center;transition:background .3s,color .3s,transform .45s var(--ease),border-color .3s}
+.rc:hover .rc-go{background:var(--a);border-color:var(--a);color:#fff;transform:rotate(45deg)}
+.reel-ui{display:flex;align-items:center;gap:22px;margin-top:clamp(28px,4vh,48px)}
+.reel-count{font:700 13px/1 var(--mono);letter-spacing:.08em;color:rgba(244,242,237,.55);display:flex;gap:8px}
+.reel-count b{color:var(--paper);min-width:2ch}
+.reel-bar{flex:1;height:2px;background:rgba(244,242,237,.15);border-radius:2px;overflow:hidden}
+.reel-bar i{display:block;height:100%;width:100%;background:var(--paper);transform-origin:0 50%;transform:scaleX(var(--p,0))}
+.reel-hint{font:500 12px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:rgba(244,242,237,.5)}
+
+/* ---------- crew cards: tilt + glare ---------- */
+.card{transform-style:preserve-3d}
+.card .glare{position:absolute;inset:0;z-index:3;pointer-events:none;opacity:0;transition:opacity .4s;background:radial-gradient(420px circle at var(--gx,50%) var(--gy,50%),rgba(255,255,255,.35),transparent 45%);mix-blend-mode:soft-light}
+.card:hover .glare{opacity:1}
+
+/* ---------- roadmap: the line is drawn while you scroll ---------- */
+.steps{position:relative}
+.steps li{border-top-color:var(--line)}
+.steps .s-line{position:absolute;left:0;right:0;top:0;height:2px;background:var(--ink);transform-origin:0 50%;transform:scaleX(var(--p,1));pointer-events:none}
+.steps li::after{transition:background .4s,border-color .4s,transform .5s var(--ease)}
+.steps li.lit::after{transform:scale(1.25)}
+
+/* ---------- videos open like a shutter ---------- */
+.vid{clip-path:inset(var(--ci,0%) round var(--r))}
+
+/* ---------- magnetic buttons ---------- */
+.btn{will-change:transform}
+
+@media (max-width:900px){
+  .reel-pin{height:auto;min-height:0;padding:clamp(56px,10vw,90px) 0}
+  .reel-track{width:auto;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .reel-track::-webkit-scrollbar{display:none}
+  .rc{width:84vw;scroll-snap-align:center}
+  .rc-meta{grid-template-columns:auto minmax(0,1fr) auto;gap:14px}
+  .rc-side{display:none}
+  .rc-go{width:44px;height:44px}
+  .reel-ui{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .js .intro{display:none}
+  .reel-pin{height:auto;min-height:0;padding:80px 0}
+  .reel-track{width:auto;overflow-x:auto;scroll-snap-type:x mandatory}
+}

@@ -22,6 +22,16 @@ def build_home(GAMES, DE, upd_html, LD, ROBLOX, TIKTOK, GOAT, ico, esc):
                     f'<span class="g-gen">{ico(g["icon"])}<span data-i18n="g.{k}.genre">{esc(g["genre"][0])}</span></span>'
                     f'<span class="g-st {g["st"]}"><i></i><span data-i18n="g.{k}.status">{esc(g["status"][0])}</span></span>'
                     f'<span class="g-go">{ico("arrow-up-right")}</span></a></li>')
+    reel=[]
+    for i,g in enumerate(GAMES):
+        k=g['key']
+        reel.append(f'\n        <a class="rc" href="games/{k}/" style="--a:{g["accent"]}">'
+                    f'<div class="rc-img"><img src="assets/games/{k}.webp" alt="{esc(g["title"])} key art" width="1460" height="812" loading="lazy" decoding="async"></div>'
+                    f'<div class="rc-meta"><span class="rc-no">{i+1:02d}</span><div class="rc-t"><b>{esc(g["title"])}</b><em data-i18n="g.{k}.tag">{esc(g["tag"][0])}</em></div>'
+                    f'<div class="rc-side"><span class="rc-gen">{ico(g["icon"])}<span data-i18n="g.{k}.genre">{esc(g["genre"][0])}</span></span>'
+                    f'<span class="rc-st"><i></i><span data-i18n="g.{k}.status">{esc(g["status"][0])}</span></span></div>'
+                    f'<span class="rc-go">{ico("arrow-up-right")}</span></div></a>')
+    DE["w.hint"]="weiter scrollen"
     cols=["#E2202E","#E8A400","#2450FF","#7B45F5"]
     tick=''.join(f'<span>{esc(g["title"])}</span><i style="--c:{cols[i%4]}"></i>' for i,g in enumerate(GAMES))
     DE.update({"n.apply":"Ins Team","h.m1":"Roblox-Gamestudio","h.m2":"Seit 2026","h.hint":"klick einen Creator an",
@@ -33,7 +43,7 @@ def build_home(GAMES, DE, upd_html, LD, ROBLOX, TIKTOK, GOAT, ico, esc):
      "s.st":"Ein Label, viele Creator. Wir veröffentlichen nicht die erste Version, die funktioniert. Sondern die, die wir selbst spielen würden: nach der Schule, nach der Arbeit, um zwei Uhr nachts.",
      "a.ta":"Lust, mit uns","a.tb":"zu grinden?"})
     hs=open('src/home.tpl.html').read()
-    rep={'{{CREWCARDS}}':''.join(cards),'{{GAMEROWS}}':''.join(rows),'{{TICKER}}':tick*3,'{{UPDATES}}':''.join(upd_html[:1]),'{{ROBLOX}}':ROBLOX,'{{TIKTOK}}':TIKTOK,'{{GOAT}}':GOAT,
+    rep={'{{CREWCARDS}}':''.join(cards),'{{GAMEROWS}}':''.join(rows),'{{REELCARDS}}':''.join(reel),'{{TICKER}}':tick*3,'{{UPDATES}}':''.join(upd_html[:1]),'{{ROBLOX}}':ROBLOX,'{{TIKTOK}}':TIKTOK,'{{GOAT}}':GOAT,
          '{{LDJSON}}':json.dumps(LD,ensure_ascii=False).replace('</','<\\/'),'{{DEJSON}}':json.dumps(DE,ensure_ascii=False)}
     for a,b in rep.items(): hs=hs.replace(a,b)
     hs=re.sub(r'\{\{i:([a-z0-9-]+)\}\}',lambda m:ico(m.group(1)),hs)
