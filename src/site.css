@@ -714,3 +714,25 @@ p,li,figcaption{text-wrap:pretty}
 @media (max-width:860px){.lu-photo-bar{left:var(--pad);right:var(--pad);transform:none;flex-wrap:wrap;border-radius:20px;justify-content:center}.lu-pl{display:none}.lu-poses{overflow-x:auto;scrollbar-width:none}}
 
 .og-logo{width:34px;height:auto;display:block;transition:transform .6s cubic-bezier(.2,.8,.2,1)}.brand:hover .og-logo{transform:rotate(60deg)}
+
+/* ---------- 3.3: game pages share the studio footer and use their own accent ---------- */
+.btn.fire{background:var(--accent);color:#0b0b0d}
+.btn.fire:hover{background:var(--paper);color:var(--ink)}
+.ft{background:#0b0b0d;color:rgba(242,239,233,.62);font-size:15px;border-top:1px solid var(--line);overflow:hidden;padding:0}
+.ft .wrap{display:grid}
+.ft a{border-bottom:0;text-decoration:none}
+.ft-top{grid-template-columns:minmax(0,1.4fr) repeat(3,minmax(0,1fr));gap:40px;padding-top:clamp(56px,7vw,96px)}
+.ft-col{display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+.ft-col b{font:700 12px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--paper);margin-bottom:8px}
+.ft-col a{transition:color .25s,transform .35s var(--ease)}
+.ft-col a:hover,.ft-col a[aria-current]{color:var(--paper);transform:translateX(4px)}
+.ft-col a[aria-current]::before{content:"● ";color:var(--accent)}
+.ft-about p{margin:6px 0 0;max-width:34ch;line-height:1.5}
+.ft-brand{display:inline-flex;align-items:center;gap:10px;color:var(--paper);font:800 17px/1 var(--display);letter-spacing:-.02em}
+.ft-brand img{width:26px;height:auto}
+.ft-mark{margin-top:clamp(40px,6vw,80px);text-align:center;white-space:nowrap;font:900 min(240px,calc((100vw - 2 * var(--pad)) / 7.6))/.74 var(--display);letter-spacing:-.06em;user-select:none;padding-inline:var(--pad)}
+.ft-mark span{display:inline-block;background:linear-gradient(90deg,#E2202E,#E8A400,#2450FF,#7B45F5);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ft-bot{grid-template-columns:repeat(3,auto) 1fr;gap:28px;align-items:center;padding-block:22px;border-top:1px solid var(--line);font-size:13.5px}
+.ft-up{justify-self:end;color:var(--paper)}
+@media (max-width:860px){.ft-top{grid-template-columns:1fr 1fr}.ft-about{grid-column:1/-1}.ft-bot{grid-template-columns:1fr}.ft-up{justify-self:start}}
+.gp-hero h1{max-width:none!important;font-size:min(clamp(48px,10vw,170px),calc((100vw - 2 * var(--pad)) / (var(--n,8) * .8)))!important;white-space:nowrap}

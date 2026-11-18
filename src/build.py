@@ -148,8 +148,8 @@ for i,g in enumerate(GAMES):
         "image":f"https://overgrindstudio.click/assets/games/{k}.jpg","publisher":{"@type":"Organization","name":"Overgrind Studios"}}
     s=gt.replace('{{ICON}}',g['icon'])
     rep={'{{TITLE}}':esc(g['title']),'{{DESC}}':esc(g['desc'][0]),'{{DESCR}}':esc(g['desc'][0]),'{{TAG}}':esc(g['tag'][0]),'{{BG}}':g['bg'],'{{ACCENT}}':g['accent'],'{{KEY}}':k,
-         '{{NUM}}':f"{i+1:02d}",'{{GENRE}}':esc(g['genre'][0]),'{{TITLELINES}}':tl,'{{ST}}':g['st'],'{{STATUS}}':esc(g['status'][0]),'{{FEATS}}':feats,'{{FACTS}}':facts,
-         '{{NEXTKEY}}':nx['key'],'{{NEXTACCENT}}':nx['accent'],'{{NEXTTITLE}}':esc(nx['title']),'{{ROBLOX}}':ROBLOX,'{{TIKTOK}}':TIKTOK,'{{GOAT}}':GOAT,
+         '{{NUM}}':f"{i+1:02d}",'{{GENRE}}':esc(g['genre'][0]),'{{TITLELINES}}':tl,'{{NLEN}}':str(max(len(p) for p in parts)),'{{ST}}':g['st'],'{{STATUS}}':esc(g['status'][0]),'{{FEATS}}':feats,'{{FACTS}}':facts,
+         '{{NEXTKEY}}':nx['key'],'{{NEXTACCENT}}':nx['accent'],'{{NEXTTITLE}}':esc(nx['title']),'{{ROBLOX}}':ROBLOX,'{{TIKTOK}}':TIKTOK,'{{GOAT}}':GOAT,'{{FTGAMES}}':''.join(f'<a href="../{h["key"]}/"'+(' aria-current="page"' if h['key']==k else '')+f'>{esc(h["title"])}</a>' for h in GAMES),
          '{{LDJSON}}':json.dumps(ld,ensure_ascii=False).replace('</','<\\/'),'{{DEJSON}}':json.dumps(DE,ensure_ascii=False)}
     for a,v in rep.items(): s=s.replace(a,v)
     s=re.sub(r'\{\{i:([a-z0-9-]+)\}\}',lambda m:ico(m.group(1)),s)
