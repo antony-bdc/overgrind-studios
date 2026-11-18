@@ -9,7 +9,7 @@ async function init(){
   const cv = sec.querySelector(".jn-gl"), stations = [...sec.querySelectorAll(".jn-st")], N = stations.length;
   const R = new THREE.WebGLRenderer({ canvas: cv, antialias: true, powerPreference: "high-performance" });
   R.setPixelRatio(Math.min(devicePixelRatio, 1.6)); R.outputColorSpace = THREE.SRGBColorSpace; R.toneMapping = THREE.NeutralToneMapping; R.shadowMap.enabled = true; R.shadowMap.type = THREE.PCFSoftShadowMap;
-  const sc = new THREE.Scene(), SKY = new THREE.Color(0xf1ede4); sc.background = SKY.clone(); sc.fog = new THREE.Fog(SKY.clone(), 40, 210);
+  const sc = new THREE.Scene(), SKY = new THREE.Color(0xf1ede4); sc.background = SKY.clone(); sc.fog = new THREE.Fog(SKY.clone(), 50, 260);
   { const pm = new THREE.PMREMGenerator(R); sc.environment = pm.fromScene(new RoomEnvironment(), .04).texture; sc.environmentIntensity = .55; }
   sc.add(new THREE.HemisphereLight(0xffffff, 0xcfc6b4, 1.1));
   const sun = new THREE.DirectionalLight(0xfff1dc, 2.4); sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048); Object.assign(sun.shadow.camera, { left: -60, right: 60, top: 60, bottom: -60, near: 1, far: 300 }); sun.shadow.bias = -.0006; sc.add(sun, sun.target);
@@ -21,7 +21,7 @@ async function init(){
   const ground = new THREE.Mesh(new THREE.PlaneGeometry(1200, 1200), new THREE.MeshStandardMaterial({ map: stT, roughness: .8 })); ground.rotation.x = -Math.PI / 2; ground.position.y = -26; ground.receiveShadow = true; sc.add(ground);
   /* stations along a winding path */
   const tl = new THREE.TextureLoader(), studG = new THREE.CylinderGeometry(.42, .42, .3, 20), hs = (n) => { const x = Math.sin(n * 77.7) * 4375.85; return x - Math.floor(x); };
-  const ST = [], camPts = [], lookPts = [], GAP = 46;
+  const ST = [], camPts = [], lookPts = [], GAP = 74;
   for (let i = 0; i < N; i++){
     const el = stations[i], col = new THREE.Color(el.dataset.a), side = i % 2 ? -1 : 1, z = -i * GAP, x = side * 9 + Math.sin(i * 1.3) * 4, y = Math.sin(i * .9) * 3;
     const g = new THREE.Group(); g.position.set(x, y, z); sc.add(g);
@@ -45,7 +45,7 @@ async function init(){
     ST.push({ g, bb, bits, lamp, col, side });
     /* camera passes in front of the billboard, a bit to the outside */
     const bw = new THREE.Vector3(); bb.getWorldPosition(bw);
-    camPts.push(new THREE.Vector3(x - side * 6, y + 10, z + 34)); lookPts.push(bw.clone());
+    camPts.push(new THREE.Vector3(x - side * 4, y + 8.5, z + 25)); lookPts.push(bw.clone());
   }
   camPts.unshift(camPts[0].clone().add(new THREE.Vector3(0, 6, 30))); lookPts.unshift(lookPts[0].clone());
   camPts.push(camPts[camPts.length - 1].clone().add(new THREE.Vector3(0, 10, -30))); lookPts.push(lookPts[lookPts.length - 1].clone().add(new THREE.Vector3(0, 0, -40)));
