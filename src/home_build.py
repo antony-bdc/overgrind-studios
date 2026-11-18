@@ -47,6 +47,9 @@ def build_home(GAMES, DE, upd_html, LD, ROBLOX, TIKTOK, GOAT, ico, esc):
          '{{LDJSON}}':json.dumps(LD,ensure_ascii=False).replace('</','<\\/'),'{{DEJSON}}':json.dumps(DE,ensure_ascii=False)}
     for a,b in rep.items(): hs=hs.replace(a,b)
     hs=re.sub(r'\{\{i:([a-z0-9-]+)\}\}',lambda m:ico(m.group(1)),hs)
+    import hashlib
+    V=hashlib.md5((open('src/home.css').read()+open('home.js').read()+open('gear3d.js').read()).encode()).hexdigest()[:8]
+    hs=hs.replace('href="assets/home.css"','href="assets/home.css?v='+V+'"').replace('src="home.js"','src="home.js?v='+V+'"').replace('src="gear3d.js"','src="gear3d.js?v='+V+'"')
     assert '{{' not in hs, re.findall(r'\{\{[^}]*\}\}',hs)
     open('index.html','w').write(hs); print('home',len(hs)//1024,'KB')
     open('assets/home.css','w').write(open('src/home.css').read())
