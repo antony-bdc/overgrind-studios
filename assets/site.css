@@ -736,3 +736,10 @@ p,li,figcaption{text-wrap:pretty}
 .ft-up{justify-self:end;color:var(--paper)}
 @media (max-width:860px){.ft-top{grid-template-columns:1fr 1fr}.ft-about{grid-column:1/-1}.ft-bot{grid-template-columns:1fr}.ft-up{justify-self:start}}
 .gp-hero h1{max-width:none!important;font-size:min(clamp(48px,10vw,170px),calc((100vw - 2 * var(--pad)) / (var(--n,8) * .8)))!important;white-space:nowrap}
+
+/* portal transitions */
+.portal{position:fixed;inset:0;z-index:300;display:none;pointer-events:none;perspective:900px}
+.portal.on{display:grid;pointer-events:auto}
+.portal b{position:relative;background:var(--c);transform-style:preserve-3d}
+.portal b.dk{background:color-mix(in srgb,var(--c) 82%,#000)}
+.portal b::after{content:"";position:absolute;left:50%;top:50%;width:44%;aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(circle at 36% 32%,rgba(255,255,255,.4),rgba(255,255,255,0) 55%) var(--c);box-shadow:inset 0 -5px 0 rgba(0,0,0,.18),0 4px 0 rgba(0,0,0,.14)}
