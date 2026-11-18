@@ -140,6 +140,9 @@ async function init() {
         const s = hover === it.i ? 1.25 : 0.8, dx = aimS.x - (it.g.position.x / 10), dy = aimS.y + 0.1;
         P.Head.y += dx * 0.55 * s - it.ry * 0.7; P.Head.x += -dy * 0.22 * s; P.UpperTorso.y += dx * 0.18 * s;
       });
+      if (J.fsMat) { // FreshStatue: the gold seams glow while he emotes
+        const on = it.act ? Math.min(1, (t - it.t0) / .25) * Math.max(0, Math.min(1, ((DUR[it.act] || 2) - (t - it.t0)) / .4)) : 0;
+        J.fsMat.gold.emissiveIntensity = on * (1.6 + .8 * Math.sin(t * 9)); J.fsMat.marble.emissive.setRGB(1, .72, .25); J.fsMat.marble.emissiveIntensity = on * .06; }
       if (J.pet) { J.pet.position.set(Math.sin(t * 1.3) * 0.18, Math.sin(t * 2.6) * 0.14, Math.cos(t * 1.3) * 0.12); J.pet.rotation.z = Math.sin(t * 9) * 0.06; }
     }
     ghost.children.forEach((c) => c.isLineSegments && (c.material.opacity = 0.45 + Math.sin(t * 2) * 0.15));

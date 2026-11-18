@@ -225,7 +225,10 @@ section{position:relative}
 .ap-note{margin:0;font-size:13.5px;color:var(--mute);max-width:34ch}
 
 /* ---------- join ---------- */
-.join{background:var(--ink);color:var(--paper);padding:clamp(96px,12vw,170px) 0 clamp(80px,9vw,130px);overflow:hidden}
+.join{background:var(--ink);color:var(--paper);padding:clamp(96px,12vw,170px) 0 clamp(80px,9vw,130px);overflow:hidden;position:relative}
+.join .wrap{position:relative;z-index:1}
+.join-gear{position:absolute;right:-9vw;top:clamp(40px,6vw,90px);width:min(36vw,560px);height:auto;pointer-events:none;filter:drop-shadow(0 40px 90px rgba(255,120,30,.22));will-change:transform}
+.ft-brand{display:inline-flex;align-items:center;gap:10px}.ft-brand img{width:26px;height:auto}
 .join h2{margin:0;font:800 clamp(46px,8.6vw,150px)/.88 var(--display);letter-spacing:-.055em;max-width:12ch}
 .join h2 em{color:var(--fs);font-size:1.1em;display:inline-block}
 .join-row{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;margin-top:44px;flex-wrap:wrap}
@@ -296,6 +299,7 @@ footer a:hover{color:var(--paper)}
   .ap-form input,.ap-form select,.ap-form textarea{font-size:16px}
   .ap-peek{display:none}
   .join-crew{gap:0;height:46vw}
+  .join-gear{width:78vw;right:-26vw;top:16px;margin-top:0;opacity:.32}
   .join-crew img{margin:0 -3%}
   footer .wrap{flex-direction:column;gap:8px}
 }

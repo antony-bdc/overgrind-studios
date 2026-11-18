@@ -1,8 +1,31 @@
 [
  {
+  "v": "Site 3.1",
+  "date": "18.11.2026",
+  "new": true,
+  "t": [
+   "New crew, new logo, new film",
+   "Neue Crew, neues Logo, neuer Film"
+  ],
+  "items": [
+   [
+    "excess and Gino got rebuilt from scratch, and FreshStatue is now real marble with gold seams. Click them in the header.",
+    "excess und Gino wurden komplett neu gebaut, und FreshStatue ist jetzt echter Marmor mit goldenen Nähten. Klick sie oben an."
+   ],
+   [
+    "Our own logo: a gear built from studs in the four crew colours.",
+    "Unser eigenes Logo: ein Zahnrad aus Noppen in den vier Crew-Farben."
+   ],
+   [
+    "New in the devlog: a one-minute film through five of our worlds, and the full studio video.",
+    "Neu im Devlog: ein Ein-Minuten-Film durch fünf unserer Welten und das ganze Studio-Video."
+   ]
+  ]
+ },
+ {
   "v": "Site 3.0",
   "date": "17.11.2026",
-  "new": true,
+  "new": false,
   "t": [
    "Full crew, new look",
    "Ganze Crew, neuer Look"
@@ -42,7 +65,8 @@
     "10 golden studs are hidden somewhere on this page.",
     "Irgendwo auf dieser Seite sind 10 goldene Noppen versteckt."
    ]
-  ]
+  ],
+  "new": false
  },
  {
   "v": "Site 2.0",
@@ -60,6 +84,7 @@
     "Every game got its own outfit for the crew.",
     "Jedes Game hat sein eigenes Outfit für die Crew bekommen."
    ]
-  ]
+  ],
+  "new": false
  }
 ]

@@ -63,6 +63,8 @@
       gsap.from(".vid", { y: 60, autoAlpha: 0, duration: 1.2, stagger: .12, ease: "expo.out", scrollTrigger: { trigger: ".dl-grid", start: "top 80%" } });
       gsap.from(".ap-form", { y: 50, autoAlpha: 0, duration: 1.1, ease: "expo.out", scrollTrigger: { trigger: ".ap-form", start: "top 85%" } });
       gsap.from(".join h2", { y: 60, autoAlpha: 0, duration: 1.2, ease: "expo.out", scrollTrigger: { trigger: ".join", start: "top 75%" } });
+      // the gear logo turns as you scroll into the last section, like it drives the page
+      gsap.fromTo(".join-gear", { rotate: -120, scale: .8, autoAlpha: 0 }, { rotate: 60, scale: 1, autoAlpha: matchMedia("(max-width:640px)").matches ? .3 : 1, ease: "none", scrollTrigger: { trigger: ".join", start: "top bottom", end: "bottom bottom", scrub: .8 } });
     }
     addEventListener("load", function(){ ScrollTrigger.refresh(); });
     if (window.ResizeObserver){ var rt; new ResizeObserver(function(){ clearTimeout(rt); rt = setTimeout(function(){ ScrollTrigger.refresh(); }, 200); }).observe(document.querySelector("main")); }
