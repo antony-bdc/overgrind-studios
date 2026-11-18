@@ -29,7 +29,7 @@
   function shade(hex, k){ var n = parseInt(hex.slice(1), 16), r = n >> 16, gg = n >> 8 & 255, b = n & 255; return "rgb(" + Math.round(r * k) + "," + Math.round(gg * k) + "," + Math.round(b * k) + ")"; }
   var lastT = performance.now();
   (function loop(t){ requestAnimationFrame(loop); if (!visible) { lastT = t; return; }
-    M.Engine.update(E, Math.min(32, t - lastT)); lastT = t;
+    var acc = Math.min(250, t - lastT); lastT = t; while (acc > 0){ var st = Math.min(16.7, acc); M.Engine.update(E, st); acc -= st; }
     g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, w, h);
     bricks.forEach(function(b){ var o = b.og; g.save(); g.translate(b.position.x, b.position.y); g.rotate(b.angle);
       var x = -o.bw / 2, y = -o.bh / 2, sw = o.bw / o.studs;
