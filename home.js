@@ -35,7 +35,8 @@
 
   /* ---------- nav ---------- */
   var nav = document.querySelector(".nav");
-  function onScroll(){ nav.classList.toggle("scrolled", scrollY > 30); paintStatement(); peekHide(); }
+  var prog = document.querySelector(".progress"), ftm = document.querySelector(".ft-mark span");
+  function onScroll(){ nav.classList.toggle("scrolled", scrollY > 30); paintStatement(); peekHide(); var mx = document.documentElement.scrollHeight - innerHeight; if (prog) prog.style.setProperty("--sp", mx > 0 ? (scrollY / mx).toFixed(4) : 0); if (ftm){ var r = ftm.getBoundingClientRect(); ftm.style.setProperty("--fx", Math.max(0, Math.min(100, (r.top / innerHeight) * 140)) + "%"); } }
   addEventListener("scroll", onScroll, { passive: true }); onScroll();
 
   /* ---------- smooth scroll ---------- */
@@ -122,7 +123,7 @@
       /* scroll: the wordmark sinks back, the crew stays in front */
       gsap.to(".mark", { yPercent: 18, scale: .86, autoAlpha: .12, ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true } });
       gsap.to(".stage", { yPercent: -8, ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true } });
-      gsap.utils.toArray(".sec-head").forEach(function(h){
+      gsap.utils.toArray(".sec-head").forEach(function(h){ gsap.fromTo(h, { "--hl": 0 }, { "--hl": 1, duration: 1.4, ease: "expo.inOut", scrollTrigger: { trigger: h, start: "top 88%" } });
         gsap.from(h.querySelectorAll(":scope > :not(.h2)"), { y: 36, autoAlpha: 0, duration: 1, stagger: .08, ease: "power3.out", scrollTrigger: { trigger: h, start: "top 82%" } });
       });
       /* headlines: every word rises out of its own mask */

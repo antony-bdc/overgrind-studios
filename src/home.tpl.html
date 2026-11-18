@@ -24,6 +24,7 @@
 </head>
 <body>
 <a class="skip" href="#crew">Skip to content</a>
+<div class="grain" aria-hidden="true"></div><div class="progress" aria-hidden="true"><i></i></div>
 <div class="intro" aria-hidden="true"><div class="intro-bricks"></div><img class="intro-gear" src="assets/logo/emblem-640.png" alt="" width="640" height="531"></div>
 <header class="nav">
   <div class="wrap">
@@ -196,12 +197,22 @@
   </div>
 </section>
 </main>
-<footer>
-  <div class="wrap">
-    <span class="ft-brand"><img src="assets/logo/emblem-128.png" alt="" aria-hidden="true" width="26" height="22">© 2026 Overgrind Studios</span>
+<footer class="ft">
+  <div class="wrap ft-top">
+    <div class="ft-col ft-about">
+      <span class="ft-brand"><img src="assets/logo/emblem-128.png" alt="" aria-hidden="true" width="26" height="22">Overgrind Studios</span>
+      <p data-i18n="ft.about">A Roblox crew of four creators from Switzerland and Germany. We build until it's better than good enough.</p>
+    </div>
+    <nav class="ft-col" aria-label="Studio"><b data-i18n="ft.h1">Studio</b><a href="#crew" data-i18n="n.crew">Crew</a><a href="#road" data-i18n="n.road">Roadmap</a><a href="#devlog" data-i18n="n.devlog">Devlog</a><a href="#apply" data-i18n="n.apply">Join the team</a></nav>
+    <nav class="ft-col" aria-label="Games"><b data-i18n="n.games">Games</b>{{FTGAMES}}</nav>
+    <nav class="ft-col" aria-label="Community"><b data-i18n="ft.h3">Community</b><a href="{{ROBLOX}}" target="_blank" rel="noopener">Roblox</a><a href="{{TIKTOK}}" target="_blank" rel="noopener">TikTok</a></nav>
+  </div>
+  <div class="ft-mark" aria-hidden="true"><span>OVERGRIND</span></div>
+  <div class="wrap ft-bot">
+    <span>© 2026 Overgrind Studios</span>
     <span data-i18n="ft.1">Built by freshstatue and the crew</span>
-    <span><a href="{{TIKTOK}}" target="_blank" rel="noopener">TikTok</a> · <a href="{{ROBLOX}}" target="_blank" rel="noopener">Roblox</a></span>
     <span data-i18n="ft.2">Not affiliated with Roblox Corporation.</span>
+    <a class="ft-up" href="#top"><span data-i18n="ft.up">Back to top</span> ↑</a>
   </div>
 </footer>
 <script src="vendor/gsap.min.js"></script>
