@@ -31,7 +31,7 @@ def build_home(GAMES, DE, upd_html, LD, ROBLOX, TIKTOK, GOAT, ico, esc):
                     f'<div class="rc-side"><span class="rc-gen">{ico(g["icon"])}<span data-i18n="g.{k}.genre">{esc(g["genre"][0])}</span></span>'
                     f'<span class="rc-st"><i></i><span data-i18n="g.{k}.status">{esc(g["status"][0])}</span></span></div>'
                     f'<span class="rc-go">{ico("arrow-up-right")}</span></div></a>')
-    DE["w.hint"]="weiter scrollen"; DE["ft.about"]="Eine Roblox-Crew aus vier Creatorn aus der Schweiz und Deutschland. Wir bauen, bis es mehr als nur gut genug ist."; DE["ft.h1"]="Studio"; DE["ft.h3"]="Community"; DE["ft.up"]="Nach oben"
+    DE["w.hint"]="weiter scrollen"; DE["ft.about"]="Eine Roblox-Crew aus vier Creatorn aus der Schweiz und Deutschland. Wir bauen, bis es mehr als nur gut genug ist."; DE["ft.h1"]="Studio"; DE["ft.h3"]="Community"; DE["ft.up"]="Nach oben"; DE["lb.crew"]="Zur Crew"; DE["lb.back"]="Zurück"
     cols=["#E2202E","#E8A400","#2450FF","#7B45F5"]
     tick=''.join(f'<span>{esc(g["title"])}</span><i style="--c:{cols[i%4]}"></i>' for i,g in enumerate(GAMES))
     DE.update({"n.apply":"Ins Team","h.m1":"Roblox-Gamestudio","h.m2":"Seit 2026","h.hint":"klick einen Creator an",

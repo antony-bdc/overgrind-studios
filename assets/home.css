@@ -547,3 +547,20 @@ footer a:hover{color:var(--paper)}
 @media (max-width:900px){.g-studio{position:relative;right:auto;top:auto;transform:none;width:58vw;margin:30px auto 0}.join-gear{width:46vw;right:-8vw;top:18%;transform:none}}
 @media (min-width:901px){.statement{max-width:17ch}.g-studio{right:-5vw;width:min(32vw,440px)}}
 @media (min-width:901px){.statement{max-width:min(17ch,60%);font-size:clamp(34px,4.6vw,80px)}}
+
+/* =========================================================
+   Site 3.5 – island hero + lobby crew
+   ========================================================= */
+.hero{background:radial-gradient(60% 50% at 50% 70%,#fff 0%,rgba(255,255,255,0) 70%),linear-gradient(180deg,var(--paper) 0%,#ebe7dd 100%)}
+.hero::after{display:none}
+.lobby{position:absolute;right:var(--pad);top:50%;z-index:5;width:min(360px,34vw);padding:26px 26px 22px;border-radius:24px;background:rgba(255,255,255,.82);backdrop-filter:blur(18px) saturate(1.4);-webkit-backdrop-filter:blur(18px) saturate(1.4);box-shadow:0 0 0 1px var(--line2),0 40px 80px -40px rgba(15,15,16,.5);transform:translate(40px,-50%);opacity:0;transition:opacity .45s var(--ease),transform .7s var(--ease);pointer-events:none}
+.lobby.on{opacity:1;transform:translate(0,-50%);pointer-events:auto}
+.lobby::before{content:"";position:absolute;left:0;top:22px;bottom:22px;width:4px;border-radius:0 4px 4px 0;background:var(--c)}
+.lb-no{font:700 12px/1 var(--mono);color:var(--mute)}
+.lb-role{display:inline-flex;margin-left:10px;padding:5px 9px;border-radius:999px;background:var(--c);color:#fff;font:700 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase}
+.lb-name{margin:14px 0 10px;font:900 clamp(34px,3.4vw,54px)/.9 var(--display);letter-spacing:-.05em}
+.lb-bio{margin:0 0 18px;color:var(--ink2);font-size:16px;line-height:1.45}
+.lb-row{display:flex;gap:8px;flex-wrap:wrap}
+html.lobby-on .mark{opacity:.08!important;transition:opacity .6s}
+html.lobby-on .hero-foot{opacity:.25;transition:opacity .6s}
+@media (max-width:760px){.lobby{left:12px;right:12px;width:auto;top:auto;bottom:12px;transform:translateY(30px)}.lobby.on{transform:none}}
