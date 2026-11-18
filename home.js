@@ -122,7 +122,12 @@
       gsap.from(".hero-meta > *, .hero-foot > *", { y: 20, autoAlpha: 0, duration: .9, stagger: .06, ease: "power3.out", delay: D0 + .45 });
       document.querySelectorAll(".facts dd").forEach(function(dd){ var n = +dd.textContent, o = { v: 0 }; if (!n) return; dd.textContent = "0"; gsap.to(o, { v: n, duration: 1.6, ease: "power2.out", delay: D0 + .7, onUpdate: function(){ dd.textContent = Math.round(o.v); } }); });
       /* scroll: the wordmark sinks back, the crew stays in front */
-      gsap.to(".mark", { yPercent: 18, scale: .86, autoAlpha: .12, ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true } });
+      /* scroll: the wordmark breaks apart letter by letter, like bricks knocked off a wall */
+      var chars = document.querySelectorAll(".mark .og-c");
+      if (chars.length){ gsap.set(".mark", { perspective: 900 });
+        gsap.to(chars, { x: function(i){ return (i - 4) * 38 + gsap.utils.random(-60, 60); }, y: function(){ return gsap.utils.random(-160, 120); }, z: function(){ return gsap.utils.random(-300, 260); }, rotationX: function(){ return gsap.utils.random(-120, 120); }, rotationY: function(){ return gsap.utils.random(-140, 140); }, rotationZ: function(){ return gsap.utils.random(-50, 50); }, ease: "power1.in", stagger: { each: .02, from: "center" }, scrollTrigger: { trigger: ".hero", start: "top top", end: "70% top", scrub: .6 } });
+        gsap.to(".mark", { autoAlpha: 0, ease: "power2.in", scrollTrigger: { trigger: ".hero", start: "35% top", end: "75% top", scrub: true } }); }
+      else gsap.to(".mark", { yPercent: 18, scale: .86, autoAlpha: .12, ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true } });
       gsap.to(".stage", { yPercent: -8, ease: "none", scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true } });
       gsap.utils.toArray(".sec-head").forEach(function(h){ gsap.fromTo(h, { "--hl": 0 }, { "--hl": 1, duration: 1.4, ease: "expo.inOut", scrollTrigger: { trigger: h, start: "top 88%" } });
         gsap.from(h.querySelectorAll(":scope > :not(.h2)"), { y: 36, autoAlpha: 0, duration: 1, stagger: .08, ease: "power3.out", scrollTrigger: { trigger: h, start: "top 82%" } });
