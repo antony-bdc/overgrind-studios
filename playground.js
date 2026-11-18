@@ -7,7 +7,7 @@
   var cv = document.createElement("canvas"); cv.className = "play"; cv.setAttribute("aria-hidden", "true"); sec.insertBefore(cv, sec.firstChild);
   var g = cv.getContext("2d"), dpr = Math.min(devicePixelRatio || 1, 2), w = 0, h = 0, U = 34, walls = [], bricks = [], started = false, visible = false;
   var COL = ["#E2202E", "#E8A400", "#2450FF", "#7B45F5"];
-  function size(){ var r = sec.getBoundingClientRect(); w = r.width; h = r.height; cv.width = w * dpr; cv.height = h * dpr; cv.style.width = w + "px"; cv.style.height = h + "px"; U = w < 700 ? 24 : 34;
+  function size(){ var r = sec.getBoundingClientRect(); w = r.width; h = r.height; cv.width = w * dpr; cv.height = h * dpr; cv.style.width = w + "px"; cv.style.height = h + "px"; U = Math.max(24, Math.min(54, w / 46));
     walls.forEach(function(b){ W.remove(E.world, b); }); var t = 200;
     walls = [B.rectangle(w / 2, h + t / 2, w * 3, t, { isStatic: true }), B.rectangle(-t / 2, h / 2, t, h * 3, { isStatic: true }), B.rectangle(w + t / 2, h / 2, t, h * 3, { isStatic: true })]; W.add(E.world, walls); }
   size(); addEventListener("resize", size);
@@ -17,7 +17,7 @@
     b.og = { c: COL[(Math.random() * 4) | 0], studs: wide * 2, bw: bw, bh: bh }; bricks.push(b); W.add(E.world, b);
     if (bricks.length > 70){ var o = bricks.shift(); W.remove(E.world, o); }
   }, i * 70); })(i); }
-  new IntersectionObserver(function(es){ es.forEach(function(e){ visible = e.isIntersecting; if (visible && !started){ started = true; drop(w < 700 ? 22 : 40); } }); }, { threshold: .25 }).observe(sec);
+  new IntersectionObserver(function(es){ es.forEach(function(e){ visible = e.isIntersecting; if (visible && !started){ started = true; drop(w < 700 ? 22 : 56); } }); }, { threshold: .25 }).observe(sec);
   /* grab and throw (only when you press on a brick, so buttons keep working) */
   var drag = null, mp = { x: 0, y: 0 }, prev = { x: 0, y: 0 };
   function local(e){ var r = cv.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; }
