@@ -80,7 +80,7 @@
       var disp = document.querySelector("#og-liquid feDisplacementMap"), lq = { s: 0 };
       cards.forEach(function(c){ var img = c.querySelector(".rc-img");
         c.addEventListener("pointerenter", function(){ if (!disp) return; img.style.filter = "url(#og-liquid)"; gsap.fromTo(lq, { s: 60 }, { s: 0, duration: 1.1, ease: "power3.out", onUpdate: function(){ disp.setAttribute("scale", lq.s.toFixed(1)); }, onComplete: function(){ img.style.filter = ""; } }); }); });
-      gsap.from(".reel-track", { y: 80, autoAlpha: 0, duration: 1.2, ease: "expo.out", scrollTrigger: { trigger: ".reel", start: "top 80%" } });
+      gsap.from(".reel-track", { autoAlpha: 0, duration: 1.2, ease: "expo.out", scrollTrigger: { trigger: ".reel", start: "top 80%" } }); gsap.from(".reel-ui", { y: 40, autoAlpha: 0, duration: 1, ease: "expo.out", scrollTrigger: { trigger: ".reel", start: "top 70%" } });
       return function(){ reelEl.classList.remove("ring"); track.style.transform = ""; cards.forEach(function(c){ c.style.transform = ""; }); removeEventListener("resize", place); };
     });
     /* crew cards: tilt towards the pointer with a soft glare */
