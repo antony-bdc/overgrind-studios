@@ -19,7 +19,7 @@ const CREW = [
 async function init() {
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const R = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: "high-performance" });
-  R.setPixelRatio(Math.min(devicePixelRatio, 2)); R.outputColorSpace = THREE.SRGBColorSpace;
+  R.setPixelRatio(Math.min(devicePixelRatio, innerWidth < 700 ? 1.5 : 1.75)); R.outputColorSpace = THREE.SRGBColorSpace;
   R.toneMapping = THREE.ACESFilmicToneMapping; R.toneMappingExposure = 1.02;
   R.shadowMap.enabled = true; R.shadowMap.type = THREE.PCFSoftShadowMap;
   const sc = new THREE.Scene();

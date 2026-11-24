@@ -4,13 +4,16 @@ import * as THREE from "./vendor/three.module.min.js";
 const ORDER = ["LowerTorso", "UpperTorso", "Head", "RUpperArm", "RLowerArm", "RHand", "LUpperArm", "LLowerArm", "LHand", "RUpperLeg", "RLowerLeg", "RFoot", "LUpperLeg", "LLowerLeg", "LFoot"];
 const al = (x) => (x + 3) & ~3;
 export async function loadCrew4(base) {
-  const [meta, bin] = await Promise.all([fetch(base + ".json").then((r) => r.json()), fetch(base + ".bin").then((r) => r.arrayBuffer())]);
+  // mesh ships gzip-compressed (.binz, ~half the size) and is unpacked in the browser; textures load in parallel
+  const getBin = async () => { if (typeof DecompressionStream !== "undefined") { try { const r = await fetch(base + ".binz"); if (r.ok) return await new Response(r.body.pipeThrough(new DecompressionStream("gzip"))).arrayBuffer(); } catch (e) {} } return fetch(base + ".bin").then((r) => r.arrayBuffer()); };
+  const texP = new THREE.TextureLoader().loadAsync(base + ".jpg"), nrmP = new THREE.TextureLoader().loadAsync(base + "_n.jpg").catch(() => null);
+  const [meta, bin] = await Promise.all([fetch(base + ".json").then((r) => r.json()), getBin()]);
   const n = meta.n; let o = 0; const take = (T, c, b) => { const a = new T(bin, o, n * c); o += al(n * c * b); return a; };
   const pos = take(Float32Array, 3, 4), nor = take(Int8Array, 4, 1), uv = take(Uint16Array, 2, 2), si = take(Uint8Array, 4, 1), sw = take(Uint8Array, 4, 1);
   const idx = new Uint32Array(bin, o, meta.ni);
-  const tex = await new THREE.TextureLoader().loadAsync(base + ".jpg"); tex.colorSpace = THREE.SRGBColorSpace; tex.flipY = true; tex.anisotropy = 8;
+  const tex = await texP; tex.colorSpace = THREE.SRGBColorSpace; tex.flipY = true; tex.anisotropy = 8;
   tex.anisotropy = 16; tex.generateMipmaps = true; tex.minFilter = THREE.LinearMipmapLinearFilter;
-  let nrm = null; try { nrm = await new THREE.TextureLoader().loadAsync(base + "_n.jpg"); nrm.flipY = true; nrm.anisotropy = 16; } catch (e) { nrm = null; }
+  const nrm = await nrmP; if (nrm) { nrm.flipY = true; nrm.anisotropy = 16; }
   const marble = base.endsWith("/fs");
   const mat = new THREE.MeshPhysicalMaterial({ map: tex, roughness: marble ? .32 : .58, metalness: 0, side: THREE.DoubleSide,
     clearcoat: marble ? .55 : .12, clearcoatRoughness: marble ? .18 : .5, sheen: marble ? 0 : .35, sheenRoughness: .6, sheenColor: new THREE.Color(0x9aa0b0), envMapIntensity: marble ? 1.0 : .7 });

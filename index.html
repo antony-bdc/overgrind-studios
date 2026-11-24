@@ -263,10 +263,20 @@
 <script src="portal.js?v=754be078"></script>
 <script src="vendor/matter.min.js"></script>
 <script src="playground.js?v=754be078"></script>
-<script type="module" src="crewstage.js?v=754be078"></script>
 <script type="module" src="gear3d.js?v=754be078"></script>
-<script type="module" src="brickword.js?v=754be078"></script>
-<script type="module" src="journey.js?v=754be078"></script>
+<script>
+/* Speed: the heavy 3D scenes start only when they are needed. The crew stage waits until the hero has painted,
+   the journey and the footer wordmark load when you scroll near them. */
+(function(){ var V="?v=754be078";
+  function idle(f){ (window.requestIdleCallback||function(c){ setTimeout(c,200); })(f,{timeout:1500}); }
+  function near(sel, src){ var el=document.querySelector(sel); if(!el) return; var done=false;
+    var go=function(){ if(done) return; done=true; import("./"+src+V); };
+    if(!("IntersectionObserver" in window)) return go();
+    var io=new IntersectionObserver(function(es){ if(es.some(function(e){return e.isIntersecting;})){ io.disconnect(); go(); } },{rootMargin:"1200px 0px"}); io.observe(el); }
+  window.addEventListener("load", function(){ idle(function(){ import("./crewstage.js"+V); }); });
+  near(".journey","journey.js"); near(".ft-mark","brickword.js");
+})();
+</script>
 <script data-goatcounter="https://overgrind.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </body>
 </html>
